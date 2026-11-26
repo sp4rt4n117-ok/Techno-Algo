@@ -1,0 +1,2054 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technologie 4e — Chapitre 12 : Algorithmes & Boucles</title>
+  <style>
+    :root {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-soft: #eff6ff;
+      --accent: #0f766e;
+      --accent-soft: #f0fdfa;
+      --warn: #d97706;
+      --warn-soft: #fffbeb;
+      --danger: #dc2626;
+      --danger-soft: #fef2f2;
+      --success: #16a34a;
+      --success-soft: #f0fdf4;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --radius: 12px;
+      --shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: #fff;
+      padding: 20px 24px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.18);
+    }
+
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.35rem;
+      letter-spacing: -0.01em;
+    }
+
+    header p {
+      margin: 4px 0 0;
+      font-size: 0.9rem;
+      color: #cbd5e1;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.22);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 22px auto 60px;
+      padding: 0 16px;
+    }
+
+    /* Carte identification */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      margin: 0 0 12px;
+      font-size: 1.15rem;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 10px;
+    }
+
+    .coef-pill {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      border: 1px solid #bfdbfe;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .identity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      background: #fff;
+      color: var(--text);
+    }
+
+    input[type="text"]:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+    }
+
+    /* Navigation par onglets */
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 720px) {
+      .tabs { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .tab-btn {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 10px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .tab-btn:hover { border-color: var(--primary); background: var(--primary-soft); }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary-dark);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .tab-btn .t-num { font-size: 0.75rem; opacity: 0.85; font-weight: 700; text-transform: uppercase; }
+    .tab-btn .t-name { font-size: 0.92rem; font-weight: 700; margin-top: 2px; display: block; }
+    .tab-btn .t-pts { font-size: 0.78rem; opacity: 0.9; }
+
+    .section-panel { display: none; }
+    .section-panel.active { display: block; }
+
+    /* Encadrés pédagogiques */
+    .context-box {
+      background: var(--primary-soft);
+      border-left: 4px solid var(--primary);
+      padding: 14px 16px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 16px;
+      font-size: 0.93rem;
+    }
+
+    .context-box ul { margin: 8px 0 0; padding-left: 20px; }
+    .context-box li { margin-bottom: 4px; }
+
+    .hint-box {
+      background: var(--warn-soft);
+      border-left: 4px solid var(--warn);
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.88rem;
+      margin: 12px 0;
+    }
+
+    /* Boutons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform 0.1s, background 0.15s;
+    }
+
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-success:hover { background: #15803d; }
+    .btn-outline { background: #fff; color: var(--text); border: 1.5px solid var(--border); }
+    .btn-outline:hover { background: var(--surface-alt); border-color: #94a3b8; }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-sm { padding: 6px 10px; font-size: 0.82rem; }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* ACTIVITÉ 1 : ARBRE DE DÉCISION */
+    .act1-layout {
+      display: grid;
+      grid-template-columns: 1.45fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .act1-layout { grid-template-columns: 1fr; }
+    }
+
+    .tree-board {
+      background: var(--surface-alt);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      overflow-x: auto;
+    }
+
+    .tree-level {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .node-card {
+      width: 100%;
+      max-width: 280px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: #fff;
+      transition: all 0.2s;
+    }
+
+    .node-test {
+      border-color: #2563eb;
+      background: #eff6ff;
+      position: relative;
+    }
+
+    .node-test::before {
+      content: "◆ TEST (Capteur)";
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #1d4ed8;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    .node-action {
+      border-color: #0f766e;
+      background: #f0fdfa;
+    }
+
+    .node-action::before {
+      content: "■ ACTION (Climatiseur)";
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #0f766e;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    .node-card.highlight {
+      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.45);
+      border-color: #d97706 !important;
+      transform: scale(1.02);
+    }
+
+    .branch-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      width: 100%;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 2px dashed #94a3b8;
+      position: relative;
+    }
+
+    .branch-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .branch-tag {
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 2px 10px;
+      border-radius: 999px;
+      color: #fff;
+    }
+
+    .tag-oui { background: var(--success); }
+    .tag-non { background: var(--danger); }
+
+    /* Simulateur Climatiseur */
+    .sim-box {
+      background: #0f172a;
+      color: #f8fafc;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .sim-box h3 { margin: 0 0 10px; font-size: 1rem; color: #93c5fd; }
+
+    .ac-unit {
+      background: #1e293b;
+      border: 2px solid #334155;
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+      margin-bottom: 14px;
+      transition: all 0.25s;
+    }
+
+    .ac-unit.cold { border-color: #38bdf8; background: #0c4a6e; }
+    .ac-unit.heat { border-color: #fb923c; background: #7c2d12; }
+    .ac-unit.idle { border-color: #4ade80; background: #14532d; }
+
+    .ac-icon { font-size: 2.3rem; line-height: 1.1; }
+    .ac-status { font-weight: 800; font-size: 1rem; margin-top: 6px; }
+    .ac-detail { font-size: 0.82rem; color: #cbd5e1; margin-top: 4px; }
+
+    .sim-control {
+      margin-bottom: 12px;
+      background: rgba(255,255,255,0.06);
+      padding: 10px 12px;
+      border-radius: 8px;
+    }
+
+    .sim-control label { color: #e2e8f0; display: flex; justify-content: space-between; }
+
+    /* ACTIVITÉ 2 : ROBOT SEMEUR & BOUCLES */
+    .raw-log {
+      background: #1e293b;
+      color: #e2e8f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      padding: 12px 14px;
+      border-radius: 10px;
+      max-height: 195px;
+      overflow-y: auto;
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
+    .raw-log .hl-init { color: #fbbf24; }
+    .raw-log .hl-step { color: #7dd3fc; }
+    .raw-log .hl-end  { color: #86efac; }
+
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 780px) {
+      .analysis-grid { grid-template-columns: 1fr; }
+    }
+
+    .q-card {
+      background: var(--surface-alt);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .q-card p { margin: 0 0 8px; font-weight: 700; font-size: 0.9rem; }
+
+    .radio-opt {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 400;
+      font-size: 0.87rem;
+      color: var(--text);
+    }
+
+    .radio-opt:hover { background: #e2e8f0; }
+
+    .act2-workspace {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    @media (max-width: 920px) {
+      .act2-workspace { grid-template-columns: 1fr; }
+    }
+
+    .palette {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+      padding: 10px;
+      background: var(--surface-alt);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .block-chip {
+      border: none;
+      border-radius: 7px;
+      padding: 7px 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform 0.1s, opacity 0.15s;
+    }
+
+    .block-chip:hover { opacity: 0.92; transform: translateY(-1px); }
+    .c-sys  { background: #d97706; }
+    .c-move { background: #2563eb; }
+    .c-act  { background: #0f766e; }
+    .c-end  { background: #7c3aed; }
+
+    .zone-box {
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      background: #fff;
+    }
+
+    .zone-box.zone-active {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.14);
+    }
+
+    .zone-loop {
+      border-color: #f59e0b;
+      background: #fffbeb;
+    }
+
+    .zone-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .zone-label {
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: #334155;
+    }
+
+    .zone-target-btn {
+      font-size: 0.76rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1.5px solid var(--primary);
+      background: #fff;
+      color: var(--primary);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .zone-box.zone-active .zone-target-btn {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .block-list {
+      min-height: 38px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .empty-hint {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      font-style: italic;
+      padding: 6px 4px;
+    }
+
+    .placed-block {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      border-radius: 7px;
+      color: #fff;
+      font-size: 0.84rem;
+      font-weight: 700;
+      gap: 8px;
+    }
+
+    .placed-controls {
+      display: flex;
+      gap: 4px;
+    }
+
+    .placed-controls button {
+      background: rgba(255,255,255,0.22);
+      border: none;
+      color: #fff;
+      width: 24px;
+      height: 24px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 0.76rem;
+    }
+
+    .placed-controls button:hover { background: rgba(255,255,255,0.38); }
+
+    .loop-config-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .loop-config-row select { flex: 1; min-width: 180px; padding: 6px 10px; font-size: 0.86rem; }
+    .loop-config-row input[type="number"] {
+      width: 68px;
+      padding: 6px 8px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    /* Canvas Simulateur Robot */
+    .canvas-card {
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 14px;
+      color: #f8fafc;
+    }
+
+    canvas#robotCanvas {
+      width: 100%;
+      height: 245px;
+      background: #1e293b;
+      border-radius: 8px;
+      display: block;
+      border: 1px solid #334155;
+    }
+
+    .sim-log {
+      margin-top: 10px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.84rem;
+      min-height: 62px;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    .sim-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    /* MINI BILAN */
+    .bilan-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 780px) {
+      .bilan-grid { grid-template-columns: 1fr; }
+    }
+
+    /* RAPPORT FINAL */
+    .score-hero {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 20px;
+      align-items: center;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: #fff;
+      padding: 22px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 640px) {
+      .score-hero { grid-template-columns: 1fr; text-align: center; }
+    }
+
+    .score-circle {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 4px solid #38bdf8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .score-circle .big { font-size: 1.9rem; font-weight: 800; line-height: 1; }
+    .score-circle .sub { font-size: 0.82rem; color: #cbd5e1; margin-top: 3px; }
+
+    .subscores {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .subscore-pill {
+      background: rgba(255,255,255,0.12);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .fb-block {
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+    }
+
+    .fb-block h4 { margin: 0 0 10px; font-size: 1rem; display: flex; justify-content: space-between; }
+
+    .fb-item {
+      padding: 8px 10px;
+      border-radius: 7px;
+      margin-bottom: 6px;
+      font-size: 0.88rem;
+    }
+
+    .fb-ok  { background: var(--success-soft); border-left: 4px solid var(--success); color: #14532d; }
+    .fb-ko  { background: var(--danger-soft); border-left: 4px solid var(--danger); color: #7f1d1d; }
+    .fb-mid { background: var(--warn-soft); border-left: 4px solid var(--warn); color: #78350f; }
+
+    .send-status {
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 16px;
+    }
+
+    .step-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid #e2e8f0;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .locked-banner {
+      background: #fef3c7;
+      border: 1.5px solid #f59e0b;
+      color: #92400e;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      margin-bottom: 14px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <h1>⚙️ Technologie 4e — Chapitre 12 : Algorithmes & Boucles</h1>
+      <p>Activité interactive auto-corrigée • Arbre de décision, boucle intelligente et bilan</p>
+    </div>
+    <div class="badge-bar">
+      <span class="badge">🎯 Note / 10 (4 + 4 + 2)</span>
+      <span class="badge">💻 Pix 3.4 & 3.2</span>
+      <span class="badge">⏱️ 50 min</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- IDENTIFICATION -->
+  <div class="card">
+    <div class="card-title">
+      <span>👤 Identification de l'élève (obligatoire pour enregistrer ta note)</span>
+      <span id="saveIndicator" style="font-size:0.8rem; color:#64748b; font-weight:600;">Brouillon local prêt</span>
+    </div>
+    <div class="identity-grid">
+      <div>
+        <label for="elNom">Nom *</label>
+        <input type="text" id="elNom" placeholder="Ex : MARTIN">
+      </div>
+      <div>
+        <label for="elPrenom">Prénom *</label>
+        <input type="text" id="elPrenom" placeholder="Ex : Lucas">
+      </div>
+      <div>
+        <label for="elClasse">Classe *</label>
+        <select id="elClasse">
+          <option value="">-- Choisir ta classe --</option>
+          <option value="4e A">4e A</option>
+          <option value="4e B">4e B</option>
+          <option value="4e C">4e C</option>
+          <option value="4e D">4e D</option>
+          <option value="4e E">4e E</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div id="lockedBanner" class="locked-banner">
+    🔒 Copie déjà corrigée et envoyée au professeur. Tu peux consulter ta correction détaillée dans l'onglet « 4. Correction & Note ».
+  </div>
+
+  <!-- ONGLETS -->
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="tab1">
+      <span class="t-num">Étape 1</span>
+      <span class="t-name">❄️ Arbre de décision</span>
+      <span class="t-pts">Climatiseur réversible • 4 pts</span>
+    </button>
+    <button class="tab-btn" data-tab="tab2">
+      <span class="t-num">Étape 2</span>
+      <span class="t-name">🤖 Boucle intelligente</span>
+      <span class="t-pts">Robot semeur • 4 pts</span>
+    </button>
+    <button class="tab-btn" data-tab="tab3">
+      <span class="t-num">Étape 3</span>
+      <span class="t-name">📝 Mini-Bilan</span>
+      <span class="t-pts">Synthèse du cours • 2 pts</span>
+    </button>
+    <button class="tab-btn" data-tab="tab4">
+      <span class="t-num">Étape 4</span>
+      <span class="t-name">📊 Correction & Envoi</span>
+      <span class="t-pts">Diagnostic détaillé • /10</span>
+    </button>
+  </nav>
+
+  <!-- ==================== ACTIVITÉ 1 ==================== -->
+  <section id="tab1" class="section-panel active">
+    <div class="card">
+      <div class="card-title">
+        <span>❄️ Activité 1 : Créer l'arbre de décision d'un climatiseur réversible</span>
+        <span class="coef-pill">Coefficient : 4 points</span>
+      </div>
+
+      <div class="context-box">
+        <strong>Cahier des charges de la salle de classe :</strong> Le climatiseur réversible possède un <em>capteur de température</em> (T) et un <em>détecteur de fenêtre ouverte</em>. Il doit respecter ces 3 règles :
+        <ul>
+          <li><strong>Règle n°1 (Priorité éco-énergie) :</strong> Si la <strong>fenêtre est ouverte</strong>, l'appareil passe obligatoirement en <strong>Arrêt / Veille</strong>, quelle que soit la température !</li>
+          <li><strong>Règle n°2 (Chaleur) :</strong> Fenêtre fermée, si la température est <strong>supérieure à 25 °C</strong> (<code>T &gt; 25 °C</code>), il lance le <strong>Mode Froid (Climatisation)</strong>.</li>
+          <li><strong>Règle n°3 (Froid) :</strong> Fenêtre fermée, si la température est <strong>inférieure à 19 °C</strong> (<code>T &lt; 19 °C</code>), il lance le <strong>Mode Chaud (Chauffage)</strong>. Entre 19 °C et 25 °C inclus, il reste en <strong>Arrêt / Veille</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="act1-layout">
+        <!-- ARBRE INTERACTIF -->
+        <div class="tree-board">
+          <div class="tree-level">
+            <!-- TEST 1 -->
+            <div class="node-card node-test" id="node-t1">
+              <select id="t1" class="tree-select">
+                <option value="">-- Choisir le 1er test (prioritaire) --</option>
+                <option value="FENETRE">Fenêtre ouverte ?</option>
+                <option value="T_GT_25">Température &gt; 25 °C ?</option>
+                <option value="T_LT_19">Température &lt; 19 °C ?</option>
+              </select>
+            </div>
+
+            <div class="branch-split">
+              <!-- OUI DE T1 -->
+              <div class="branch-col">
+                <span class="branch-tag tag-oui">OUI</span>
+                <div class="node-card node-action" id="node-a1">
+                  <select id="a1" class="tree-select">
+                    <option value="">-- Action --</option>
+                    <option value="VEILLE">Arrêt / Veille (Éco)</option>
+                    <option value="FROID">Mode Froid (Clim)</option>
+                    <option value="CHAUD">Mode Chaud (Chauffage)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- NON DE T1 -->
+              <div class="branch-col">
+                <span class="branch-tag tag-non">NON</span>
+                <div class="node-card node-test" id="node-t2">
+                  <select id="t2" class="tree-select">
+                    <option value="">-- Choisir le 2e test --</option>
+                    <option value="FENETRE">Fenêtre ouverte ?</option>
+                    <option value="T_GT_25">Température &gt; 25 °C ?</option>
+                    <option value="T_LT_19">Température &lt; 19 °C ?</option>
+                  </select>
+                </div>
+
+                <div class="branch-split">
+                  <!-- OUI DE T2 -->
+                  <div class="branch-col">
+                    <span class="branch-tag tag-oui">OUI</span>
+                    <div class="node-card node-action" id="node-a2">
+                      <select id="a2" class="tree-select">
+                        <option value="">-- Action --</option>
+                        <option value="VEILLE">Arrêt / Veille (Éco)</option>
+                        <option value="FROID">Mode Froid (Clim)</option>
+                        <option value="CHAUD">Mode Chaud (Chauffage)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- NON DE T2 -->
+                  <div class="branch-col">
+                    <span class="branch-tag tag-non">NON</span>
+                    <div class="node-card node-test" id="node-t3">
+                      <select id="t3" class="tree-select">
+                        <option value="">-- Choisir le 3e test --</option>
+                        <option value="FENETRE">Fenêtre ouverte ?</option>
+                        <option value="T_GT_25">Température &gt; 25 °C ?</option>
+                        <option value="T_LT_19">Température &lt; 19 °C ?</option>
+                      </select>
+                    </div>
+
+                    <div class="branch-split">
+                      <div class="branch-col">
+                        <span class="branch-tag tag-oui">OUI</span>
+                        <div class="node-card node-action" id="node-a3">
+                          <select id="a3" class="tree-select">
+                            <option value="">-- Action --</option>
+                            <option value="VEILLE">Arrêt / Veille (Éco)</option>
+                            <option value="FROID">Mode Froid (Clim)</option>
+                            <option value="CHAUD">Mode Chaud (Chauffage)</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="branch-col">
+                        <span class="branch-tag tag-non">NON</span>
+                        <div class="node-card node-action" id="node-a4">
+                          <select id="a4" class="tree-select">
+                            <option value="">-- Action --</option>
+                            <option value="VEILLE">Arrêt / Veille (Éco)</option>
+                            <option value="FROID">Mode Froid (Clim)</option>
+                            <option value="CHAUD">Mode Chaud (Chauffage)</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIMULATEUR CLIMATISEUR -->
+        <div class="sim-box">
+          <h3>🧪 Banc d'essai de ton arbre</h3>
+          <div id="acUnit" class="ac-unit">
+            <div id="acIcon" class="ac-icon">🎛️</div>
+            <div id="acStatus" class="ac-status">En attente de test</div>
+            <div id="acDetail" class="ac-detail">Complète ton arbre puis clique sur « Tester ».</div>
+          </div>
+
+          <div class="sim-control">
+            <label for="simTemp">
+              <span>🌡️ Température de la salle :</span>
+              <strong id="simTempVal">22 °C</strong>
+            </label>
+            <input type="range" id="simTemp" min="10" max="35" value="22" style="width:100%;">
+          </div>
+
+          <div class="sim-control">
+            <label for="simWin"><span>🪟 État de la fenêtre :</span></label>
+            <select id="simWin" style="margin-top:4px;">
+              <option value="false">Fermée</option>
+              <option value="true">Ouverte</option>
+            </select>
+          </div>
+
+          <button type="button" class="btn btn-primary" id="btnTestAC" style="width:100%;">
+            ▶️ Simuler avec mon arbre
+          </button>
+          <p style="font-size:0.78rem; color:#94a3b8; margin:10px 0 0;">
+            Astuce : teste plusieurs situations (ex : 30 °C fenêtre ouverte, 15 °C fenêtre fermée, 22 °C fenêtre fermée) pour vérifier que ton arbre ne fait aucune erreur !
+          </p>
+        </div>
+      </div>
+
+      <div class="step-footer">
+        <span style="font-size:0.85rem; color:var(--muted);">💡 Plusieurs ordres des tests 2 et 3 sont acceptés s'ils respectent le cahier des charges.</span>
+        <button type="button" class="btn btn-primary" onclick="goTab('tab2')">Passer à l'Activité 2 ➡️</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ACTIVITÉ 2 ==================== -->
+  <section id="tab2" class="section-panel">
+    <div class="card">
+      <div class="card-title">
+        <span>🤖 Activité 2 : Analyser et programmer une boucle intelligente (Robot Semeur)</span>
+        <span class="coef-pill">Coefficient : 4 points</span>
+      </div>
+
+      <div class="context-box">
+        <strong>Situation technologique :</strong> Un robot agricole doit semer des graines dans des bacs de terre alignés. Il démarre toujours sur sa <strong>base en béton (case 0)</strong>. Au bout de chaque rangée se trouve une <strong>balise de fin de rangée</strong> (capteur). Un stagiaire a écrit un programme « à la main » pour une rangée de 4 bacs, mais il est trop long et ne fonctionne plus si la rangée change de taille (ex : 6 bacs) :
+      </div>
+
+      <div class="raw-log">
+        <div><span class="hl-init">01. Allumer le gyrophare de sécurité</span></div>
+        <div><span class="hl-step">02. Avancer d'1 bac &nbsp;→&nbsp; 03. Creuser un trou &nbsp;→&nbsp; 04. Déposer une graine &nbsp;→&nbsp; 05. Arroser le trou</span> &nbsp;(Bac 1)</div>
+        <div><span class="hl-step">06. Avancer d'1 bac &nbsp;→&nbsp; 07. Creuser un trou &nbsp;→&nbsp; 08. Déposer une graine &nbsp;→&nbsp; 09. Arroser le trou</span> &nbsp;(Bac 2)</div>
+        <div><span class="hl-step">10. Avancer d'1 bac &nbsp;→&nbsp; 11. Creuser un trou &nbsp;→&nbsp; 12. Déposer une graine &nbsp;→&nbsp; 13. Arroser le trou</span> &nbsp;(Bac 3)</div>
+        <div><span class="hl-step">14. Avancer d'1 bac &nbsp;→&nbsp; 15. Creuser un trou &nbsp;→&nbsp; 16. Déposer une graine &nbsp;→&nbsp; 17. Arroser le trou</span> &nbsp;(Bac 4)</div>
+        <div><span class="hl-end">18. Éteindre le gyrophare &nbsp;→&nbsp; 19. Rentrer à la base</span></div>
+      </div>
+
+      <!-- ÉTAPE 2A : ANALYSE -->
+      <h3 style="margin:0 0 10px; font-size:1rem;">🔍 Partie A — Analyse de la situation (1 point)</h3>
+      <div class="analysis-grid">
+        <div class="q-card">
+          <p>1. Quelles tâches doivent rester EN DEHORS de la boucle de répétition ? (0,5 pt)</p>
+          <label class="radio-opt"><input type="radio" name="ana1" value="A"> Uniquement « Avancer d'1 bac » et « Arroser »</label>
+          <label class="radio-opt"><input type="radio" name="ana1" value="B"> « Allumer le gyrophare » (au début), puis « Éteindre le gyrophare » et « Rentrer à la base » (à la fin)</label>
+          <label class="radio-opt"><input type="radio" name="ana1" value="C"> Aucune : toutes les actions doivent être répétées dans la boucle</label>
+        </div>
+
+        <div class="q-card">
+          <p>2. Dans le motif répété, pourquoi « Avancer d'1 bac » doit-il être placé EN PREMIER ? (0,5 pt)</p>
+          <label class="radio-opt"><input type="radio" name="ana2" value="A"> Parce que le robot démarre sur la base en béton : s'il creuse avant d'avancer, il casse sa foreuse !</label>
+          <label class="radio-opt"><input type="radio" name="ana2" value="B"> Pour économiser la batterie du gyrophare</label>
+          <label class="radio-opt"><input type="radio" name="ana2" value="C"> L'ordre des instructions dans la boucle n'a aucune importance</label>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 2B : CONSTRUCTION + SIMULATEUR -->
+      <h3 style="margin:0 0 10px; font-size:1rem;">🧱 Partie B — Construis ton programme et teste-le sur les 2 parcelles (3 points)</h3>
+      <div class="hint-box">
+        <strong>Mode d'emploi :</strong> 1) Clique sur le bouton <em>« Ajouter ici »</em> de la zone choisie (Avant la boucle / Dans la boucle / Après la boucle). 2) Clique sur les blocs de couleur pour les ajouter. 3) Choisis la <strong>boucle la plus intelligente</strong> pour réussir à la fois la <strong>Parcelle A (4 bacs)</strong> ET la <strong>Parcelle B (6 bacs)</strong> !
+      </div>
+
+      <div class="act2-workspace">
+        <!-- ÉDITEUR DE BLOCS -->
+        <div>
+          <label>Palette de blocs disponibles (clique pour ajouter dans la zone sélectionnée) :</label>
+          <div class="palette" id="blockPalette">
+            <button type="button" class="block-chip c-sys"  data-block="GYRO_ON">🚨 Allumer gyrophare</button>
+            <button type="button" class="block-chip c-move" data-block="MOVE">➡️ Avancer d'1 bac</button>
+            <button type="button" class="block-chip c-act"  data-block="DIG">⛏️ Creuser un trou</button>
+            <button type="button" class="block-chip c-act"  data-block="SEED">🌱 Déposer graine</button>
+            <button type="button" class="block-chip c-act"  data-block="WATER">💧 Arroser le trou</button>
+            <button type="button" class="block-chip c-end"  data-block="GYRO_OFF">🔕 Éteindre gyrophare</button>
+            <button type="button" class="block-chip c-end"  data-block="RETURN">🏠 Rentrer à la base</button>
+          </div>
+
+          <!-- ZONE AVANT -->
+          <div class="zone-box zone-active" id="zone-before" data-zone="before">
+            <div class="zone-header">
+              <span class="zone-label">1. Avant la boucle (Initialisation)</span>
+              <button type="button" class="zone-target-btn" onclick="selectZone('before')">✏️ Ajouter ici</button>
+            </div>
+            <div class="block-list" id="list-before"></div>
+          </div>
+
+          <!-- ZONE BOUCLE -->
+          <div class="zone-box zone-loop" id="zone-loop" data-zone="loop">
+            <div class="zone-header">
+              <span class="zone-label">2. Dans la boucle (Tâche répétée)</span>
+              <button type="button" class="zone-target-btn" onclick="selectZone('loop')">✏️ Ajouter ici</button>
+            </div>
+            <div class="loop-config-row">
+              <select id="loopType">
+                <option value="NONE">-- Choisir le type de boucle --</option>
+                <option value="FIXED">Répéter [N] fois</option>
+                <option value="UNTIL_END">Répéter jusqu'à [Capteur = Fin de rangée]</option>
+                <option value="FOREVER">Répéter indéfiniment</option>
+              </select>
+              <input type="number" id="loopCount" min="1" max="10" value="4" style="display:none;" title="Nombre de répétitions">
+            </div>
+            <div class="block-list" id="list-loop"></div>
+          </div>
+
+          <!-- ZONE APRÈS -->
+          <div class="zone-box" id="zone-after" data-zone="after">
+            <div class="zone-header">
+              <span class="zone-label">3. Après la boucle (Fin de mission)</span>
+              <button type="button" class="zone-target-btn" onclick="selectZone('after')">✏️ Ajouter ici</button>
+            </div>
+            <div class="block-list" id="list-after"></div>
+          </div>
+
+          <button type="button" class="btn btn-outline btn-sm" id="btnClearBlocks">🗑️ Vider mon programme</button>
+        </div>
+
+        <!-- SIMULATEUR CANVAS -->
+        <div class="canvas-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+            <strong style="color:#93c5fd; font-size:0.95rem;">🚜 Simulateur de terrain en direct</strong>
+            <span id="simBadge" style="font-size:0.78rem; background:#334155; padding:3px 9px; border-radius:999px;">Prêt</span>
+          </div>
+          <canvas id="robotCanvas" width="540" height="245"></canvas>
+          <div class="sim-actions">
+            <button type="button" class="btn btn-primary btn-sm" id="btnRun4">▶️ Tester Parcelle A (4 bacs)</button>
+            <button type="button" class="btn btn-success btn-sm" id="btnRun6">▶️ Tester Parcelle B (6 bacs)</button>
+            <button type="button" class="btn btn-outline btn-sm" id="btnResetSim" style="color:#0f172a;">↺ Réinitialiser</button>
+          </div>
+          <div class="sim-log" id="simLog">
+            Clique sur « Tester Parcelle A (4 bacs) » ou « Tester Parcelle B (6 bacs) » pour observer le comportement réel de ton robot.
+          </div>
+        </div>
+      </div>
+
+      <div class="step-footer">
+        <button type="button" class="btn btn-outline" onclick="goTab('tab1')">⬅️ Retour Activité 1</button>
+        <button type="button" class="btn btn-primary" onclick="goTab('tab3')">Passer au Mini-Bilan ➡️</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MINI BILAN ==================== -->
+  <section id="tab3" class="section-panel">
+    <div class="card">
+      <div class="card-title">
+        <span>📝 Étape 3 : Mini-Bilan des notions du chapitre</span>
+        <span class="coef-pill">Coefficient : 2 points (4 × 0,5 pt)</span>
+      </div>
+
+      <div class="bilan-grid">
+        <div class="q-card">
+          <p>1. Dans un arbre de décision (algorigramme), que représente un losange ◆ ?</p>
+          <label class="radio-opt"><input type="radio" name="b1" value="A"> Une action exécutée par un moteur ou un actionneur</label>
+          <label class="radio-opt"><input type="radio" name="b1" value="B"> Un test / une instruction conditionnelle (souvent liée à un capteur)</label>
+          <label class="radio-opt"><input type="radio" name="b1" value="C"> La fin définitive du programme</label>
+        </div>
+
+        <div class="q-card">
+          <p>2. Avec la condition « Fenêtre fermée ET Température &gt; 25 °C », la climatisation démarre si :</p>
+          <label class="radio-opt"><input type="radio" name="b2" value="A"> Au moins une des deux conditions est vraie</label>
+          <label class="radio-opt"><input type="radio" name="b2" value="B"> Les deux conditions sont vraies en même temps</label>
+          <label class="radio-opt"><input type="radio" name="b2" value="C"> Aucune des deux conditions n'est vraie</label>
+        </div>
+
+        <div class="q-card">
+          <p>3. Pourquoi la boucle « Répéter jusqu'à [Fin de rangée] » est-elle plus intelligente que « Répéter 4 fois » ?</p>
+          <label class="radio-opt"><input type="radio" name="b3" value="A"> Elle s'adapte automatiquement à la longueur de la rangée grâce au capteur</label>
+          <label class="radio-opt"><input type="radio" name="b3" value="B"> Elle permet au robot de rouler deux fois plus vite</label>
+          <label class="radio-opt"><input type="radio" name="b3" value="C"> Elle supprime le besoin de capteurs sur le robot</label>
+        </div>
+
+        <div class="q-card">
+          <p>4. Dans un objet connecté (thermostat, climatiseur, alarme), à quoi sert la boucle « Répéter indéfiniment » ?</p>
+          <label class="radio-opt"><input type="radio" name="b4" value="A"> À provoquer un bug volontaire</label>
+          <label class="radio-opt"><input type="radio" name="b4" value="B"> À n'exécuter le programme qu'une seule fois</label>
+          <label class="radio-opt"><input type="radio" name="b4" value="C"> À surveiller en permanence les capteurs tant que l'objet est allumé</label>
+        </div>
+      </div>
+
+      <div class="step-footer">
+        <button type="button" class="btn btn-outline" onclick="goTab('tab2')">⬅️ Retour Activité 2</button>
+        <button type="button" class="btn btn-success" id="btnFinish" onclick="submitAndGrade()">✅ Corriger et envoyer ma note au professeur</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CORRECTION & ENVOI ==================== -->
+  <section id="tab4" class="section-panel">
+    <div class="card">
+      <div class="card-title">
+        <span>📊 Étape 4 : Correction détaillée & Transmission de ta note</span>
+        <span class="coef-pill">Note finale sur 10</span>
+      </div>
+
+      <div id="notSubmittedMsg" style="text-align:center; padding:30px 10px;">
+        <p style="font-size:1rem; color:var(--muted); margin-bottom:16px;">
+          Tu n'as pas encore validé ton travail. Vérifie que tu as bien complété les 3 étapes et saisi ton <strong>Nom, Prénom et Classe</strong> en haut de la page.
+        </p>
+        <button type="button" class="btn btn-success" onclick="submitAndGrade()">✅ Valider, voir ma correction et envoyer ma note</button>
+      </div>
+
+      <div id="resultsContainer" style="display:none;">
+        <div id="sendStatus" class="send-status"></div>
+
+        <div class="score-hero">
+          <div class="score-circle">
+            <span class="big" id="finalTotal">0</span>
+            <span class="sub">/ 10 pts</span>
+          </div>
+          <div>
+            <h2 style="margin:0 0 4px; font-size:1.2rem;" id="studentSummary"></h2>
+            <div id="pixLevel" style="font-size:0.9rem; color:#93c5fd; font-weight:700;"></div>
+            <div class="subscores">
+              <span class="subscore-pill">❄️ Activité 1 : <span id="resA1">0</span> / 4</span>
+              <span class="subscore-pill">🤖 Activité 2 : <span id="resA2">0</span> / 4</span>
+              <span class="subscore-pill">📝 Mini-Bilan : <span id="resBilan">0</span> / 2</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="fb-block">
+          <h4><span>❄️ Diagnostic Activité 1 — Arbre de décision (Climatiseur)</span><span id="fbA1Score"></span></h4>
+          <div id="fbA1List"></div>
+        </div>
+
+        <div class="fb-block">
+          <h4><span>🤖 Diagnostic Activité 2 — Boucle intelligente (Robot Semeur)</span><span id="fbA2Score"></span></h4>
+          <div id="fbA2List"></div>
+        </div>
+
+        <div class="fb-block">
+          <h4><span>📝 Diagnostic Étape 3 — Mini-Bilan</span><span id="fbBilanScore"></span></h4>
+          <div id="fbBilanList"></div>
+        </div>
+
+        <div class="step-footer">
+          <button type="button" class="btn btn-outline btn-sm" id="btnRetrySend" style="display:none;" onclick="sendToGoogleSheet(lastPayload)">🔄 Réessayer l'envoi au professeur</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="window.print()">🖨️ Imprimer / Enregistrer ma correction en PDF</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ============================================================================
+   CONFIGURATION PROFESSEUR (À PERSONNALISER EN 10 SECONDES)
+   ============================================================================ */
+const CONFIG = {
+  // Collez ici l'URL Web App obtenue après déploiement de votre Google Apps Script (Code.gs)
+  GOOGLE_SHEET_URL: "https://script.google.com/macros/s/AKfycbzVVAsvfEOhjm0T_ST2KB-7Z5t4luH15-AITwOghv5RTqLSZp-7W0iRqbqH1zOhZ-RS/exec",
+  ACTIVITY_NAME: "4e_Ch12_Algorithmes_Boucles",
+  STORAGE_KEY: "techno4e_ch12_v1"
+};
+
+/* ============================================================================
+   DONNÉES & ÉTAT DE L'APPLICATION
+   ============================================================================ */
+const BLOCK_META = {
+  GYRO_ON:  { label: "🚨 Allumer gyrophare",   cls: "c-sys"  },
+  MOVE:     { label: "➡️ Avancer d'1 bac",     cls: "c-move" },
+  DIG:      { label: "⛏️ Creuser un trou",     cls: "c-act"  },
+  SEED:     { label: "🌱 Déposer graine",      cls: "c-act"  },
+  WATER:    { label: "💧 Arroser le trou",     cls: "c-act"  },
+  GYRO_OFF: { label: "🔕 Éteindre gyrophare",  cls: "c-end"  },
+  RETURN:   { label: "🏠 Rentrer à la base",   cls: "c-end"  }
+};
+
+const state = {
+  activeZone: "before",
+  zones: { before: [], loop: [], after: [] },
+  locked: false,
+  simTimer: null
+};
+
+let lastPayload = null;
+
+/* ============================================================================
+   NAVIGATION PAR ONGLETS
+   ============================================================================ */
+function goTab(tabId) {
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tabId));
+  document.querySelectorAll(".section-panel").forEach(p => p.classList.toggle("active", p.id === tabId));
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (tabId === "tab2") drawField(4, 0, [], false, null);
+}
+
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => goTab(btn.dataset.tab));
+});
+
+/* ============================================================================
+   ACTIVITÉ 1 : MOTEUR D'ÉVALUATION DE L'ARBRE DU CLIMATISEUR
+   ============================================================================ */
+function evalCondition(condKey, temp, windowOpen) {
+  if (condKey === "FENETRE") return windowOpen === true;
+  if (condKey === "T_GT_25") return temp > 25;
+  if (condKey === "T_LT_19") return temp < 19;
+  return null;
+}
+
+function getTreeValues() {
+  return {
+    t1: document.getElementById("t1").value,
+    a1: document.getElementById("a1").value,
+    t2: document.getElementById("t2").value,
+    a2: document.getElementById("a2").value,
+    t3: document.getElementById("t3").value,
+    a3: document.getElementById("a3").value,
+    a4: document.getElementById("a4").value
+  };
+}
+
+function runDecisionTree(tree, temp, windowOpen) {
+  const path = ["node-t1"];
+  const r1 = evalCondition(tree.t1, temp, windowOpen);
+  if (r1 === null) return { action: "", path, error: "Le 1er test n'est pas choisi." };
+  if (r1) {
+    path.push("node-a1");
+    return { action: tree.a1, path };
+  }
+  path.push("node-t2");
+  const r2 = evalCondition(tree.t2, temp, windowOpen);
+  if (r2 === null) return { action: "", path, error: "Le 2e test n'est pas choisi." };
+  if (r2) {
+    path.push("node-a2");
+    return { action: tree.a2, path };
+  }
+  path.push("node-t3");
+  const r3 = evalCondition(tree.t3, temp, windowOpen);
+  if (r3 === null) return { action: "", path, error: "Le 3e test n'est pas choisi." };
+  if (r3) {
+    path.push("node-a3");
+    return { action: tree.a3, path };
+  }
+  path.push("node-a4");
+  return { action: tree.a4, path };
+}
+
+document.getElementById("simTemp").addEventListener("input", e => {
+  document.getElementById("simTempVal").textContent = e.target.value + " °C";
+});
+
+document.getElementById("btnTestAC").addEventListener("click", () => {
+  const temp = Number(document.getElementById("simTemp").value);
+  const winOpen = document.getElementById("simWin").value === "true";
+  const tree = getTreeValues();
+  const res = runDecisionTree(tree, temp, winOpen);
+
+  document.querySelectorAll(".node-card").forEach(el => el.classList.remove("highlight"));
+  res.path.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add("highlight");
+  });
+
+  const unit = document.getElementById("acUnit");
+  const icon = document.getElementById("acIcon");
+  const status = document.getElementById("acStatus");
+  const detail = document.getElementById("acDetail");
+  unit.className = "ac-unit";
+
+  if (!res.action) {
+    icon.textContent = "⚠️";
+    status.textContent = "Arbre incomplet !";
+    detail.textContent = res.error || "Une case Action sur ce chemin est encore vide.";
+    return;
+  }
+
+  const contextStr = `Entrées : ${temp} °C • Fenêtre ${winOpen ? "OUVERTE" : "FERMÉE"}`;
+  if (res.action === "FROID") {
+    unit.classList.add("cold");
+    icon.textContent = "❄️";
+    status.textContent = "MODE FROID (Climatisation)";
+    detail.textContent = contextStr;
+  } else if (res.action === "CHAUD") {
+    unit.classList.add("heat");
+    icon.textContent = "🔥";
+    status.textContent = "MODE CHAUD (Chauffage)";
+    detail.textContent = contextStr;
+  } else {
+    unit.classList.add("idle");
+    icon.textContent = "🌿";
+    status.textContent = "ARRÊT / VEILLE (Éco)";
+    detail.textContent = contextStr;
+  }
+});
+
+function gradeActivity1() {
+  const tree = getTreeValues();
+  const scenarios = [
+    { name: "Été fenêtre ouverte (31 °C, Ouverte)",   temp: 31, win: true,  expected: "VEILLE", pts: 0.75, rule: "Priorité éco-conception : la fenêtre est ouverte, l'appareil doit s'arrêter même à 31 °C." },
+    { name: "Hiver fenêtre ouverte (14 °C, Ouverte)", temp: 14, win: true,  expected: "VEILLE", pts: 0.75, rule: "Priorité éco-conception : la fenêtre est ouverte, on ne chauffe pas dehors !" },
+    { name: "Canicule fenêtre fermée (29 °C, Fermée)",temp: 29, win: false, expected: "FROID",  pts: 0.75, rule: "Température > 25 °C et fenêtre fermée → Mode Froid." },
+    { name: "Hiver fenêtre fermée (16 °C, Fermée)",   temp: 16, win: false, expected: "CHAUD",  pts: 0.75, rule: "Température < 19 °C et fenêtre fermée → Mode Chaud." },
+    { name: "Confort fenêtre fermée (22 °C, Fermée)", temp: 22, win: false, expected: "VEILLE", pts: 0.50, rule: "Entre 19 °C et 25 °C → Arrêt / Veille." },
+    { name: "Seuil limite (25 °C, Fermée)",           temp: 25, win: false, expected: "VEILLE", pts: 0.50, rule: "25 °C n'est pas strictement supérieur à 25 °C → Arrêt / Veille." }
+  ];
+
+  const labels = { VEILLE: "Arrêt / Veille", FROID: "Mode Froid", CHAUD: "Mode Chaud", "": "(Vide)" };
+  let score = 0;
+  const feedback = [];
+
+  scenarios.forEach(sc => {
+    const out = runDecisionTree(tree, sc.temp, sc.win);
+    if (out.action === sc.expected) {
+      score += sc.pts;
+      feedback.push({ type: "ok", text: `✅ ${sc.name} → Ton arbre choisit bien « ${labels[out.action]} » (+${sc.pts} pt).` });
+    } else {
+      feedback.push({ type: "ko", text: `❌ ${sc.name} → Ton arbre donne « ${labels[out.action]} » au lieu de « ${labels[sc.expected]} ». (${sc.rule})` });
+    }
+  });
+
+  // Vérifier si l'élève a mis 2 fois le même test
+  const tests = [tree.t1, tree.t2, tree.t3].filter(Boolean);
+  if (new Set(tests).size < 3 && score < 4) {
+    feedback.push({ type: "mid", text: "💡 Conseil : utilise les 3 tests différents (Fenêtre ouverte en 1er, puis T > 25 °C et T < 19 °C dans l'ordre de ton choix)." });
+  }
+
+  return { score: Math.round(score * 100) / 100, feedback };
+}
+
+/* ============================================================================
+   ACTIVITÉ 2 : ÉDITEUR DE BLOCS & SIMULATEUR ROBOT SEMEUR
+   ============================================================================ */
+function selectZone(z) {
+  state.activeZone = z;
+  document.querySelectorAll(".zone-box").forEach(el => {
+    el.classList.toggle("zone-active", el.dataset.zone === z);
+  });
+}
+
+function renderZone(z) {
+  const listEl = document.getElementById("list-" + z);
+  const arr = state.zones[z];
+  listEl.innerHTML = "";
+  if (arr.length === 0) {
+    listEl.innerHTML = `<div class="empty-hint">Aucun bloc ici. Clique sur un bloc de la palette pour l'ajouter.</div>`;
+    return;
+  }
+  arr.forEach((bKey, idx) => {
+    const meta = BLOCK_META[bKey];
+    const div = document.createElement("div");
+    div.className = "placed-block " + meta.cls;
+    div.innerHTML = `
+      <span>${meta.label}</span>
+      <div class="placed-controls">
+        <button type="button" title="Monter" ${idx === 0 || state.locked ? "disabled" : ""} onclick="moveBlock('${z}', ${idx}, -1)">▲</button>
+        <button type="button" title="Descendre" ${idx === arr.length - 1 || state.locked ? "disabled" : ""} onclick="moveBlock('${z}', ${idx}, 1)">▼</button>
+        <button type="button" title="Supprimer" ${state.locked ? "disabled" : ""} onclick="removeBlock('${z}', ${idx})">✕</button>
+      </div>
+    `;
+    listEl.appendChild(div);
+  });
+}
+
+function renderAllZones() {
+  ["before", "loop", "after"].forEach(renderZone);
+}
+
+function moveBlock(z, idx, dir) {
+  if (state.locked) return;
+  const arr = state.zones[z];
+  const target = idx + dir;
+  if (target < 0 || target >= arr.length) return;
+  [arr[idx], arr[target]] = [arr[target], arr[idx]];
+  renderZone(z);
+  saveDraft();
+}
+
+function removeBlock(z, idx) {
+  if (state.locked) return;
+  state.zones[z].splice(idx, 1);
+  renderZone(z);
+  saveDraft();
+}
+
+document.querySelectorAll("#blockPalette .block-chip").forEach(btn => {
+  btn.addEventListener("click", () => {
+    if (state.locked) return;
+    if (state.zones[state.activeZone].length >= 8) return;
+    state.zones[state.activeZone].push(btn.dataset.block);
+    renderZone(state.activeZone);
+    saveDraft();
+  });
+});
+
+document.getElementById("loopType").addEventListener("change", e => {
+  document.getElementById("loopCount").style.display = (e.target.value === "FIXED") ? "inline-block" : "none";
+  saveDraft();
+});
+
+document.getElementById("loopCount").addEventListener("input", saveDraft);
+
+document.getElementById("btnClearBlocks").addEventListener("click", () => {
+  if (state.locked) return;
+  state.zones = { before: [], loop: [], after: [] };
+  renderAllZones();
+  drawField(4, 0, [], false, null);
+  document.getElementById("simLog").textContent = "Programme vidé. Construis ta nouvelle solution.";
+  saveDraft();
+});
+
+/* Moteur de simulation déterministe du Robot Semeur */
+function simulateRobot(numPlots) {
+  const loopType = document.getElementById("loopType").value;
+  const loopCount = Math.max(1, Math.min(10, Number(document.getElementById("loopCount").value) || 1));
+
+  // État des bacs (indices 1..numPlots)
+  const plots = [];
+  for (let i = 1; i <= numPlots; i++) {
+    plots.push({ dug: false, seeded: false, watered: false, ruined: false });
+  }
+
+  let pos = 0; // 0 = base en béton, 1..numPlots = bacs, >numPlots = mur
+  let gyroOn = false;
+  let gyroWasUsed = false;
+  let returnedHome = false;
+  let crashed = false;
+  let crashMsg = "";
+  let warnings = [];
+  const frames = [];
+
+  function snapshot(msg, isError = false) {
+    frames.push({
+      numPlots,
+      pos,
+      plots: plots.map(p => ({ ...p })),
+      gyroOn,
+      crashed: isError,
+      msg
+    });
+  }
+
+  function execBlock(bKey, inLoop) {
+    if (crashed) return;
+    if (bKey === "GYRO_ON") {
+      if (inLoop) warnings.push("Le gyrophare est allumé en boucle : il vaut mieux le placer AVANT la boucle.");
+      gyroOn = true;
+      gyroWasUsed = true;
+      snapshot("🚨 Gyrophare allumé.");
+    } else if (bKey === "GYRO_OFF") {
+      if (inLoop) warnings.push("Le gyrophare est éteint dans la boucle : il doit être éteint APRÈS la boucle.");
+      gyroOn = false;
+      snapshot("🔕 Gyrophare éteint.");
+    } else if (bKey === "RETURN") {
+      if (inLoop) warnings.push("« Rentrer à la base » est dans la boucle : le robot fait des allers-retours inutiles !");
+      pos = 0;
+      returnedHome = true;
+      snapshot("🏠 Le robot rentre à sa base (case 0).");
+    } else if (bKey === "MOVE") {
+      pos += 1;
+      if (pos > numPlots) {
+        crashed = true;
+        crashMsg = `💥 Collision avec la clôture au-delà du bac ${numPlots} !`;
+        snapshot(crashMsg, true);
+      } else {
+        snapshot(`➡️ Avance au bac n°${pos}.`);
+      }
+    } else if (bKey === "DIG") {
+      if (pos === 0) {
+        crashed = true;
+        crashMsg = "💥 Foreuse cassée ! Tu as creusé sur la base en béton (case 0). Il faut avancer avant de creuser !";
+        snapshot(crashMsg, true);
+      } else {
+        const p = plots[pos - 1];
+        if (p.watered) {
+          p.ruined = true;
+          warnings.push(`Bac ${pos} : tu as arrosé avant de creuser (sol boueux).`);
+          snapshot(`⚠️ Bac ${pos} : terre déjà mouillée, trou raté !`);
+        } else {
+          p.dug = true;
+          snapshot(`⛏️ Bac ${pos} : trou creusé.`);
+        }
+      }
+    } else if (bKey === "SEED") {
+      if (pos === 0) {
+        warnings.push("Tu as déposé une graine sur le béton de la base !");
+        snapshot("⚠️ Graine déposée sur le béton (case 0) !");
+      } else {
+        const p = plots[pos - 1];
+        if (!p.dug) {
+          p.ruined = true;
+          warnings.push(`Bac ${pos} : graine déposée sans avoir creusé avant !`);
+          snapshot(`⚠️ Bac ${pos} : graine posée en surface (pas de trou) !`);
+        } else {
+          p.seeded = true;
+          snapshot(`🌱 Bac ${pos} : graine déposée dans le trou.`);
+        }
+      }
+    } else if (bKey === "WATER") {
+      if (pos === 0) {
+        warnings.push("Tu as arrosé la base électrique en béton !");
+        snapshot("⚠️ Eau sur la base électrique (case 0) !");
+      } else {
+        const p = plots[pos - 1];
+        if (!p.dug || !p.seeded) {
+          p.ruined = true;
+          warnings.push(`Bac ${pos} : arrosage effectué avant d'avoir creusé et semé !`);
+          snapshot(`⚠️ Bac ${pos} : arrosé trop tôt (boue) !`);
+        } else {
+          p.watered = true;
+          snapshot(`💧 Bac ${pos} : graine arrosée → semis réussi !`);
+        }
+      }
+    }
+  }
+
+  snapshot(`Départ sur la base (Parcelle de ${numPlots} bacs).`);
+
+  // 1. Avant la boucle
+  state.zones.before.forEach(b => execBlock(b, false));
+
+  // 2. Boucle
+  if (!crashed && state.zones.loop.length > 0 && loopType !== "NONE") {
+    if (loopType === "FIXED") {
+      for (let i = 0; i < loopCount && !crashed; i++) {
+        state.zones.loop.forEach(b => execBlock(b, true));
+      }
+    } else if (loopType === "UNTIL_END") {
+      let guard = 0;
+      while (pos < numPlots && !crashed && guard < 15) {
+        state.zones.loop.forEach(b => execBlock(b, true));
+        guard++;
+      }
+      if (guard >= 15 && !crashed) {
+        crashed = true;
+        crashMsg = "💥 Boucle infinie bloquée : le robot n'avance jamais jusqu'à la balise de fin !";
+        snapshot(crashMsg, true);
+      }
+    } else if (loopType === "FOREVER") {
+      for (let i = 0; i < numPlots + 2 && !crashed; i++) {
+        state.zones.loop.forEach(b => execBlock(b, true));
+      }
+      if (!crashed) {
+        crashed = true;
+        crashMsg = "💥 Boucle « Répéter indéfiniment » : le robot ne s'arrête jamais !";
+        snapshot(crashMsg, true);
+      }
+    }
+  }
+
+  // 3. Après la boucle
+  if (!crashed) {
+    state.zones.after.forEach(b => execBlock(b, false));
+  }
+
+  const allPlanted = plots.every(p => p.dug && p.seeded && p.watered && !p.ruined);
+  const cleanSuccess = allPlanted && !crashed && gyroWasUsed && !gyroOn && returnedHome && warnings.length === 0;
+
+  return {
+    frames,
+    allPlanted,
+    crashed,
+    crashMsg,
+    gyroWasUsed,
+    gyroOffAtEnd: !gyroOn,
+    returnedHome,
+    warnings: [...new Set(warnings)],
+    cleanSuccess,
+    plantedCount: plots.filter(p => p.dug && p.seeded && p.watered && !p.ruined).length
+  };
+}
+
+/* Rendu Canvas 2D du Robot Semeur */
+function drawField(numPlots, robotPos, plotsState, gyroOn, crashed) {
+  const canvas = document.getElementById("robotCanvas");
+  const ctx = canvas.getContext("2d");
+  const W = canvas.width;
+  const H = canvas.height;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Ciel & sol
+  ctx.fillStyle = "#0f172a";
+  ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = "#1e293b";
+  ctx.fillRect(0, 0, W, 150);
+  ctx.fillStyle = "#334155";
+  ctx.fillRect(0, 150, W, 95);
+
+  const totalSlots = numPlots + 1; // 0 (base) + 1..numPlots
+  const marginX = 24;
+  const usableW = W - marginX * 2 - 26; // place pour la balise/clôture
+  const slotW = usableW / totalSlots;
+
+  // Base en béton (case 0)
+  const baseX = marginX;
+  ctx.fillStyle = "#64748b";
+  ctx.fillRect(baseX + 3, 154, slotW - 6, 46);
+  ctx.strokeStyle = "#cbd5e1";
+  ctx.strokeRect(baseX + 3, 154, slotW - 6, 46);
+  ctx.fillStyle = "#f8fafc";
+  ctx.font = "bold 11px sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("BASE", baseX + slotW / 2, 174);
+  ctx.font = "10px sans-serif";
+  ctx.fillText("(Béton)", baseX + slotW / 2, 189);
+
+  // Bacs de terre 1..numPlots
+  for (let i = 1; i <= numPlots; i++) {
+    const x = marginX + i * slotW;
+    const p = plotsState[i - 1] || { dug: false, seeded: false, watered: false, ruined: false };
+
+    ctx.fillStyle = p.ruined ? "#7f1d1d" : (p.watered ? "#3f2e21" : "#78350f");
+    ctx.fillRect(x + 4, 154, slotW - 8, 46);
+    ctx.strokeStyle = p.ruined ? "#ef4444" : "#b45309";
+    ctx.strokeRect(x + 4, 154, slotW - 8, 46);
+
+    const cx = x + slotW / 2;
+    ctx.fillStyle = "#fde68a";
+    ctx.font = "bold 11px sans-serif";
+    ctx.fillText("Bac " + i, cx, 215);
+
+    if (p.dug) {
+      ctx.fillStyle = "#1c1917";
+      ctx.beginPath();
+      ctx.ellipse(cx, 177, 11, 6, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    if (p.seeded) {
+      ctx.fillStyle = "#facc15";
+      ctx.beginPath();
+      ctx.arc(cx, 177, 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    if (p.watered && p.dug && p.seeded && !p.ruined) {
+      // Petite pousse verte !
+      ctx.strokeStyle = "#22c55e";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(cx, 174);
+      ctx.lineTo(cx, 148);
+      ctx.stroke();
+      ctx.fillStyle = "#4ade80";
+      ctx.beginPath();
+      ctx.ellipse(cx - 6, 153, 6, 3, -0.5, 0, Math.PI * 2);
+      ctx.ellipse(cx + 6, 151, 6, 3, 0.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.lineWidth = 1;
+    }
+  }
+
+  // Balise fin de rangée + Clôture
+  const wallX = marginX + totalSlots * slotW + 4;
+  ctx.fillStyle = "#ef4444";
+  ctx.fillRect(wallX, 110, 6, 92);
+  ctx.fillStyle = "#facc15";
+  ctx.beginPath();
+  ctx.arc(wallX + 3, 108, 7, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#e2e8f0";
+  ctx.font = "bold 10px sans-serif";
+  ctx.fillText("FIN", wallX + 3, 96);
+
+  // Robot
+  const clampedPos = Math.min(robotPos, numPlots + 0.55);
+  const rx = marginX + clampedPos * slotW + slotW / 2;
+  const ry = 112;
+
+  // Corps du robot
+  ctx.fillStyle = crashed ? "#dc2626" : "#3b82f6";
+  ctx.beginPath();
+  ctx.roundRect(rx - 22, ry, 44, 28, 6);
+  ctx.fill();
+  ctx.strokeStyle = "#93c5fd";
+  ctx.stroke();
+
+  // Roues
+  ctx.fillStyle = "#0f172a";
+  ctx.beginPath();
+  ctx.arc(rx - 13, ry + 30, 7, 0, Math.PI * 2);
+  ctx.arc(rx + 13, ry + 30, 7, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Gyrophare
+  ctx.fillStyle = gyroOn ? "#facc15" : "#475569";
+  ctx.beginPath();
+  ctx.arc(rx, ry - 5, 6, Math.PI, 0);
+  ctx.fill();
+  if (gyroOn) {
+    ctx.fillStyle = "rgba(250, 204, 21, 0.35)";
+    ctx.beginPath();
+    ctx.arc(rx, ry - 6, 14, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Étiquette robot
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "bold 11px sans-serif";
+  ctx.fillText(crashed ? "💥" : "BOT", rx, ry + 18);
+}
+
+function playSimulation(numPlots) {
+  if (state.simTimer) clearInterval(state.simTimer);
+  const sim = simulateRobot(numPlots);
+  const logEl = document.getElementById("simLog");
+  const badge = document.getElementById("simBadge");
+
+  if (sim.frames.length <= 1) {
+    drawField(numPlots, 0, [], false, false);
+    logEl.innerHTML = "⚠️ Ton programme est vide (ou aucune boucle n'est sélectionnée). Ajoute des blocs puis relance le test.";
+    badge.textContent = "Programme vide";
+    badge.style.background = "#b45309";
+    return;
+  }
+
+  let idx = 0;
+  badge.textContent = `Simulation Parcelle ${numPlots} bacs...`;
+  badge.style.background = "#2563eb";
+  logEl.innerHTML = "";
+
+  state.simTimer = setInterval(() => {
+    const f = sim.frames[idx];
+    drawField(f.numPlots, f.pos, f.plots, f.gyroOn, f.crashed);
+    logEl.innerHTML = `<div>${f.msg}</div>` + logEl.innerHTML;
+    idx++;
+    if (idx >= sim.frames.length) {
+      clearInterval(state.simTimer);
+      state.simTimer = null;
+      if (sim.cleanSuccess) {
+        badge.textContent = `✅ Réussi (${numPlots}/${numPlots} bacs)`;
+        badge.style.background = "#16a34a";
+        logEl.innerHTML = `<div style="color:#4ade80; font-weight:700;">✅ Mission parfaite sur la parcelle de ${numPlots} bacs !</div>` + logEl.innerHTML;
+      } else if (sim.crashed) {
+        badge.textContent = "❌ Crash / Erreur";
+        badge.style.background = "#dc2626";
+      } else {
+        badge.textContent = `⚠️ Incomplet (${sim.plantedCount}/${numPlots} bacs)`;
+        badge.style.background = "#d97706";
+        const extra = sim.warnings.length ? " — " + sim.warnings[0] : "";
+        logEl.innerHTML = `<div style="color:#fbbf24; font-weight:700;">⚠️ Bacs réussis : ${sim.plantedCount}/${numPlots}${extra}</div>` + logEl.innerHTML;
+      }
+    }
+  }, 260);
+}
+
+document.getElementById("btnRun4").addEventListener("click", () => playSimulation(4));
+document.getElementById("btnRun6").addEventListener("click", () => playSimulation(6));
+document.getElementById("btnResetSim").addEventListener("click", () => {
+  if (state.simTimer) clearInterval(state.simTimer);
+  drawField(4, 0, [], false, false);
+  document.getElementById("simBadge").textContent = "Prêt";
+  document.getElementById("simBadge").style.background = "#334155";
+  document.getElementById("simLog").textContent = "Simulateur réinitialisé.";
+});
+
+function gradeActivity2() {
+  let score = 0;
+  const feedback = [];
+
+  // 1. Analyse A1 & A2 (1 pt)
+  const ana1 = (document.querySelector('input[name="ana1"]:checked') || {}).value || "";
+  const ana2 = (document.querySelector('input[name="ana2"]:checked') || {}).value || "";
+
+  if (ana1 === "B") {
+    score += 0.5;
+    feedback.push({ type: "ok", text: "✅ Analyse Q1 : Exact ! On allume le gyrophare AVANT la boucle, et on l'éteint + rentre à la base APRÈS (+0,5 pt)." });
+  } else {
+    feedback.push({ type: "ko", text: "❌ Analyse Q1 : Les actions réalisées une seule fois (allumer le gyrophare au début, l'éteindre et rentrer à la fin) doivent rester hors de la boucle." });
+  }
+
+  if (ana2 === "A") {
+    score += 0.5;
+    feedback.push({ type: "ok", text: "✅ Analyse Q2 : Exact ! Comme le robot démarre sur la base en béton, il doit avancer en premier (+0,5 pt)." });
+  } else {
+    feedback.push({ type: "ko", text: "❌ Analyse Q2 : Le robot démarre sur le béton (case 0). Il doit impérativement « Avancer d'1 bac » avant de creuser !" });
+  }
+
+  // 2. Qualité du motif dans la boucle (1.25 pt)
+  const expectedMotif = ["MOVE", "DIG", "SEED", "WATER"];
+  const userLoop = state.zones.loop;
+  const motifExact = userLoop.length === 4 && expectedMotif.every((b, i) => userLoop[i] === b);
+  const hasAll4 = expectedMotif.every(b => userLoop.includes(b));
+
+  if (motifExact) {
+    score += 1.25;
+    feedback.push({ type: "ok", text: "✅ Motif répété : Suite exacte et dans le bon ordre (Avancer → Creuser → Déposer graine → Arroser) (+1,25 pt)." });
+  } else if (hasAll4 && userLoop.length === 4) {
+    score += 0.5;
+    feedback.push({ type: "mid", text: "⚠️ Motif répété : Tu as trouvé les 4 bonnes actions, mais pas dans le bon ordre logique. Ordre attendu : Avancer → Creuser → Déposer graine → Arroser (+0,5 / 1,25 pt)." });
+  } else {
+    feedback.push({ type: "ko", text: "❌ Motif répété : Le motif dans la boucle est incomplet ou contient des blocs parasites. Attendu : Avancer → Creuser → Déposer graine → Arroser." });
+  }
+
+  // 3. Initialisation et clôture (0.75 pt)
+  const initOk = state.zones.before.length === 1 && state.zones.before[0] === "GYRO_ON";
+  const afterOk = state.zones.after.length === 2 &&
+                  state.zones.after.includes("GYRO_OFF") &&
+                  state.zones.after.includes("RETURN");
+
+  if (initOk && afterOk) {
+    score += 0.75;
+    feedback.push({ type: "ok", text: "✅ Initialisation & Fin : Gyrophare allumé avant la boucle, puis éteint et retour à la base après (+0,75 pt)." });
+  } else if (initOk || afterOk) {
+    score += 0.35;
+    feedback.push({ type: "mid", text: "⚠️ Initialisation & Fin : Une des deux zones (Avant ou Après la boucle) est incomplète ou mal placée (+0,35 / 0,75 pt)." });
+  } else {
+    feedback.push({ type: "ko", text: "❌ Initialisation & Fin : Il faut placer « Allumer gyrophare » AVANT la boucle, et « Éteindre gyrophare » + « Rentrer à la base » APRÈS la boucle." });
+  }
+
+  // 4. Intelligence & validation sur 2 parcelles (1 pt)
+  const sim4 = simulateRobot(4);
+  const sim6 = simulateRobot(6);
+  const loopType = document.getElementById("loopType").value;
+
+  if (sim4.allPlanted && !sim4.crashed && sim6.allPlanted && !sim6.crashed && loopType === "UNTIL_END") {
+    score += 1.0;
+    feedback.push({ type: "ok", text: "✅ Boucle intelligente : Bravo ! Grâce à « Répéter jusqu'à [Fin de rangée] », ton robot réussit la Parcelle A (4 bacs) ET la Parcelle B (6 bacs) sans rien modifier (+1 pt)." });
+  } else if (sim4.allPlanted && !sim4.crashed) {
+    score += 0.5;
+    feedback.push({ type: "mid", text: "⚠️ Boucle fixe : Ton programme réussit la Parcelle A (4 bacs), mais échoue sur la Parcelle B (6 bacs). Utilise « Répéter jusqu'à [Capteur = Fin de rangée] » pour rendre la boucle vraiment intelligente (+0,5 / 1 pt)." });
+  } else {
+    const reason = sim4.crashMsg || (sim4.warnings[0]) || `Seulement ${sim4.plantedCount}/4 bacs plantés sur la Parcelle A.`;
+    feedback.push({ type: "ko", text: `❌ Test pratique sur terrain : ${reason}` });
+  }
+
+  return { score: Math.round(score * 100) / 100, feedback };
+}
+
+/* ============================================================================
+   ÉTAPE 3 : MINI-BILAN (2 POINTS)
+   ============================================================================ */
+function gradeBilan() {
+  const key = [
+    { name: "b1", good: "B", label: "Q1 (Losange)", expl: "Un losange représente toujours un test / une condition." },
+    { name: "b2", good: "B", label: "Q2 (Opérateur ET)", expl: "Avec ET, les deux conditions doivent être vraies simultanément." },
+    { name: "b3", good: "A", label: "Q3 (Répéter jusqu'à)", expl: "La boucle conditionnelle s'adapte grâce au capteur de fin de rangée." },
+    { name: "b4", good: "C", label: "Q4 (Boucle infinie)", expl: "Dans un système embarqué, elle permet une surveillance continue des capteurs." }
+  ];
+
+  let score = 0;
+  const feedback = [];
+  key.forEach(q => {
+    const val = (document.querySelector(`input[name="${q.name}"]:checked`) || {}).value || "";
+    if (val === q.good) {
+      score += 0.5;
+      feedback.push({ type: "ok", text: `✅ ${q.label} : Bonne réponse (+0,5 pt).` });
+    } else {
+      feedback.push({ type: "ko", text: `❌ ${q.label} : Incorrect ou non répondu. À retenir : ${q.expl}` });
+    }
+  });
+
+  return { score: Math.round(score * 100) / 100, feedback };
+}
+
+/* ============================================================================
+   VALIDATION FINALE, AFFICHAGE CORRECTION & ENVOI GOOGLE SHEETS
+   ============================================================================ */
+function computePixLevel(total10) {
+  if (total10 >= 8.5) return "Très Bonne Maîtrise (Pix 3.4 — Niveau 2 validé)";
+  if (total10 >= 6.0) return "Maîtrise Satisfaisante (Pix 3.4 — Niveau 2 en cours)";
+  if (total10 >= 4.0) return "Maîtrise Fragile (Pix 3.4 — Niveau 1)";
+  return "Maîtrise Insuffisante (Notions à revoir)";
+}
+
+function renderFeedbackList(containerId, items) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = items.map(it => {
+    const cls = it.type === "ok" ? "fb-ok" : (it.type === "mid" ? "fb-mid" : "fb-ko");
+    return `<div class="fb-item ${cls}">${it.text}</div>`;
+  }).join("");
+}
+
+function submitAndGrade() {
+  const nom = document.getElementById("elNom").value.trim().toUpperCase();
+  const prenom = document.getElementById("elPrenom").value.trim();
+  const classe = document.getElementById("elClasse").value;
+
+  if (!nom || !prenom || !classe) {
+    alert("⚠️ Merci de renseigner ton NOM, ton PRÉNOM et ta CLASSE en haut de la page avant de valider.");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
+  const r1 = gradeActivity1();
+  const r2 = gradeActivity2();
+  const r3 = gradeBilan();
+  const total = Math.round((r1.score + r2.score + r3.score) * 100) / 100;
+  const niveau = computePixLevel(total);
+
+  // Verrouillage des champs
+  state.locked = true;
+  document.getElementById("lockedBanner").style.display = "block";
+  document.querySelectorAll("input, select").forEach(el => {
+    if (el.id !== "simTemp" && el.id !== "simWin") el.disabled = true;
+  });
+  document.getElementById("btnFinish").disabled = true;
+  document.getElementById("btnClearBlocks").disabled = true;
+  renderAllZones();
+
+  // Affichage des résultats
+  document.getElementById("notSubmittedMsg").style.display = "none";
+  document.getElementById("resultsContainer").style.display = "block";
+  document.getElementById("finalTotal").textContent = total.toString().replace(".", ",");
+  document.getElementById("resA1").textContent = r1.score.toString().replace(".", ",");
+  document.getElementById("resA2").textContent = r2.score.toString().replace(".", ",");
+  document.getElementById("resBilan").textContent = r3.score.toString().replace(".", ",");
+  document.getElementById("fbA1Score").textContent = `${r1.score} / 4 pts`;
+  document.getElementById("fbA2Score").textContent = `${r2.score} / 4 pts`;
+  document.getElementById("fbBilanScore").textContent = `${r3.score} / 2 pts`;
+  document.getElementById("studentSummary").textContent = `${prenom} ${nom} (${classe})`;
+  document.getElementById("pixLevel").textContent = `🏅 ${niveau}`;
+
+  renderFeedbackList("fbA1List", r1.feedback);
+  renderFeedbackList("fbA2List", r2.feedback);
+  renderFeedbackList("fbBilanList", r3.feedback);
+
+  lastPayload = {
+    activite: CONFIG.ACTIVITY_NAME,
+    classe,
+    nom,
+    prenom,
+    score_arbre: r1.score,
+    score_boucle: r2.score,
+    score_bilan: r3.score,
+    note_totale: total,
+    niveau_pix: niveau,
+    boucle_choisie: document.getElementById("loopType").value,
+    motif_boucle: state.zones.loop.join(" > ")
+  };
+
+  goTab("tab4");
+  sendToGoogleSheet(lastPayload);
+  saveDraft();
+}
+
+async function sendToGoogleSheet(payload) {
+  const statusEl = document.getElementById("sendStatus");
+  const retryBtn = document.getElementById("btnRetrySend");
+  retryBtn.style.display = "none";
+
+  if (!CONFIG.GOOGLE_SHEET_URL || CONFIG.GOOGLE_SHEET_URL.includes("https://script.google.com/macros/s/AKfycbzVVAsvfEOhjm0T_ST2KB-7Z5t4luH15-AITwOghv5RTqLSZp-7W0iRqbqH1zOhZ-RS/exec")) {
+    statusEl.className = "send-status fb-mid";
+    statusEl.innerHTML = "ℹ️ Mode aperçu local : l'URL Google Sheets n'est pas encore configurée dans le fichier HTML. Ta correction complète est affichée ci-dessous.";
+    return;
+  }
+
+  statusEl.className = "send-status fb-mid";
+  statusEl.textContent = "⏳ Envoi de ta note au tableau du professeur en cours...";
+
+  try {
+    await fetch(CONFIG.GOOGLE_SHEET_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    });
+    statusEl.className = "send-status fb-ok";
+    statusEl.innerHTML = "✅ Note transmise avec succès au professeur ! Tu peux maintenant lire attentivement ce qui va et ce qui ne va pas dans ta copie.";
+  } catch (err) {
+    statusEl.className = "send-status fb-ko";
+    statusEl.innerHTML = "❌ Erreur réseau lors de l'envoi. Appelle le professeur ou clique sur « Réessayer l'envoi ».";
+    retryBtn.style.display = "inline-flex";
+  }
+}
+
+/* ============================================================================
+   SAUVEGARDE LOCALE ANTI-RAFRAÎCHISSEMENT (try/catch sécurisé)
+   ============================================================================ */
+function saveDraft() {
+  try {
+    const draft = {
+      nom: document.getElementById("elNom").value,
+      prenom: document.getElementById("elPrenom").value,
+      classe: document.getElementById("elClasse").value,
+      tree: getTreeValues(),
+      zones: state.zones,
+      loopType: document.getElementById("loopType").value,
+      loopCount: document.getElementById("loopCount").value
+    };
+    localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(draft));
+    document.getElementById("saveIndicator").textContent = "💾 Sauvegardé automatiquement";
+  } catch (e) { /* Ignore si localStorage bloqué */ }
+}
+
+function loadDraft() {
+  try {
+    const raw = localStorage.getItem(CONFIG.STORAGE_KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.nom) document.getElementById("elNom").value = d.nom;
+    if (d.prenom) document.getElementById("elPrenom").value = d.prenom;
+    if (d.classe) document.getElementById("elClasse").value = d.classe;
+    if (d.tree) {
+      Object.keys(d.tree).forEach(k => {
+        const el = document.getElementById(k);
+        if (el && d.tree[k]) el.value = d.tree[k];
+      });
+    }
+    if (d.zones) state.zones = d.zones;
+    if (d.loopType) {
+      document.getElementById("loopType").value = d.loopType;
+      document.getElementById("loopCount").style.display = (d.loopType === "FIXED") ? "inline-block" : "none";
+    }
+    if (d.loopCount) document.getElementById("loopCount").value = d.loopCount;
+  } catch (e) { /* Ignore */ }
+}
+
+["elNom", "elPrenom", "elClasse", "t1", "t2", "t3", "a1", "a2", "a3", "a4"].forEach(id => {
+  document.getElementById(id).addEventListener("change", saveDraft);
+});
+
+// Initialisation
+loadDraft();
+renderAllZones();
+drawField(4, 0, [], false, false);
+</script>
+</body>
+</html>

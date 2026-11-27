@@ -1228,7 +1228,7 @@
    ============================================================================ */
 const CONFIG = {
   // Collez ici l'URL Web App obtenue après déploiement de votre Google Apps Script (Code.gs)
-  GOOGLE_SHEET_URL: "https://script.google.com/macros/s/AKfycbzL-W9pGDA9yHaauQCpJd8RYQ5tU-Wc-8ZwFl3d7nq-MdOVRpERV3odW79egewpXz8A/exec",
+  GOOGLE_SHEET_URL: "https://script.google.com/macros/s/AKfycbz_rBS_UYuawW4OQwjoD1JSf-qLTcWgLQsASuYlhZUDfPbzo-I1o6qiRyvljDG3irpd/exec",
   ACTIVITY_NAME: "4e_Ch12_Arbres_et_Boucles_v2",
   STORAGE_KEY: "techno4e_ch12_v2"
 };
@@ -2468,7 +2468,7 @@ async function sendToGoogleSheet(payload) {
   const retryBtn = document.getElementById("btnRetrySend");
   retryBtn.style.display = "none";
 
-  if (!CONFIG.GOOGLE_SHEET_URL || CONFIG.GOOGLE_SHEET_URL.includes("https://script.google.com/macros/s/AKfycbzL-W9pGDA9yHaauQCpJd8RYQ5tU-Wc-8ZwFl3d7nq-MdOVRpERV3odW79egewpXz8A/exec")) {
+  if (!CONFIG.GOOGLE_SHEET_URL || CONFIG.GOOGLE_SHEET_URL.includes("COLLEZ_ICI")) {
     statusEl.className = "send-status fb-mid";
     statusEl.innerHTML = "ℹ️ Mode aperçu local : collez votre URL Google Apps Script dans CONFIG.GOOGLE_SHEET_URL pour activer l'envoi vers Google Sheets.";
     return;

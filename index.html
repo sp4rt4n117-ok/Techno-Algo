@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Technologie 4e — Chapitre 12 : Algorithmes & Boucles</title>
+  <title>Technologie 4e — Chapitre 12 : Arbres de décision & Boucles</title>
   <style>
     :root {
       --bg: #f1f5f9;
@@ -40,66 +40,47 @@
     header {
       background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
       color: #fff;
-      padding: 20px 24px;
+      padding: 18px 24px;
       box-shadow: 0 4px 20px rgba(15, 23, 42, 0.18);
     }
 
     .header-inner {
-      max-width: 1120px;
+      max-width: 1200px;
       margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 1.35rem;
-      letter-spacing: -0.01em;
-    }
+    header h1 { margin: 0; font-size: 1.32rem; letter-spacing: -0.01em; }
+    header p { margin: 3px 0 0; font-size: 0.88rem; color: #cbd5e1; }
 
-    header p {
-      margin: 4px 0 0;
-      font-size: 0.9rem;
-      color: #cbd5e1;
-    }
-
-    .badge-bar {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
+    .badge-bar { display: flex; gap: 8px; flex-wrap: wrap; }
     .badge {
       background: rgba(255,255,255,0.14);
       border: 1px solid rgba(255,255,255,0.22);
-      padding: 5px 12px;
+      padding: 4px 11px;
       border-radius: 999px;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 600;
     }
 
-    .container {
-      max-width: 1120px;
-      margin: 22px auto 60px;
-      padding: 0 16px;
-    }
+    .container { max-width: 1200px; margin: 20px auto 60px; padding: 0 16px; }
 
-    /* Carte identification */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 20px;
+      padding: 18px 20px;
       box-shadow: var(--shadow);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .card-title {
       margin: 0 0 12px;
-      font-size: 1.15rem;
+      font-size: 1.12rem;
       color: #1e293b;
       display: flex;
       align-items: center;
@@ -128,7 +109,7 @@
 
     label {
       display: block;
-      font-size: 0.84rem;
+      font-size: 0.83rem;
       font-weight: 700;
       color: var(--muted);
       margin-bottom: 4px;
@@ -136,10 +117,10 @@
 
     input[type="text"], select {
       width: 100%;
-      padding: 9px 12px;
+      padding: 8px 11px;
       border: 1.5px solid var(--border);
       border-radius: 8px;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       background: #fff;
       color: var(--text);
     }
@@ -150,23 +131,21 @@
       box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
     }
 
-    /* Navigation par onglets */
+    /* Navigation 5 onglets */
     .tabs {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 8px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
-    @media (max-width: 720px) {
-      .tabs { grid-template-columns: repeat(2, 1fr); }
-    }
+    @media (max-width: 900px) { .tabs { grid-template-columns: repeat(2, 1fr); } }
 
     .tab-btn {
       background: var(--surface);
       border: 1.5px solid var(--border);
       border-radius: 10px;
-      padding: 12px 10px;
+      padding: 10px 10px;
       cursor: pointer;
       text-align: left;
       transition: all 0.15s ease;
@@ -181,33 +160,54 @@
       box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
     }
 
-    .tab-btn .t-num { font-size: 0.75rem; opacity: 0.85; font-weight: 700; text-transform: uppercase; }
-    .tab-btn .t-name { font-size: 0.92rem; font-weight: 700; margin-top: 2px; display: block; }
-    .tab-btn .t-pts { font-size: 0.78rem; opacity: 0.9; }
+    .tab-btn .t-num { font-size: 0.72rem; opacity: 0.85; font-weight: 700; text-transform: uppercase; }
+    .tab-btn .t-name { font-size: 0.88rem; font-weight: 700; margin-top: 2px; display: block; }
+    .tab-btn .t-pts { font-size: 0.75rem; opacity: 0.9; }
 
     .section-panel { display: none; }
     .section-panel.active { display: block; }
 
-    /* Encadrés pédagogiques */
+    /* Encadrés */
     .context-box {
       background: var(--primary-soft);
       border-left: 4px solid var(--primary);
-      padding: 14px 16px;
+      padding: 13px 16px;
       border-radius: 0 8px 8px 0;
-      margin-bottom: 16px;
-      font-size: 0.93rem;
+      margin-bottom: 14px;
+      font-size: 0.91rem;
+    }
+    .context-box ul { margin: 6px 0 0; padding-left: 20px; }
+    .context-box li { margin-bottom: 3px; }
+
+    .formalism-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 9px 14px;
+      margin-bottom: 14px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: #334155;
     }
 
-    .context-box ul { margin: 8px 0 0; padding-left: 20px; }
-    .context-box li { margin-bottom: 4px; }
+    .f-item { display: inline-flex; align-items: center; gap: 6px; }
+    .f-pill { display:inline-block; width:24px; height:13px; border-radius:999px; background:#e2e8f0; border:2px solid #475569; }
+    .f-diamond { display:inline-block; width:14px; height:14px; transform:rotate(45deg); background:#dbeafe; border:2px solid #1d4ed8; margin:0 3px; }
+    .f-seg { display:inline-block; width:24px; height:2px; background:#475569; position:relative; }
+    .f-rect { display:inline-block; width:22px; height:13px; background:#ccfbf1; border:2px solid #0f766e; }
 
-    .hint-box {
+    .protocol-alert {
       background: var(--warn-soft);
-      border-left: 4px solid var(--warn);
-      padding: 10px 14px;
-      border-radius: 0 8px 8px 0;
-      font-size: 0.88rem;
-      margin: 12px 0;
+      border: 1.5px solid #f59e0b;
+      border-radius: 10px;
+      padding: 11px 14px;
+      margin-bottom: 14px;
+      font-size: 0.87rem;
+      color: #78350f;
     }
 
     /* Boutons */
@@ -216,16 +216,15 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 10px 16px;
+      padding: 9px 15px;
       border-radius: 8px;
       border: none;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 700;
       cursor: pointer;
       font-family: inherit;
       transition: transform 0.1s, background 0.15s;
     }
-
     .btn:active { transform: scale(0.98); }
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-primary:hover { background: var(--primary-dark); }
@@ -233,151 +232,147 @@
     .btn-success:hover { background: #15803d; }
     .btn-outline { background: #fff; color: var(--text); border: 1.5px solid var(--border); }
     .btn-outline:hover { background: var(--surface-alt); border-color: #94a3b8; }
+    .btn-warn { background: var(--warn); color: #fff; }
     .btn-danger { background: var(--danger); color: #fff; }
-    .btn-sm { padding: 6px 10px; font-size: 0.82rem; }
+    .btn-sm { padding: 6px 10px; font-size: 0.8rem; }
     .btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
-    /* ACTIVITÉ 1 : ARBRE DE DÉCISION */
-    .act1-layout {
+    /* Layout Arbre SVG + Banc d'essai */
+    .tree-workspace {
       display: grid;
       grid-template-columns: 1.45fr 1fr;
-      gap: 18px;
+      gap: 16px;
       align-items: start;
     }
 
-    @media (max-width: 900px) {
-      .act1-layout { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 980px) { .tree-workspace { grid-template-columns: 1fr; } }
 
-    .tree-board {
-      background: var(--surface-alt);
+    .svg-stage {
+      background: #ffffff;
       border: 1.5px solid var(--border);
       border-radius: 12px;
-      padding: 16px;
+      padding: 10px;
       overflow-x: auto;
     }
 
-    .tree-level {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-
-    .node-card {
+    .svg-stage svg {
       width: 100%;
-      max-width: 280px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 2px solid var(--border);
-      background: #fff;
-      transition: all 0.2s;
-    }
-
-    .node-test {
-      border-color: #2563eb;
-      background: #eff6ff;
-      position: relative;
-    }
-
-    .node-test::before {
-      content: "◆ TEST (Capteur)";
+      height: auto;
       display: block;
-      font-size: 0.7rem;
-      font-weight: 800;
-      color: #1d4ed8;
-      letter-spacing: 0.04em;
-      margin-bottom: 4px;
+      min-width: 600px;
     }
 
-    .node-action {
-      border-color: #0f766e;
-      background: #f0fdfa;
-    }
-
-    .node-action::before {
-      content: "■ ACTION (Climatiseur)";
-      display: block;
-      font-size: 0.7rem;
-      font-weight: 800;
-      color: #0f766e;
-      letter-spacing: 0.04em;
-      margin-bottom: 4px;
-    }
-
-    .node-card.highlight {
-      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.45);
-      border-color: #d97706 !important;
-      transform: scale(1.02);
-    }
-
-    .branch-split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
+    .svg-select {
       width: 100%;
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 2px dashed #94a3b8;
-      position: relative;
+      height: 100%;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 4px;
+      border-radius: 5px;
+      border: 1.5px solid #94a3b8;
+      background: #ffffff;
+      color: #0f172a;
+      cursor: pointer;
+      text-align: center;
     }
+    .svg-select:focus { outline: none; border-color: #2563eb; }
 
-    .branch-col {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .branch-tag {
-      font-size: 0.76rem;
-      font-weight: 800;
-      padding: 2px 10px;
-      border-radius: 999px;
-      color: #fff;
-    }
-
-    .tag-oui { background: var(--success); }
-    .tag-non { background: var(--danger); }
-
-    /* Simulateur Climatiseur */
-    .sim-box {
+    /* Banc d'essai & Protocole */
+    .bench-box {
       background: #0f172a;
       color: #f8fafc;
       border-radius: 12px;
-      padding: 16px;
+      padding: 15px;
     }
+    .bench-box h3 { margin: 0 0 8px; font-size: 0.98rem; color: #93c5fd; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; }
 
-    .sim-box h3 { margin: 0 0 10px; font-size: 1rem; color: #93c5fd; }
+    .penalty-pill {
+      font-size: 0.76rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #334155;
+      color: #fde68a;
+      font-weight: 700;
+    }
+    .penalty-pill.has-err { background: #991b1b; color: #fecaca; }
 
-    .ac-unit {
+    .sim-control {
+      margin-bottom: 10px;
+      background: rgba(255,255,255,0.07);
+      padding: 9px 11px;
+      border-radius: 8px;
+    }
+    .sim-control label { color: #e2e8f0; display: flex; justify-content: space-between; font-size: 0.83rem; }
+
+    .verdict-card {
       background: #1e293b;
       border: 2px solid #334155;
       border-radius: 10px;
-      padding: 14px;
-      text-align: center;
-      margin-bottom: 14px;
-      transition: all 0.25s;
+      padding: 12px;
+      margin: 12px 0;
+      transition: all 0.2s;
     }
+    .verdict-card.v-ok   { border-color: #22c55e; background: #052e16; }
+    .verdict-card.v-ko   { border-color: #ef4444; background: #450a0a; }
+    .verdict-card.v-warn { border-color: #f59e0b; background: #451a03; }
 
-    .ac-unit.cold { border-color: #38bdf8; background: #0c4a6e; }
-    .ac-unit.heat { border-color: #fb923c; background: #7c2d12; }
-    .ac-unit.idle { border-color: #4ade80; background: #14532d; }
+    .v-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .v-ok .v-badge   { background: #16a34a; color: #fff; }
+    .v-ko .v-badge   { background: #dc2626; color: #fff; }
+    .v-warn .v-badge { background: #d97706; color: #fff; }
+    .v-idle .v-badge { background: #475569; color: #e2e8f0; }
 
-    .ac-icon { font-size: 2.3rem; line-height: 1.1; }
-    .ac-status { font-weight: 800; font-size: 1rem; margin-top: 6px; }
-    .ac-detail { font-size: 0.82rem; color: #cbd5e1; margin-top: 4px; }
+    .v-row { font-size: 0.84rem; margin: 3px 0; }
+    .v-row strong { color: #fff; }
+    .v-explain { font-size: 0.81rem; color: #e2e8f0; margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.14); }
 
-    .sim-control {
-      margin-bottom: 12px;
-      background: rgba(255,255,255,0.06);
-      padding: 10px 12px;
+    /* Table protocole */
+    .proto-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+      margin-top: 10px;
+      background: rgba(255,255,255,0.04);
       border-radius: 8px;
+      overflow: hidden;
     }
+    .proto-table th, .proto-table td {
+      padding: 7px 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      text-align: left;
+    }
+    .proto-table th { color: #93c5fd; font-weight: 700; background: rgba(255,255,255,0.06); }
+    .proto-status { font-weight: 800; white-space: nowrap; }
+    .ps-todo { color: #94a3b8; }
+    .ps-ok   { color: #4ade80; }
+    .ps-ko   { color: #f87171; }
+    .ps-redo { color: #fbbf24; }
 
-    .sim-control label { color: #e2e8f0; display: flex; justify-content: space-between; }
+    /* Éditeur de conception libre (Activité 2) */
+    .node-editor-bar {
+      background: #eff6ff;
+      border: 2px solid #2563eb;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-top: 10px;
+    }
+    .node-editor-bar h4 { margin: 0 0 8px; font-size: 0.92rem; color: #1e3a8a; display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; }
+    .editor-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .editor-controls select { width: auto; min-width: 200px; flex: 1; padding: 7px 10px; font-size: 0.86rem; }
 
-    /* ACTIVITÉ 2 : ROBOT SEMEUR & BOUCLES */
+    .svg-clickable { cursor: pointer; }
+    .svg-clickable:hover { filter: brightness(0.96); }
+
+    /* ACTIVITÉ 3 : ROBOT SEMEUR */
     .raw-log {
       background: #1e293b;
       color: #e2e8f0;
@@ -385,26 +380,22 @@
       font-size: 0.82rem;
       padding: 12px 14px;
       border-radius: 10px;
-      max-height: 195px;
+      max-height: 185px;
       overflow-y: auto;
       line-height: 1.55;
       margin-bottom: 14px;
     }
-
     .raw-log .hl-init { color: #fbbf24; }
     .raw-log .hl-step { color: #7dd3fc; }
     .raw-log .hl-end  { color: #86efac; }
 
-    .analysis-grid {
+    .analysis-grid, .bilan-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
-
-    @media (max-width: 780px) {
-      .analysis-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 780px) { .analysis-grid, .bilan-grid { grid-template-columns: 1fr; } }
 
     .q-card {
       background: var(--surface-alt);
@@ -412,33 +403,28 @@
       border-radius: 10px;
       padding: 12px 14px;
     }
-
-    .q-card p { margin: 0 0 8px; font-weight: 700; font-size: 0.9rem; }
+    .q-card p { margin: 0 0 8px; font-weight: 700; font-size: 0.89rem; }
 
     .radio-opt {
       display: flex;
       align-items: flex-start;
       gap: 8px;
-      padding: 6px 8px;
+      padding: 5px 8px;
       border-radius: 6px;
       cursor: pointer;
       font-weight: 400;
-      font-size: 0.87rem;
+      font-size: 0.86rem;
       color: var(--text);
     }
-
     .radio-opt:hover { background: #e2e8f0; }
 
-    .act2-workspace {
+    .act3-workspace {
       display: grid;
       grid-template-columns: 1fr 1.15fr;
-      gap: 18px;
+      gap: 16px;
       align-items: start;
     }
-
-    @media (max-width: 920px) {
-      .act2-workspace { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 920px) { .act3-workspace { grid-template-columns: 1fr; } }
 
     .palette {
       display: flex;
@@ -462,12 +448,11 @@
       font-family: inherit;
       transition: transform 0.1s, opacity 0.15s;
     }
-
     .block-chip:hover { opacity: 0.92; transform: translateY(-1px); }
-    .c-sys  { background: #d97706; }
-    .c-move { background: #2563eb; }
-    .c-act  { background: #0f766e; }
-    .c-end  { background: #7c3aed; }
+    /* Couleurs par catégorie fonctionnelle (ne révèlent PAS l'ordre Avant/Boucle/Après) */
+    .c-signal { background: #d97706; } /* Gyrophare ON et OFF même couleur */
+    .c-move   { background: #2563eb; } /* Avancer et Rentrer même couleur */
+    .c-tool   { background: #0f766e; } /* Outils agricoles */
 
     .zone-box {
       border: 2px solid var(--border);
@@ -476,16 +461,8 @@
       margin-bottom: 10px;
       background: #fff;
     }
-
-    .zone-box.zone-active {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37,99,235,0.14);
-    }
-
-    .zone-loop {
-      border-color: #f59e0b;
-      background: #fffbeb;
-    }
+    .zone-box.zone-active { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.14); }
+    .zone-loop { border-color: #f59e0b; background: #fffbeb; }
 
     .zone-header {
       display: flex;
@@ -495,17 +472,9 @@
       margin-bottom: 8px;
       flex-wrap: wrap;
     }
-
-    .zone-label {
-      font-size: 0.82rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      color: #334155;
-    }
-
+    .zone-label { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; color: #334155; }
     .zone-target-btn {
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       padding: 3px 9px;
       border-radius: 999px;
       border: 1.5px solid var(--primary);
@@ -514,25 +483,10 @@
       font-weight: 700;
       cursor: pointer;
     }
+    .zone-box.zone-active .zone-target-btn { background: var(--primary); color: #fff; }
 
-    .zone-box.zone-active .zone-target-btn {
-      background: var(--primary);
-      color: #fff;
-    }
-
-    .block-list {
-      min-height: 38px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .empty-hint {
-      font-size: 0.8rem;
-      color: #94a3b8;
-      font-style: italic;
-      padding: 6px 4px;
-    }
+    .block-list { min-height: 36px; display: flex; flex-direction: column; gap: 5px; }
+    .empty-hint { font-size: 0.79rem; color: #94a3b8; font-style: italic; padding: 5px 4px; }
 
     .placed-block {
       display: flex;
@@ -541,16 +495,11 @@
       padding: 6px 10px;
       border-radius: 7px;
       color: #fff;
-      font-size: 0.84rem;
+      font-size: 0.83rem;
       font-weight: 700;
       gap: 8px;
     }
-
-    .placed-controls {
-      display: flex;
-      gap: 4px;
-    }
-
+    .placed-controls { display: flex; gap: 4px; }
     .placed-controls button {
       background: rgba(255,255,255,0.22);
       border: none;
@@ -560,20 +509,12 @@
       border-radius: 5px;
       cursor: pointer;
       font-weight: 800;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
     }
-
     .placed-controls button:hover { background: rgba(255,255,255,0.38); }
 
-    .loop-config-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
-    }
-
-    .loop-config-row select { flex: 1; min-width: 180px; padding: 6px 10px; font-size: 0.86rem; }
+    .loop-config-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+    .loop-config-row select { flex: 1; min-width: 180px; padding: 6px 10px; font-size: 0.85rem; }
     .loop-config-row input[type="number"] {
       width: 68px;
       padding: 6px 8px;
@@ -583,51 +524,19 @@
       text-align: center;
     }
 
-    /* Canvas Simulateur Robot */
-    .canvas-card {
-      background: #0f172a;
-      border-radius: 12px;
-      padding: 14px;
-      color: #f8fafc;
-    }
-
-    canvas#robotCanvas {
-      width: 100%;
-      height: 245px;
-      background: #1e293b;
-      border-radius: 8px;
-      display: block;
-      border: 1px solid #334155;
-    }
-
+    .canvas-card { background: #0f172a; border-radius: 12px; padding: 14px; color: #f8fafc; }
+    canvas#robotCanvas { width: 100%; height: 235px; background: #1e293b; border-radius: 8px; display: block; border: 1px solid #334155; }
     .sim-log {
       margin-top: 10px;
       background: rgba(255,255,255,0.06);
       border-radius: 8px;
-      padding: 10px 12px;
-      font-size: 0.84rem;
-      min-height: 62px;
-      max-height: 120px;
+      padding: 9px 11px;
+      font-size: 0.82rem;
+      min-height: 58px;
+      max-height: 115px;
       overflow-y: auto;
     }
-
-    .sim-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-
-    /* MINI BILAN */
-    .bilan-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-
-    @media (max-width: 780px) {
-      .bilan-grid { grid-template-columns: 1fr; }
-    }
+    .sim-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
 
     /* RAPPORT FINAL */
     .score-hero {
@@ -637,96 +546,40 @@
       align-items: center;
       background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
       color: #fff;
-      padding: 22px;
+      padding: 20px;
       border-radius: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
-
-    @media (max-width: 640px) {
-      .score-hero { grid-template-columns: 1fr; text-align: center; }
-    }
+    @media (max-width: 640px) { .score-hero { grid-template-columns: 1fr; text-align: center; } }
 
     .score-circle {
-      width: 112px;
-      height: 112px;
-      border-radius: 50%;
+      width: 110px; height: 110px; border-radius: 50%;
       background: rgba(255,255,255,0.1);
       border: 4px solid #38bdf8;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
       margin: 0 auto;
     }
+    .score-circle .big { font-size: 1.85rem; font-weight: 800; line-height: 1; }
+    .score-circle .sub { font-size: 0.8rem; color: #cbd5e1; margin-top: 3px; }
 
-    .score-circle .big { font-size: 1.9rem; font-weight: 800; line-height: 1; }
-    .score-circle .sub { font-size: 0.82rem; color: #cbd5e1; margin-top: 3px; }
+    .subscores { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .subscore-pill { background: rgba(255,255,255,0.12); padding: 5px 11px; border-radius: 8px; font-size: 0.83rem; font-weight: 700; }
 
-    .subscores {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
+    .fb-block { border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; border: 1.5px solid var(--border); background: #fff; }
+    .fb-block h4 { margin: 0 0 10px; font-size: 0.98rem; display: flex; justify-content: space-between; flex-wrap:wrap; gap:6px; }
 
-    .subscore-pill {
-      background: rgba(255,255,255,0.12);
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.86rem;
-      font-weight: 700;
-    }
-
-    .fb-block {
-      border-radius: 10px;
-      padding: 14px 16px;
-      margin-bottom: 14px;
-      border: 1.5px solid var(--border);
-      background: #fff;
-    }
-
-    .fb-block h4 { margin: 0 0 10px; font-size: 1rem; display: flex; justify-content: space-between; }
-
-    .fb-item {
-      padding: 8px 10px;
-      border-radius: 7px;
-      margin-bottom: 6px;
-      font-size: 0.88rem;
-    }
-
+    .fb-item { padding: 8px 10px; border-radius: 7px; margin-bottom: 6px; font-size: 0.86rem; }
     .fb-ok  { background: var(--success-soft); border-left: 4px solid var(--success); color: #14532d; }
     .fb-ko  { background: var(--danger-soft); border-left: 4px solid var(--danger); color: #7f1d1d; }
     .fb-mid { background: var(--warn-soft); border-left: 4px solid var(--warn); color: #78350f; }
 
-    .send-status {
-      padding: 12px 16px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.92rem;
-      margin-bottom: 16px;
-    }
-
-    .step-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 18px;
-      padding-top: 14px;
-      border-top: 1px solid #e2e8f0;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+    .send-status { padding: 12px 16px; border-radius: 10px; font-weight: 700; font-size: 0.9rem; margin-bottom: 16px; }
+    .step-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 12px; border-top: 1px solid #e2e8f0; flex-wrap: wrap; gap: 10px; }
 
     .locked-banner {
-      background: #fef3c7;
-      border: 1.5px solid #f59e0b;
-      color: #92400e;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 0.88rem;
-      margin-bottom: 14px;
-      display: none;
+      background: #fef3c7; border: 1.5px solid #f59e0b; color: #92400e;
+      padding: 10px 14px; border-radius: 8px; font-weight: 700; font-size: 0.87rem;
+      margin-bottom: 14px; display: none;
     }
   </style>
 </head>
@@ -735,11 +588,11 @@
 <header>
   <div class="header-inner">
     <div>
-      <h1>⚙️ Technologie 4e — Chapitre 12 : Algorithmes & Boucles</h1>
-      <p>Activité interactive auto-corrigée • Arbre de décision, boucle intelligente et bilan</p>
+      <h1>⚙️ Technologie 4e — Chapitre 12 : Arbres de décision & Boucles</h1>
+      <p>Activités guidées et en autonomie avec protocoles de vérification et auto-correction</p>
     </div>
     <div class="badge-bar">
-      <span class="badge">🎯 Note / 10 (4 + 4 + 2)</span>
+      <span class="badge">🎯 Note / 10 (2,5 + 3 + 3 + 1,5)</span>
       <span class="badge">💻 Pix 3.4 & 3.2</span>
       <span class="badge">⏱️ 50 min</span>
     </div>
@@ -752,7 +605,7 @@
   <div class="card">
     <div class="card-title">
       <span>👤 Identification de l'élève (obligatoire pour enregistrer ta note)</span>
-      <span id="saveIndicator" style="font-size:0.8rem; color:#64748b; font-weight:600;">Brouillon local prêt</span>
+      <span id="saveIndicator" style="font-size:0.78rem; color:#64748b; font-weight:600;">Brouillon local prêt</span>
     </div>
     <div class="identity-grid">
       <div>
@@ -778,198 +631,387 @@
   </div>
 
   <div id="lockedBanner" class="locked-banner">
-    🔒 Copie déjà corrigée et envoyée au professeur. Tu peux consulter ta correction détaillée dans l'onglet « 4. Correction & Note ».
+    🔒 Copie corrigée et transmise au professeur. Consulte ton diagnostic détaillé dans l'onglet « 5. Correction & Note ».
   </div>
 
-  <!-- ONGLETS -->
+  <!-- ONGLETS (5 ÉTAPES) -->
   <nav class="tabs">
     <button class="tab-btn active" data-tab="tab1">
       <span class="t-num">Étape 1</span>
-      <span class="t-name">❄️ Arbre de décision</span>
-      <span class="t-pts">Climatiseur réversible • 4 pts</span>
+      <span class="t-name">❄️ Arbre guidé</span>
+      <span class="t-pts">Climatiseur • 2,5 pts</span>
     </button>
     <button class="tab-btn" data-tab="tab2">
       <span class="t-num">Étape 2</span>
-      <span class="t-name">🤖 Boucle intelligente</span>
-      <span class="t-pts">Robot semeur • 4 pts</span>
+      <span class="t-name">🚧 Concevoir un arbre</span>
+      <span class="t-pts">Barrière parking • 3 pts</span>
     </button>
     <button class="tab-btn" data-tab="tab3">
       <span class="t-num">Étape 3</span>
-      <span class="t-name">📝 Mini-Bilan</span>
-      <span class="t-pts">Synthèse du cours • 2 pts</span>
+      <span class="t-name">🤖 Boucle intelligente</span>
+      <span class="t-pts">Robot semeur • 3 pts</span>
     </button>
     <button class="tab-btn" data-tab="tab4">
       <span class="t-num">Étape 4</span>
+      <span class="t-name">📝 Mini-Bilan</span>
+      <span class="t-pts">Notions clés • 1,5 pt</span>
+    </button>
+    <button class="tab-btn" data-tab="tab5">
+      <span class="t-num">Étape 5</span>
       <span class="t-name">📊 Correction & Envoi</span>
-      <span class="t-pts">Diagnostic détaillé • /10</span>
+      <span class="t-pts">Bilan & Note • /10</span>
     </button>
   </nav>
 
-  <!-- ==================== ACTIVITÉ 1 ==================== -->
+  <!-- ==================== ÉTAPE 1 : ARBRE GUIDÉ (CLIMATISEUR) ==================== -->
   <section id="tab1" class="section-panel active">
     <div class="card">
       <div class="card-title">
-        <span>❄️ Activité 1 : Créer l'arbre de décision d'un climatiseur réversible</span>
-        <span class="coef-pill">Coefficient : 4 points</span>
+        <span>❄️ Étape 1 : Compléter et vérifier l'arbre de décision d'un climatiseur réversible</span>
+        <span class="coef-pill">2,5 points (-0,5 pt par erreur au protocole)</span>
       </div>
 
       <div class="context-box">
-        <strong>Cahier des charges de la salle de classe :</strong> Le climatiseur réversible possède un <em>capteur de température</em> (T) et un <em>détecteur de fenêtre ouverte</em>. Il doit respecter ces 3 règles :
+        <strong>Cahier des charges de la salle de classe :</strong> Le climatiseur réversible possède un capteur de <em>Température (T)</em> et un capteur de <em>Fenêtre ouverte</em>.
         <ul>
-          <li><strong>Règle n°1 (Priorité éco-énergie) :</strong> Si la <strong>fenêtre est ouverte</strong>, l'appareil passe obligatoirement en <strong>Arrêt / Veille</strong>, quelle que soit la température !</li>
-          <li><strong>Règle n°2 (Chaleur) :</strong> Fenêtre fermée, si la température est <strong>supérieure à 25 °C</strong> (<code>T &gt; 25 °C</code>), il lance le <strong>Mode Froid (Climatisation)</strong>.</li>
-          <li><strong>Règle n°3 (Froid) :</strong> Fenêtre fermée, si la température est <strong>inférieure à 19 °C</strong> (<code>T &lt; 19 °C</code>), il lance le <strong>Mode Chaud (Chauffage)</strong>. Entre 19 °C et 25 °C inclus, il reste en <strong>Arrêt / Veille</strong>.</li>
+          <li><strong>Règle 1 (Priorité éco-énergie) :</strong> Si la <strong>fenêtre est ouverte</strong>, l'appareil passe obligatoirement en <strong>Arrêt / Veille</strong>, quelle que soit la température.</li>
+          <li><strong>Règle 2 (Chaleur) :</strong> Fenêtre fermée, si <code>T &gt; 25 °C</code> → <strong>Mode Froid (Clim)</strong>.</li>
+          <li><strong>Règle 3 (Froid) :</strong> Fenêtre fermée, si <code>T &lt; 19 °C</code> → <strong>Mode Chaud (Chauffage)</strong>. Entre 19 °C et 25 °C inclus → <strong>Arrêt / Veille</strong>.</li>
         </ul>
       </div>
 
-      <div class="act1-layout">
-        <!-- ARBRE INTERACTIF -->
-        <div class="tree-board">
-          <div class="tree-level">
-            <!-- TEST 1 -->
-            <div class="node-card node-test" id="node-t1">
-              <select id="t1" class="tree-select">
-                <option value="">-- Choisir le 1er test (prioritaire) --</option>
-                <option value="FENETRE">Fenêtre ouverte ?</option>
-                <option value="T_GT_25">Température &gt; 25 °C ?</option>
-                <option value="T_LT_19">Température &lt; 19 °C ?</option>
-              </select>
-            </div>
+      <div class="formalism-bar">
+        <span>📐 Formalisme officiel de l'arbre de décision :</span>
+        <span class="f-item"><span class="f-pill"></span> Début</span>
+        <span class="f-item"><span class="f-diamond"></span> Nœud (Losange) = Test / Capteur</span>
+        <span class="f-item"><span class="f-seg"></span> Branche (Segment) = OUI / NON</span>
+        <span class="f-item"><span class="f-rect"></span> Feuille (Rectangle) = Action</span>
+      </div>
 
-            <div class="branch-split">
-              <!-- OUI DE T1 -->
-              <div class="branch-col">
-                <span class="branch-tag tag-oui">OUI</span>
-                <div class="node-card node-action" id="node-a1">
-                  <select id="a1" class="tree-select">
-                    <option value="">-- Action --</option>
-                    <option value="VEILLE">Arrêt / Veille (Éco)</option>
-                    <option value="FROID">Mode Froid (Clim)</option>
-                    <option value="CHAUD">Mode Chaud (Chauffage)</option>
-                  </select>
-                </div>
+      <div class="protocol-alert">
+        <strong>⚠️ Démarche obligatoire :</strong> 1) Complète d'abord tous les losanges et rectangles de l'arbre. 2) Manipule ensuite les réglages du <strong>Banc d'essai</strong> à droite pour exécuter les <strong>4 tests du protocole de vérification</strong>. Si un test est <strong>NON CONFORME</strong>, tu perds <strong>0,5 pt</strong> : repère la branche rouge, corrige ton arbre et re-vérifie !
+      </div>
+
+      <div class="tree-workspace">
+        <!-- ARBRE SVG FORMEL ACTIVITÉ 1 -->
+        <div class="svg-stage">
+          <svg id="svgAct1" viewBox="0 0 920 520" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arr-def" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569"/>
+              </marker>
+              <marker id="arr-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#16a34a"/>
+              </marker>
+              <marker id="arr-ko" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626"/>
+              </marker>
+            </defs>
+
+            <!-- DÉBUT (Ovale) -->
+            <rect x="260" y="14" width="140" height="36" rx="18" fill="#e2e8f0" stroke="#334155" stroke-width="2.5"/>
+            <text x="330" y="37" text-anchor="middle" font-size="13" font-weight="800" fill="#0f172a">DÉBUT</text>
+
+            <!-- SEGMENT DÉBUT -> T1 -->
+            <path id="seg1-start" d="M 330 50 L 330 68" fill="none" stroke="#475569" stroke-width="2.5" marker-end="url(#arr-def)"/>
+
+            <!-- SEGMENTS DE T1 -->
+            <path id="seg1-t1-oui" d="M 200 120 L 110 120 L 110 198" fill="none" stroke="#475569" stroke-width="2.5" marker-end="url(#arr-def)"/>
+            <rect x="130" y="106" width="42" height="22" rx="11" fill="#16a34a"/>
+            <text x="151" y="121" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">OUI</text>
+
+            <path id="seg1-t1-non" d="M 460 120 L 530 120 L 530 183" fill="none" stroke="#475569" stroke-width="2.5" marker-end="url(#arr-def)"/>
+            <rect x="478" y="106" width="42" height="22" rx="11" fill="#dc2626"/>
+            <text x="499" y="121" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">NON</text>
+
+            <!-- SEGMENTS DE T2 -->
+            <path id="seg1-t2-oui" d="M 400 237 L 315 237 L 315 313" fill="none" stroke="#475569" stroke-width="2.5" marker-end="url(#arr-def)"/>
+            <rect x="336" y="223" width="42" height="22" rx="11" fill="#16a34a"/>
+            <text x="357" y="238" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">OUI</text>
+
+            <path id="seg1-t2-non" d="M 660 237 L 690 237 L 690 305" fill="none" stroke="#475569" stroke-width="2.5" marker-end="url(#arr-def)"/>
+            <rect x="652" y="223" width="42" height="22" rx="11" fill="#dc2626"/>
+            <text x="673" y="238" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">NON</text>
+
+            <!-- SEGMENTS DE T3 -->
+            <path id="seg1-t3-oui" d="M 560 360 L 530 360 L 530 438" fill="none" stroke="#475569" stroke-width="2.5" marker-end="url(#arr-def)"/>
+            <rect x="509" y="388" width="42" height="22" rx="11" fill="#16a34a"/>
+            <text x="530" y="403" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">OUI</text>
+
+            <path id="seg1-t3-non" d="M 820 360 L 815 360 L 815 438" fill="none" stroke="#475569" stroke-width="2.5" marker-end="url(#arr-def)"/>
+            <rect x="794" y="388" width="42" height="22" rx="11" fill="#dc2626"/>
+            <text x="815" y="403" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">NON</text>
+
+            <!-- NŒUD T1 (LOSANGE) -->
+            <polygon id="shp1-t1" points="330,70 460,120 330,170 200,120" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2.5"/>
+            <foreignObject x="246" y="103" width="168" height="34">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;">
+                <select id="t1" class="svg-select a1-input">
+                  <option value="">◆ Test 1 ?</option>
+                  <option value="FENETRE">Fenêtre ouverte ?</option>
+                  <option value="T_GT_25">Temp &gt; 25 °C ?</option>
+                  <option value="T_LT_19">Temp &lt; 19 °C ?</option>
+                </select>
               </div>
+            </foreignObject>
 
-              <!-- NON DE T1 -->
-              <div class="branch-col">
-                <span class="branch-tag tag-non">NON</span>
-                <div class="node-card node-test" id="node-t2">
-                  <select id="t2" class="tree-select">
-                    <option value="">-- Choisir le 2e test --</option>
-                    <option value="FENETRE">Fenêtre ouverte ?</option>
-                    <option value="T_GT_25">Température &gt; 25 °C ?</option>
-                    <option value="T_LT_19">Température &lt; 19 °C ?</option>
-                  </select>
-                </div>
-
-                <div class="branch-split">
-                  <!-- OUI DE T2 -->
-                  <div class="branch-col">
-                    <span class="branch-tag tag-oui">OUI</span>
-                    <div class="node-card node-action" id="node-a2">
-                      <select id="a2" class="tree-select">
-                        <option value="">-- Action --</option>
-                        <option value="VEILLE">Arrêt / Veille (Éco)</option>
-                        <option value="FROID">Mode Froid (Clim)</option>
-                        <option value="CHAUD">Mode Chaud (Chauffage)</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <!-- NON DE T2 -->
-                  <div class="branch-col">
-                    <span class="branch-tag tag-non">NON</span>
-                    <div class="node-card node-test" id="node-t3">
-                      <select id="t3" class="tree-select">
-                        <option value="">-- Choisir le 3e test --</option>
-                        <option value="FENETRE">Fenêtre ouverte ?</option>
-                        <option value="T_GT_25">Température &gt; 25 °C ?</option>
-                        <option value="T_LT_19">Température &lt; 19 °C ?</option>
-                      </select>
-                    </div>
-
-                    <div class="branch-split">
-                      <div class="branch-col">
-                        <span class="branch-tag tag-oui">OUI</span>
-                        <div class="node-card node-action" id="node-a3">
-                          <select id="a3" class="tree-select">
-                            <option value="">-- Action --</option>
-                            <option value="VEILLE">Arrêt / Veille (Éco)</option>
-                            <option value="FROID">Mode Froid (Clim)</option>
-                            <option value="CHAUD">Mode Chaud (Chauffage)</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="branch-col">
-                        <span class="branch-tag tag-non">NON</span>
-                        <div class="node-card node-action" id="node-a4">
-                          <select id="a4" class="tree-select">
-                            <option value="">-- Action --</option>
-                            <option value="VEILLE">Arrêt / Veille (Éco)</option>
-                            <option value="FROID">Mode Froid (Clim)</option>
-                            <option value="CHAUD">Mode Chaud (Chauffage)</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <!-- FEUILLE A1 (RECTANGLE) -->
+            <rect id="shp1-a1" x="15" y="200" width="190" height="58" rx="0" fill="#f0fdfa" stroke="#0f766e" stroke-width="2.5"/>
+            <foreignObject x="23" y="212" width="174" height="34">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;">
+                <select id="a1" class="svg-select a1-input">
+                  <option value="">▭ Action ?</option>
+                  <option value="VEILLE">Arrêt / Veille</option>
+                  <option value="FROID">Mode Froid (Clim)</option>
+                  <option value="CHAUD">Mode Chaud</option>
+                </select>
               </div>
-            </div>
-          </div>
+            </foreignObject>
+
+            <!-- NŒUD T2 (LOSANGE) -->
+            <polygon id="shp1-t2" points="530,185 660,237 530,289 400,237" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2.5"/>
+            <foreignObject x="446" y="220" width="168" height="34">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;">
+                <select id="t2" class="svg-select a1-input">
+                  <option value="">◆ Test 2 ?</option>
+                  <option value="FENETRE">Fenêtre ouverte ?</option>
+                  <option value="T_GT_25">Temp &gt; 25 °C ?</option>
+                  <option value="T_LT_19">Temp &lt; 19 °C ?</option>
+                </select>
+              </div>
+            </foreignObject>
+
+            <!-- FEUILLE A2 (RECTANGLE) -->
+            <rect id="shp1-a2" x="220" y="315" width="190" height="58" rx="0" fill="#f0fdfa" stroke="#0f766e" stroke-width="2.5"/>
+            <foreignObject x="228" y="327" width="174" height="34">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;">
+                <select id="a2" class="svg-select a1-input">
+                  <option value="">▭ Action ?</option>
+                  <option value="VEILLE">Arrêt / Veille</option>
+                  <option value="FROID">Mode Froid (Clim)</option>
+                  <option value="CHAUD">Mode Chaud</option>
+                </select>
+              </div>
+            </foreignObject>
+
+            <!-- NŒUD T3 (LOSANGE) -->
+            <polygon id="shp1-t3" points="690,308 820,360 690,412 560,360" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2.5"/>
+            <foreignObject x="606" y="343" width="168" height="34">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;">
+                <select id="t3" class="svg-select a1-input">
+                  <option value="">◆ Test 3 ?</option>
+                  <option value="FENETRE">Fenêtre ouverte ?</option>
+                  <option value="T_GT_25">Temp &gt; 25 °C ?</option>
+                  <option value="T_LT_19">Temp &lt; 19 °C ?</option>
+                </select>
+              </div>
+            </foreignObject>
+
+            <!-- FEUILLE A3 (RECTANGLE) -->
+            <rect id="shp1-a3" x="435" y="440" width="190" height="58" rx="0" fill="#f0fdfa" stroke="#0f766e" stroke-width="2.5"/>
+            <foreignObject x="443" y="452" width="174" height="34">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;">
+                <select id="a3" class="svg-select a1-input">
+                  <option value="">▭ Action ?</option>
+                  <option value="VEILLE">Arrêt / Veille</option>
+                  <option value="FROID">Mode Froid (Clim)</option>
+                  <option value="CHAUD">Mode Chaud</option>
+                </select>
+              </div>
+            </foreignObject>
+
+            <!-- FEUILLE A4 (RECTANGLE) -->
+            <rect id="shp1-a4" x="720" y="440" width="190" height="58" rx="0" fill="#f0fdfa" stroke="#0f766e" stroke-width="2.5"/>
+            <foreignObject x="728" y="452" width="174" height="34">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;">
+                <select id="a4" class="svg-select a1-input">
+                  <option value="">▭ Action ?</option>
+                  <option value="VEILLE">Arrêt / Veille</option>
+                  <option value="FROID">Mode Froid (Clim)</option>
+                  <option value="CHAUD">Mode Chaud</option>
+                </select>
+              </div>
+            </foreignObject>
+          </svg>
         </div>
 
-        <!-- SIMULATEUR CLIMATISEUR -->
-        <div class="sim-box">
-          <h3>🧪 Banc d'essai de ton arbre</h3>
-          <div id="acUnit" class="ac-unit">
-            <div id="acIcon" class="ac-icon">🎛️</div>
-            <div id="acStatus" class="ac-status">En attente de test</div>
-            <div id="acDetail" class="ac-detail">Complète ton arbre puis clique sur « Tester ».</div>
-          </div>
+        <!-- BANC D'ESSAI & PROTOCOLE ACTIVITÉ 1 -->
+        <div class="bench-box">
+          <h3>
+            <span>🧪 Banc d'essai & Protocole (Climatiseur)</span>
+            <span id="a1PenaltyPill" class="penalty-pill">Erreurs : 0 (0 pt)</span>
+          </h3>
 
           <div class="sim-control">
             <label for="simTemp">
-              <span>🌡️ Température de la salle :</span>
-              <strong id="simTempVal">22 °C</strong>
+              <span>🌡️ Température simulée :</span>
+              <strong id="simTempVal">30 °C</strong>
             </label>
-            <input type="range" id="simTemp" min="10" max="35" value="22" style="width:100%;">
+            <input type="range" id="simTemp" min="10" max="35" value="30" style="width:100%;">
           </div>
 
           <div class="sim-control">
-            <label for="simWin"><span>🪟 État de la fenêtre :</span></label>
+            <label for="simWin"><span>🪟 Capteur Fenêtre :</span></label>
             <select id="simWin" style="margin-top:4px;">
-              <option value="false">Fermée</option>
               <option value="true">Ouverte</option>
+              <option value="false">Fermée</option>
             </select>
           </div>
 
           <button type="button" class="btn btn-primary" id="btnTestAC" style="width:100%;">
-            ▶️ Simuler avec mon arbre
+            ▶️ Exécuter MON arbre sur ces réglages
           </button>
-          <p style="font-size:0.78rem; color:#94a3b8; margin:10px 0 0;">
-            Astuce : teste plusieurs situations (ex : 30 °C fenêtre ouverte, 15 °C fenêtre fermée, 22 °C fenêtre fermée) pour vérifier que ton arbre ne fait aucune erreur !
-          </p>
+
+          <div id="a1Verdict" class="verdict-card v-idle">
+            <span class="v-badge" id="a1VBadge">En attente de test</span>
+            <div class="v-row" id="a1VGot">Action de TON arbre : —</div>
+            <div class="v-row" id="a1VExp">Action attendue : —</div>
+            <div class="v-explain" id="a1VExplain">
+              Règle les capteurs ci-dessus pour effectuer chaque test du protocole ci-dessous, puis clique sur « Exécuter MON arbre ».
+            </div>
+          </div>
+
+          <div style="font-size:0.82rem; font-weight:700; color:#93c5fd; margin-top:8px;">
+            📋 Protocole de vérification obligatoire (4 tests à valider) :
+          </div>
+          <table class="proto-table">
+            <thead>
+              <tr>
+                <th>Test</th>
+                <th>Réglages à faire</th>
+                <th>Attendu</th>
+                <th>État</th>
+              </tr>
+            </thead>
+            <tbody id="a1ProtoBody"></tbody>
+          </table>
         </div>
       </div>
 
       <div class="step-footer">
-        <span style="font-size:0.85rem; color:var(--muted);">💡 Plusieurs ordres des tests 2 et 3 sont acceptés s'ils respectent le cahier des charges.</span>
-        <button type="button" class="btn btn-primary" onclick="goTab('tab2')">Passer à l'Activité 2 ➡️</button>
+        <span style="font-size:0.84rem; color:var(--muted);">💡 Si tu modifies ton arbre après un test, re-vérifie les cas du protocole pour confirmer qu'aucune régression n'est apparue.</span>
+        <button type="button" class="btn btn-primary" onclick="goTab('tab2')">Passer à l'Étape 2 ➡️</button>
       </div>
     </div>
   </section>
 
-  <!-- ==================== ACTIVITÉ 2 ==================== -->
+  <!-- ==================== ÉTAPE 2 : CONCEVOIR SON ARBRE (BARRIÈRE PARKING) ==================== -->
   <section id="tab2" class="section-panel">
     <div class="card">
       <div class="card-title">
-        <span>🤖 Activité 2 : Analyser et programmer une boucle intelligente (Robot Semeur)</span>
-        <span class="coef-pill">Coefficient : 4 points</span>
+        <span>🚧 Étape 2 : Concevoir soi-même l'arbre de décision d'une barrière de parking</span>
+        <span class="coef-pill">3 points (-0,5 pt par erreur au protocole)</span>
       </div>
 
       <div class="context-box">
-        <strong>Situation technologique :</strong> Un robot agricole doit semer des graines dans des bacs de terre alignés. Il démarre toujours sur sa <strong>base en béton (case 0)</strong>. Au bout de chaque rangée se trouve une <strong>balise de fin de rangée</strong> (capteur). Un stagiaire a écrit un programme « à la main » pour une rangée de 4 bacs, mais il est trop long et ne fonctionne plus si la rangée change de taille (ex : 6 bacs) :
+        <strong>Nouvel objet technique — La Barrière de Parking Automatisée du collège :</strong> Cette fois, l'arbre est <strong>vide</strong> ! À toi de le construire entièrement (choisir où placer les <strong>Losanges ◆</strong> de test et les <strong>Rectangles ▭</strong> d'action).
+        <ul>
+          <li><strong>Règle 1 (Présence) :</strong> Si <strong>aucune voiture</strong> n'est détectée → <strong>Laisser barrière fermée</strong>.</li>
+          <li><strong>Règle 2 (Sécurité prioritaire) :</strong> Si une voiture est présente mais que le <strong>badge n'est pas valide</strong> → <strong>Afficher « Accès refusé »</strong> (même si le parking est complet).</li>
+          <li><strong>Règle 3 (Places) :</strong> Si une voiture est présente ET le <strong>badge est valide</strong> : s'il reste des <strong>places libres (&gt; 0)</strong> → <strong>Ouvrir la barrière</strong> ; sinon (0 place) → <strong>Afficher « Parking complet »</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="protocol-alert">
+        <strong>🛠️ Comment construire ton arbre :</strong> Clique sur une case en pointillés <code>[ + Choisir ]</code> (ou sur un bloc existant) dans le schéma pour ouvrir l'éditeur juste en dessous et choisir soit un <strong>◆ Nœud de test (Losange)</strong> (qui crée automatiquement les branches OUI et NON), soit une <strong>▭ Feuille d'action (Rectangle)</strong>. Valide ensuite ton arbre avec les <strong>4 tests du protocole</strong> !
+      </div>
+
+      <div class="tree-workspace">
+        <div>
+          <div class="svg-stage">
+            <svg id="svgAct2" viewBox="0 0 920 530" xmlns="http://www.w3.org/2000/svg"></svg>
+          </div>
+
+          <!-- ÉDITEUR DE NŒUD SÉLECTIONNÉ -->
+          <div id="a2Editor" class="node-editor-bar">
+            <h4>
+              <span id="a2EditorTitle">✏️ Sélectionne un emplacement sur le schéma ci-dessus</span>
+              <button type="button" class="btn btn-outline btn-sm" id="btnResetTree2">🗑️ Tout effacer</button>
+            </h4>
+            <div id="a2EditorBody" class="editor-controls">
+              <span style="font-size:0.85rem; color:var(--muted);">Clique sur la case « + Cliquer pour commencer » dans le schéma.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BANC D'ESSAI & PROTOCOLE ACTIVITÉ 2 -->
+        <div class="bench-box">
+          <h3>
+            <span>🧪 Banc d'essai & Protocole (Parking)</span>
+            <span id="a2PenaltyPill" class="penalty-pill">Erreurs : 0 (0 pt)</span>
+          </h3>
+
+          <div class="sim-control">
+            <label for="pCar"><span>🚗 Capteur Voiture présente :</span></label>
+            <select id="pCar" style="margin-top:4px;">
+              <option value="false">Non (Aucune voiture)</option>
+              <option value="true">Oui (Voiture devant la barrière)</option>
+            </select>
+          </div>
+
+          <div class="sim-control">
+            <label for="pBadge"><span>🪪 Lecteur Badge RFID valide :</span></label>
+            <select id="pBadge" style="margin-top:4px;">
+              <option value="false">Non (Badge inconnu / absent)</option>
+              <option value="true">Oui (Badge autorisé)</option>
+            </select>
+          </div>
+
+          <div class="sim-control">
+            <label for="pSpots"><span>🅿️ Compteur Places libres &gt; 0 :</span></label>
+            <select id="pSpots" style="margin-top:4px;">
+              <option value="true">Oui (Places disponibles)</option>
+              <option value="false">Non (0 place — Complet)</option>
+            </select>
+          </div>
+
+          <button type="button" class="btn btn-primary" id="btnTestParking" style="width:100%;">
+            ▶️ Exécuter MON arbre sur ces réglages
+          </button>
+
+          <div id="a2Verdict" class="verdict-card v-idle">
+            <span class="v-badge" id="a2VBadge">En attente de test</span>
+            <div class="v-row" id="a2VGot">Action de TON arbre : —</div>
+            <div class="v-row" id="a2VExp">Action attendue : —</div>
+            <div class="v-explain" id="a2VExplain">
+              Construis ton arbre complet à gauche, puis manipule les 3 capteurs pour valider les 4 cas du protocole.
+            </div>
+          </div>
+
+          <div style="font-size:0.82rem; font-weight:700; color:#93c5fd; margin-top:8px;">
+            📋 Protocole de vérification obligatoire (4 tests à valider) :
+          </div>
+          <table class="proto-table">
+            <thead>
+              <tr>
+                <th>Test</th>
+                <th>Réglages capteurs</th>
+                <th>Attendu</th>
+                <th>État</th>
+              </tr>
+            </thead>
+            <tbody id="a2ProtoBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="step-footer">
+        <button type="button" class="btn btn-outline" onclick="goTab('tab1')">⬅️ Retour Étape 1</button>
+        <button type="button" class="btn btn-primary" onclick="goTab('tab3')">Passer à l'Étape 3 ➡️</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ÉTAPE 3 : BOUCLE INTELLIGENTE (ROBOT SEMEUR) ==================== -->
+  <section id="tab3" class="section-panel">
+    <div class="card">
+      <div class="card-title">
+        <span>🤖 Étape 3 : Analyser et programmer une boucle intelligente (Robot Semeur)</span>
+        <span class="coef-pill">3 points</span>
+      </div>
+
+      <div class="context-box">
+        <strong>Situation technologique :</strong> Un robot agricole doit semer des graines dans des bacs de terre alignés. Il démarre sur sa <strong>base en béton (case 0)</strong>. Au bout de chaque rangée se trouve une <strong>balise de fin de rangée</strong> (capteur). Un stagiaire a écrit un programme « à la main » pour 4 bacs, mais il est trop long et échoue dès que la parcelle a 6 bacs :
       </div>
 
       <div class="raw-log">
@@ -981,8 +1023,7 @@
         <div><span class="hl-end">18. Éteindre le gyrophare &nbsp;→&nbsp; 19. Rentrer à la base</span></div>
       </div>
 
-      <!-- ÉTAPE 2A : ANALYSE -->
-      <h3 style="margin:0 0 10px; font-size:1rem;">🔍 Partie A — Analyse de la situation (1 point)</h3>
+      <h3 style="margin:0 0 10px; font-size:0.98rem;">🔍 Partie A — Analyse de la situation (1 point)</h3>
       <div class="analysis-grid">
         <div class="q-card">
           <p>1. Quelles tâches doivent rester EN DEHORS de la boucle de répétition ? (0,5 pt)</p>
@@ -999,27 +1040,16 @@
         </div>
       </div>
 
-      <!-- ÉTAPE 2B : CONSTRUCTION + SIMULATEUR -->
-      <h3 style="margin:0 0 10px; font-size:1rem;">🧱 Partie B — Construis ton programme et teste-le sur les 2 parcelles (3 points)</h3>
-      <div class="hint-box">
-        <strong>Mode d'emploi :</strong> 1) Clique sur le bouton <em>« Ajouter ici »</em> de la zone choisie (Avant la boucle / Dans la boucle / Après la boucle). 2) Clique sur les blocs de couleur pour les ajouter. 3) Choisis la <strong>boucle la plus intelligente</strong> pour réussir à la fois la <strong>Parcelle A (4 bacs)</strong> ET la <strong>Parcelle B (6 bacs)</strong> !
+      <h3 style="margin:0 0 10px; font-size:0.98rem;">🧱 Partie B — Construis ton programme (blocs mélangés !) et vérifie sur les 2 parcelles (2 points)</h3>
+      <div class="protocol-alert">
+        <strong>Consigne :</strong> Les blocs ci-dessous sont volontairement <strong>dans le désordre</strong>. Sélectionne la zone cible (<em>Avant</em> / <em>Dans la boucle</em> / <em>Après</em>), place les bons blocs dans l'ordre logique, choisis la <strong>boucle la plus intelligente</strong>, puis lance le <strong>protocole de vérification</strong> sur les 2 parcelles (4 bacs ET 6 bacs).
       </div>
 
-      <div class="act2-workspace">
-        <!-- ÉDITEUR DE BLOCS -->
+      <div class="act3-workspace">
         <div>
-          <label>Palette de blocs disponibles (clique pour ajouter dans la zone sélectionnée) :</label>
-          <div class="palette" id="blockPalette">
-            <button type="button" class="block-chip c-sys"  data-block="GYRO_ON">🚨 Allumer gyrophare</button>
-            <button type="button" class="block-chip c-move" data-block="MOVE">➡️ Avancer d'1 bac</button>
-            <button type="button" class="block-chip c-act"  data-block="DIG">⛏️ Creuser un trou</button>
-            <button type="button" class="block-chip c-act"  data-block="SEED">🌱 Déposer graine</button>
-            <button type="button" class="block-chip c-act"  data-block="WATER">💧 Arroser le trou</button>
-            <button type="button" class="block-chip c-end"  data-block="GYRO_OFF">🔕 Éteindre gyrophare</button>
-            <button type="button" class="block-chip c-end"  data-block="RETURN">🏠 Rentrer à la base</button>
-          </div>
+          <label>Palette de blocs (mélangés — clique pour ajouter dans la zone active) :</label>
+          <div class="palette" id="blockPalette"></div>
 
-          <!-- ZONE AVANT -->
           <div class="zone-box zone-active" id="zone-before" data-zone="before">
             <div class="zone-header">
               <span class="zone-label">1. Avant la boucle (Initialisation)</span>
@@ -1028,7 +1058,6 @@
             <div class="block-list" id="list-before"></div>
           </div>
 
-          <!-- ZONE BOUCLE -->
           <div class="zone-box zone-loop" id="zone-loop" data-zone="loop">
             <div class="zone-header">
               <span class="zone-label">2. Dans la boucle (Tâche répétée)</span>
@@ -1046,7 +1075,6 @@
             <div class="block-list" id="list-loop"></div>
           </div>
 
-          <!-- ZONE APRÈS -->
           <div class="zone-box" id="zone-after" data-zone="after">
             <div class="zone-header">
               <span class="zone-label">3. Après la boucle (Fin de mission)</span>
@@ -1058,87 +1086,88 @@
           <button type="button" class="btn btn-outline btn-sm" id="btnClearBlocks">🗑️ Vider mon programme</button>
         </div>
 
-        <!-- SIMULATEUR CANVAS -->
         <div class="canvas-card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
-            <strong style="color:#93c5fd; font-size:0.95rem;">🚜 Simulateur de terrain en direct</strong>
+            <strong style="color:#93c5fd; font-size:0.93rem;">🚜 Banc d'essai & Protocole du Robot Semeur</strong>
             <span id="simBadge" style="font-size:0.78rem; background:#334155; padding:3px 9px; border-radius:999px;">Prêt</span>
           </div>
-          <canvas id="robotCanvas" width="540" height="245"></canvas>
+          <canvas id="robotCanvas" width="540" height="235"></canvas>
           <div class="sim-actions">
-            <button type="button" class="btn btn-primary btn-sm" id="btnRun4">▶️ Tester Parcelle A (4 bacs)</button>
-            <button type="button" class="btn btn-success btn-sm" id="btnRun6">▶️ Tester Parcelle B (6 bacs)</button>
-            <button type="button" class="btn btn-outline btn-sm" id="btnResetSim" style="color:#0f172a;">↺ Réinitialiser</button>
+            <button type="button" class="btn btn-primary btn-sm" id="btnRun4">▶️ Test 1 : Parcelle A (4 bacs)</button>
+            <button type="button" class="btn btn-success btn-sm" id="btnRun6">▶️ Test 2 : Parcelle B (6 bacs)</button>
+            <button type="button" class="btn btn-outline btn-sm" id="btnResetSim" style="color:#0f172a;">↺ Reset</button>
           </div>
-          <div class="sim-log" id="simLog">
-            Clique sur « Tester Parcelle A (4 bacs) » ou « Tester Parcelle B (6 bacs) » pour observer le comportement réel de ton robot.
+          <div id="a3Verdict" class="verdict-card v-idle" style="margin:10px 0 8px; padding:9px 11px;">
+            <span class="v-badge" id="a3VBadge">Protocole en attente</span>
+            <div class="v-row" id="a3VText" style="font-size:0.82rem;">Lance Test 1 (4 bacs) et Test 2 (6 bacs) pour vérifier la conformité de ton programme.</div>
           </div>
+          <table class="proto-table" style="margin-top:6px;">
+            <thead><tr><th>Test protocole</th><th>Exigence</th><th>État</th></tr></thead>
+            <tbody>
+              <tr><td>Test 1 — Parcelle A (4 bacs)</td><td>4 bacs semés + retour + gyro éteint</td><td id="rProto4" class="proto-status ps-todo">⬜ À tester</td></tr>
+              <tr><td>Test 2 — Parcelle B (6 bacs)</td><td>6 bacs semés sans modifier le code</td><td id="rProto6" class="proto-status ps-todo">⬜ À tester</td></tr>
+            </tbody>
+          </table>
+          <div class="sim-log" id="simLog">Journal d'exécution du robot.</div>
         </div>
       </div>
 
       <div class="step-footer">
-        <button type="button" class="btn btn-outline" onclick="goTab('tab1')">⬅️ Retour Activité 1</button>
-        <button type="button" class="btn btn-primary" onclick="goTab('tab3')">Passer au Mini-Bilan ➡️</button>
+        <button type="button" class="btn btn-outline" onclick="goTab('tab2')">⬅️ Retour Étape 2</button>
+        <button type="button" class="btn btn-primary" onclick="goTab('tab4')">Passer au Mini-Bilan ➡️</button>
       </div>
     </div>
   </section>
 
-  <!-- ==================== MINI BILAN ==================== -->
-  <section id="tab3" class="section-panel">
+  <!-- ==================== ÉTAPE 4 : MINI BILAN ==================== -->
+  <section id="tab4" class="section-panel">
     <div class="card">
       <div class="card-title">
-        <span>📝 Étape 3 : Mini-Bilan des notions du chapitre</span>
-        <span class="coef-pill">Coefficient : 2 points (4 × 0,5 pt)</span>
+        <span>📝 Étape 4 : Mini-Bilan des notions du chapitre</span>
+        <span class="coef-pill">1,5 point (3 × 0,5 pt)</span>
       </div>
 
       <div class="bilan-grid">
         <div class="q-card">
-          <p>1. Dans un arbre de décision (algorigramme), que représente un losange ◆ ?</p>
-          <label class="radio-opt"><input type="radio" name="b1" value="A"> Une action exécutée par un moteur ou un actionneur</label>
-          <label class="radio-opt"><input type="radio" name="b1" value="B"> Un test / une instruction conditionnelle (souvent liée à un capteur)</label>
-          <label class="radio-opt"><input type="radio" name="b1" value="C"> La fin définitive du programme</label>
+          <p>1. Dans le formalisme d'un arbre de décision, quelle forme correspond à un Nœud (Test) et quelle forme correspond à une Feuille (Action) ?</p>
+          <label class="radio-opt"><input type="radio" name="b1" value="A"> Un rectangle pour un test et un losange pour une action</label>
+          <label class="radio-opt"><input type="radio" name="b1" value="B"> Un losange pour un test (capteur/condition) et un rectangle pour une action</label>
+          <label class="radio-opt"><input type="radio" name="b1" value="C"> Un cercle pour les deux</label>
         </div>
 
         <div class="q-card">
-          <p>2. Avec la condition « Fenêtre fermée ET Température &gt; 25 °C », la climatisation démarre si :</p>
-          <label class="radio-opt"><input type="radio" name="b2" value="A"> Au moins une des deux conditions est vraie</label>
-          <label class="radio-opt"><input type="radio" name="b2" value="B"> Les deux conditions sont vraies en même temps</label>
-          <label class="radio-opt"><input type="radio" name="b2" value="C"> Aucune des deux conditions n'est vraie</label>
+          <p>2. À quoi sert un protocole de vérification après avoir conçu un algorithme ?</p>
+          <label class="radio-opt"><input type="radio" name="b2" value="A"> À tester différents scénarios pour vérifier que le comportement réel est conforme au cahier des charges et corriger les erreurs</label>
+          <label class="radio-opt"><input type="radio" name="b2" value="B"> À rendre l'algorithme plus long</label>
+          <label class="radio-opt"><input type="radio" name="b2" value="C"> Il ne sert à rien si on a déjà dessiné le schéma</label>
         </div>
 
-        <div class="q-card">
-          <p>3. Pourquoi la boucle « Répéter jusqu'à [Fin de rangée] » est-elle plus intelligente que « Répéter 4 fois » ?</p>
-          <label class="radio-opt"><input type="radio" name="b3" value="A"> Elle s'adapte automatiquement à la longueur de la rangée grâce au capteur</label>
-          <label class="radio-opt"><input type="radio" name="b3" value="B"> Elle permet au robot de rouler deux fois plus vite</label>
-          <label class="radio-opt"><input type="radio" name="b3" value="C"> Elle supprime le besoin de capteurs sur le robot</label>
-        </div>
-
-        <div class="q-card">
-          <p>4. Dans un objet connecté (thermostat, climatiseur, alarme), à quoi sert la boucle « Répéter indéfiniment » ?</p>
-          <label class="radio-opt"><input type="radio" name="b4" value="A"> À provoquer un bug volontaire</label>
-          <label class="radio-opt"><input type="radio" name="b4" value="B"> À n'exécuter le programme qu'une seule fois</label>
-          <label class="radio-opt"><input type="radio" name="b4" value="C"> À surveiller en permanence les capteurs tant que l'objet est allumé</label>
+        <div class="q-card" style="grid-column: 1 / -1;">
+          <p>3. Pourquoi la boucle « Répéter jusqu'à [Fin de rangée] » est-elle plus intelligente que « Répéter 4 fois » sur le robot semeur ?</p>
+          <label class="radio-opt"><input type="radio" name="b3" value="A"> Elle permet au robot de s'adapter automatiquement à n'importe quelle longueur de rangée grâce à son capteur</label>
+          <label class="radio-opt"><input type="radio" name="b3" value="B"> Elle permet au robot d'avancer deux fois plus vite</label>
+          <label class="radio-opt"><input type="radio" name="b3" value="C"> Elle supprime la nécessité d'éteindre le gyrophare à la fin</label>
         </div>
       </div>
 
       <div class="step-footer">
-        <button type="button" class="btn btn-outline" onclick="goTab('tab2')">⬅️ Retour Activité 2</button>
+        <button type="button" class="btn btn-outline" onclick="goTab('tab3')">⬅️ Retour Étape 3</button>
         <button type="button" class="btn btn-success" id="btnFinish" onclick="submitAndGrade()">✅ Corriger et envoyer ma note au professeur</button>
       </div>
     </div>
   </section>
 
-  <!-- ==================== CORRECTION & ENVOI ==================== -->
-  <section id="tab4" class="section-panel">
+  <!-- ==================== ÉTAPE 5 : CORRECTION & ENVOI ==================== -->
+  <section id="tab5" class="section-panel">
     <div class="card">
       <div class="card-title">
-        <span>📊 Étape 4 : Correction détaillée & Transmission de ta note</span>
+        <span>📊 Étape 5 : Correction détaillée & Transmission de ta note</span>
         <span class="coef-pill">Note finale sur 10</span>
       </div>
 
-      <div id="notSubmittedMsg" style="text-align:center; padding:30px 10px;">
-        <p style="font-size:1rem; color:var(--muted); margin-bottom:16px;">
-          Tu n'as pas encore validé ton travail. Vérifie que tu as bien complété les 3 étapes et saisi ton <strong>Nom, Prénom et Classe</strong> en haut de la page.
+      <div id="notSubmittedMsg" style="text-align:center; padding:28px 10px;">
+        <p style="font-size:0.98rem; color:var(--muted); margin-bottom:16px;">
+          Tu n'as pas encore validé ta copie. Vérifie que tu as bien renseigné ton <strong>Nom, Prénom et Classe</strong> en haut de la page et terminé les 4 étapes (protocoles de vérification inclus).
         </p>
         <button type="button" class="btn btn-success" onclick="submitAndGrade()">✅ Valider, voir ma correction et envoyer ma note</button>
       </div>
@@ -1152,34 +1181,40 @@
             <span class="sub">/ 10 pts</span>
           </div>
           <div>
-            <h2 style="margin:0 0 4px; font-size:1.2rem;" id="studentSummary"></h2>
-            <div id="pixLevel" style="font-size:0.9rem; color:#93c5fd; font-weight:700;"></div>
+            <h2 style="margin:0 0 4px; font-size:1.18rem;" id="studentSummary"></h2>
+            <div id="pixLevel" style="font-size:0.88rem; color:#93c5fd; font-weight:700;"></div>
             <div class="subscores">
-              <span class="subscore-pill">❄️ Activité 1 : <span id="resA1">0</span> / 4</span>
-              <span class="subscore-pill">🤖 Activité 2 : <span id="resA2">0</span> / 4</span>
-              <span class="subscore-pill">📝 Mini-Bilan : <span id="resBilan">0</span> / 2</span>
+              <span class="subscore-pill">❄️ Étape 1 (Guidé) : <span id="resA1">0</span> / 2,5</span>
+              <span class="subscore-pill">🚧 Étape 2 (Conception) : <span id="resA2">0</span> / 3</span>
+              <span class="subscore-pill">🤖 Étape 3 (Boucle) : <span id="resA3">0</span> / 3</span>
+              <span class="subscore-pill">📝 Mini-Bilan : <span id="resBilan">0</span> / 1,5</span>
             </div>
           </div>
         </div>
 
         <div class="fb-block">
-          <h4><span>❄️ Diagnostic Activité 1 — Arbre de décision (Climatiseur)</span><span id="fbA1Score"></span></h4>
+          <h4><span>❄️ Diagnostic Étape 1 — Arbre guidé (Climatiseur)</span><span id="fbA1Score"></span></h4>
           <div id="fbA1List"></div>
         </div>
 
         <div class="fb-block">
-          <h4><span>🤖 Diagnostic Activité 2 — Boucle intelligente (Robot Semeur)</span><span id="fbA2Score"></span></h4>
+          <h4><span>🚧 Diagnostic Étape 2 — Arbre conçu (Barrière de parking)</span><span id="fbA2Score"></span></h4>
           <div id="fbA2List"></div>
         </div>
 
         <div class="fb-block">
-          <h4><span>📝 Diagnostic Étape 3 — Mini-Bilan</span><span id="fbBilanScore"></span></h4>
+          <h4><span>🤖 Diagnostic Étape 3 — Boucle intelligente (Robot Semeur)</span><span id="fbA3Score"></span></h4>
+          <div id="fbA3List"></div>
+        </div>
+
+        <div class="fb-block">
+          <h4><span>📝 Diagnostic Étape 4 — Mini-Bilan</span><span id="fbBilanScore"></span></h4>
           <div id="fbBilanList"></div>
         </div>
 
         <div class="step-footer">
           <button type="button" class="btn btn-outline btn-sm" id="btnRetrySend" style="display:none;" onclick="sendToGoogleSheet(lastPayload)">🔄 Réessayer l'envoi au professeur</button>
-          <button type="button" class="btn btn-outline btn-sm" onclick="window.print()">🖨️ Imprimer / Enregistrer ma correction en PDF</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="window.print()">🖨️ Imprimer / Enregistrer en PDF</button>
         </div>
       </div>
     </div>
@@ -1189,62 +1224,82 @@
 
 <script>
 /* ============================================================================
-   CONFIGURATION PROFESSEUR (À PERSONNALISER EN 10 SECONDES)
+   CONFIGURATION PROFESSEUR (À PERSONNALISER)
    ============================================================================ */
 const CONFIG = {
   // Collez ici l'URL Web App obtenue après déploiement de votre Google Apps Script (Code.gs)
-  GOOGLE_SHEET_URL: "https://script.google.com/macros/s/AKfycbzVVAsvfEOhjm0T_ST2KB-7Z5t4luH15-AITwOghv5RTqLSZp-7W0iRqbqH1zOhZ-RS/exec",
-  ACTIVITY_NAME: "4e_Ch12_Algorithmes_Boucles",
-  STORAGE_KEY: "techno4e_ch12_v1"
+  GOOGLE_SHEET_URL: "https://script.google.com/macros/s/AKfycbzL-W9pGDA9yHaauQCpJd8RYQ5tU-Wc-8ZwFl3d7nq-MdOVRpERV3odW79egewpXz8A/exec",
+  ACTIVITY_NAME: "4e_Ch12_Arbres_et_Boucles_v2",
+  STORAGE_KEY: "techno4e_ch12_v2"
 };
 
 /* ============================================================================
-   DONNÉES & ÉTAT DE L'APPLICATION
+   ÉTAT GLOBAL
    ============================================================================ */
-const BLOCK_META = {
-  GYRO_ON:  { label: "🚨 Allumer gyrophare",   cls: "c-sys"  },
-  MOVE:     { label: "➡️ Avancer d'1 bac",     cls: "c-move" },
-  DIG:      { label: "⛏️ Creuser un trou",     cls: "c-act"  },
-  SEED:     { label: "🌱 Déposer graine",      cls: "c-act"  },
-  WATER:    { label: "💧 Arroser le trou",     cls: "c-act"  },
-  GYRO_OFF: { label: "🔕 Éteindre gyrophare",  cls: "c-end"  },
-  RETURN:   { label: "🏠 Rentrer à la base",   cls: "c-end"  }
-};
-
 const state = {
+  locked: false,
+  // Protocole Activité 1 (Climatiseur)
+  a1Errors: 0,
+  a1LastFailedSig: "",
+  a1ProtoStatus: { p1: "todo", p2: "todo", p3: "todo", p4: "todo" },
+
+  // Activité 2 (Conception libre — Barrière de parking)
+  a2Tree: { id: "n0", kind: "EMPTY", value: "", oui: null, non: null },
+  a2SelectedId: "n0",
+  a2NextUid: 1,
+  a2Errors: 0,
+  a2LastFailedSig: "",
+  a2ProtoStatus: { p1: "todo", p2: "todo", p3: "todo", p4: "todo" },
+  a2Highlight: { nodes: [], edges: [], status: "idle" },
+
+  // Activité 3 (Robot Semeur)
   activeZone: "before",
   zones: { before: [], loop: [], after: [] },
-  locked: false,
+  a3Proto: { p4: "todo", p6: "todo" },
   simTimer: null
 };
 
 let lastPayload = null;
 
 /* ============================================================================
-   NAVIGATION PAR ONGLETS
+   NAVIGATION
    ============================================================================ */
 function goTab(tabId) {
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tabId));
   document.querySelectorAll(".section-panel").forEach(p => p.classList.toggle("active", p.id === tabId));
   window.scrollTo({ top: 0, behavior: "smooth" });
-  if (tabId === "tab2") drawField(4, 0, [], false, null);
+  if (tabId === "tab2") renderAct2SVG();
+  if (tabId === "tab3") drawField(4, 0, [], false, false);
 }
-
-document.querySelectorAll(".tab-btn").forEach(btn => {
-  btn.addEventListener("click", () => goTab(btn.dataset.tab));
-});
+document.querySelectorAll(".tab-btn").forEach(btn => btn.addEventListener("click", () => goTab(btn.dataset.tab)));
 
 /* ============================================================================
-   ACTIVITÉ 1 : MOTEUR D'ÉVALUATION DE L'ARBRE DU CLIMATISEUR
+   ÉTAPE 1 : ARBRE GUIDÉ (CLIMATISEUR RÉVERSIBLE) + PROTOCOLE STRICT
    ============================================================================ */
-function evalCondition(condKey, temp, windowOpen) {
-  if (condKey === "FENETRE") return windowOpen === true;
+const A1_LABELS = { VEILLE: "Arrêt / Veille", FROID: "Mode Froid (Clim)", CHAUD: "Mode Chaud (Chauffage)", "": "(Vide)" };
+
+const A1_PROTOCOL = [
+  { id: "p1", label: "Test 1 (Priorité)", reqText: "T > 25 °C & Ouverte", match: (t, w) => t > 25 && w === true,  expected: "VEILLE", rule: "Fenêtre ouverte = Arrêt / Veille obligatoire même s'il fait chaud." },
+  { id: "p2", label: "Test 2 (Chaleur)",  reqText: "T > 25 °C & Fermée",  match: (t, w) => t > 25 && w === false, expected: "FROID",  rule: "Fenêtre fermée et T > 25 °C → Mode Froid." },
+  { id: "p3", label: "Test 3 (Froid)",    reqText: "T < 19 °C & Fermée",  match: (t, w) => t < 19 && w === false, expected: "CHAUD",  rule: "Fenêtre fermée et T < 19 °C → Mode Chaud." },
+  { id: "p4", label: "Test 4 (Confort)",  reqText: "19–25 °C & Fermée",   match: (t, w) => t >= 19 && t <= 25 && w === false, expected: "VEILLE", rule: "Entre 19 °C et 25 °C inclus → Arrêt / Veille." }
+];
+
+function expectedACAction(temp, winOpen) {
+  if (winOpen) return "VEILLE";
+  if (temp > 25) return "FROID";
+  if (temp < 19) return "CHAUD";
+  return "VEILLE";
+}
+
+function evalACCond(condKey, temp, winOpen) {
+  if (condKey === "FENETRE") return winOpen === true;
   if (condKey === "T_GT_25") return temp > 25;
   if (condKey === "T_LT_19") return temp < 19;
   return null;
 }
 
-function getTreeValues() {
+function getA1Values() {
   return {
     t1: document.getElementById("t1").value,
     a1: document.getElementById("a1").value,
@@ -1256,122 +1311,716 @@ function getTreeValues() {
   };
 }
 
-function runDecisionTree(tree, temp, windowOpen) {
-  const path = ["node-t1"];
-  const r1 = evalCondition(tree.t1, temp, windowOpen);
-  if (r1 === null) return { action: "", path, error: "Le 1er test n'est pas choisi." };
+function runA1Tree(tree, temp, winOpen) {
+  const shapes = ["shp1-t1"];
+  const segs = ["seg1-start"];
+
+  const r1 = evalACCond(tree.t1, temp, winOpen);
+  if (r1 === null) return { action: "", shapes, segs, incomplete: "Le Losange 1 (Test 1) est vide." };
   if (r1) {
-    path.push("node-a1");
-    return { action: tree.a1, path };
+    segs.push("seg1-t1-oui");
+    shapes.push("shp1-a1");
+    if (!tree.a1) return { action: "", shapes, segs, incomplete: "Le Rectangle relié à OUI du Test 1 est vide." };
+    return { action: tree.a1, shapes, segs };
   }
-  path.push("node-t2");
-  const r2 = evalCondition(tree.t2, temp, windowOpen);
-  if (r2 === null) return { action: "", path, error: "Le 2e test n'est pas choisi." };
+  segs.push("seg1-t1-non");
+  shapes.push("shp1-t2");
+  const r2 = evalACCond(tree.t2, temp, winOpen);
+  if (r2 === null) return { action: "", shapes, segs, incomplete: "Le Losange 2 (Test 2) est vide." };
   if (r2) {
-    path.push("node-a2");
-    return { action: tree.a2, path };
+    segs.push("seg1-t2-oui");
+    shapes.push("shp1-a2");
+    if (!tree.a2) return { action: "", shapes, segs, incomplete: "Le Rectangle relié à OUI du Test 2 est vide." };
+    return { action: tree.a2, shapes, segs };
   }
-  path.push("node-t3");
-  const r3 = evalCondition(tree.t3, temp, windowOpen);
-  if (r3 === null) return { action: "", path, error: "Le 3e test n'est pas choisi." };
+  segs.push("seg1-t2-non");
+  shapes.push("shp1-t3");
+  const r3 = evalACCond(tree.t3, temp, winOpen);
+  if (r3 === null) return { action: "", shapes, segs, incomplete: "Le Losange 3 (Test 3) est vide." };
   if (r3) {
-    path.push("node-a3");
-    return { action: tree.a3, path };
+    segs.push("seg1-t3-oui");
+    shapes.push("shp1-a3");
+    if (!tree.a3) return { action: "", shapes, segs, incomplete: "Le Rectangle relié à OUI du Test 3 est vide." };
+    return { action: tree.a3, shapes, segs };
   }
-  path.push("node-a4");
-  return { action: tree.a4, path };
+  segs.push("seg1-t3-non");
+  shapes.push("shp1-a4");
+  if (!tree.a4) return { action: "", shapes, segs, incomplete: "Le Rectangle relié à NON du Test 3 est vide." };
+  return { action: tree.a4, shapes, segs };
+}
+
+function resetA1SVGColors() {
+  ["shp1-t1", "shp1-t2", "shp1-t3"].forEach(id => {
+    const el = document.getElementById(id);
+    el.setAttribute("fill", "#eff6ff");
+    el.setAttribute("stroke", "#1d4ed8");
+    el.setAttribute("stroke-width", "2.5");
+  });
+  ["shp1-a1", "shp1-a2", "shp1-a3", "shp1-a4"].forEach(id => {
+    const el = document.getElementById(id);
+    el.setAttribute("fill", "#f0fdfa");
+    el.setAttribute("stroke", "#0f766e");
+    el.setAttribute("stroke-width", "2.5");
+  });
+  ["seg1-start", "seg1-t1-oui", "seg1-t1-non", "seg1-t2-oui", "seg1-t2-non", "seg1-t3-oui", "seg1-t3-non"].forEach(id => {
+    const el = document.getElementById(id);
+    el.setAttribute("stroke", "#475569");
+    el.setAttribute("stroke-width", "2.5");
+    el.setAttribute("marker-end", "url(#arr-def)");
+  });
+}
+
+function highlightA1Path(res, isOk) {
+  resetA1SVGColors();
+  const color = isOk ? "#16a34a" : "#dc2626";
+  const fill  = isOk ? "#dcfce7" : "#fee2e2";
+  const mark  = isOk ? "url(#arr-ok)" : "url(#arr-ko)";
+  res.segs.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.setAttribute("stroke", color); el.setAttribute("stroke-width", "4.5"); el.setAttribute("marker-end", mark); }
+  });
+  res.shapes.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.setAttribute("stroke", color); el.setAttribute("stroke-width", "4"); el.setAttribute("fill", fill); }
+  });
+}
+
+function renderA1ProtoTable() {
+  const tbody = document.getElementById("a1ProtoBody");
+  const statusMap = {
+    todo: `<span class="proto-status ps-todo">⬜ À tester</span>`,
+    ok:   `<span class="proto-status ps-ok">✅ Conforme</span>`,
+    ko:   `<span class="proto-status ps-ko">❌ Erreur !</span>`,
+    redo: `<span class="proto-status ps-redo">🔄 À re-tester</span>`
+  };
+  tbody.innerHTML = A1_PROTOCOL.map(p => `
+    <tr>
+      <td><strong>${p.label}</strong></td>
+      <td>${p.reqText}</td>
+      <td>${A1_LABELS[p.expected]}</td>
+      <td>${statusMap[state.a1ProtoStatus[p.id]]}</td>
+    </tr>
+  `).join("");
+
+  const pill = document.getElementById("a1PenaltyPill");
+  const pen = (state.a1Errors * 0.5).toString().replace(".", ",");
+  pill.textContent = `Erreurs : ${state.a1Errors} (-${pen} pt)`;
+  pill.classList.toggle("has-err", state.a1Errors > 0);
 }
 
 document.getElementById("simTemp").addEventListener("input", e => {
   document.getElementById("simTempVal").textContent = e.target.value + " °C";
 });
 
+document.querySelectorAll(".a1-input").forEach(el => {
+  el.addEventListener("change", () => {
+    // Toute modification de l'arbre demande de re-vérifier les tests déjà validés
+    Object.keys(state.a1ProtoStatus).forEach(k => {
+      if (state.a1ProtoStatus[k] === "ok" || state.a1ProtoStatus[k] === "ko") state.a1ProtoStatus[k] = "redo";
+    });
+    state.a1LastFailedSig = "";
+    resetA1SVGColors();
+    renderA1ProtoTable();
+    saveDraft();
+  });
+});
+
 document.getElementById("btnTestAC").addEventListener("click", () => {
   const temp = Number(document.getElementById("simTemp").value);
   const winOpen = document.getElementById("simWin").value === "true";
-  const tree = getTreeValues();
-  const res = runDecisionTree(tree, temp, winOpen);
+  const tree = getA1Values();
+  const res = runA1Tree(tree, temp, winOpen);
+  const expected = expectedACAction(temp, winOpen);
 
-  document.querySelectorAll(".node-card").forEach(el => el.classList.remove("highlight"));
-  res.path.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.add("highlight");
-  });
+  const card = document.getElementById("a1Verdict");
+  const badge = document.getElementById("a1VBadge");
+  const gotEl = document.getElementById("a1VGot");
+  const expEl = document.getElementById("a1VExp");
+  const expTxt = document.getElementById("a1VExplain");
 
-  const unit = document.getElementById("acUnit");
-  const icon = document.getElementById("acIcon");
-  const status = document.getElementById("acStatus");
-  const detail = document.getElementById("acDetail");
-  unit.className = "ac-unit";
-
-  if (!res.action) {
-    icon.textContent = "⚠️";
-    status.textContent = "Arbre incomplet !";
-    detail.textContent = res.error || "Une case Action sur ce chemin est encore vide.";
+  if (res.incomplete) {
+    highlightA1Path(res, false);
+    card.className = "verdict-card v-warn";
+    badge.textContent = "⚠️ Arbre incomplet";
+    gotEl.innerHTML = `Action de TON arbre : <strong>Aucune (bloqué)</strong>`;
+    expEl.innerHTML = `Action attendue (${temp} °C, fenêtre ${winOpen ? "ouverte" : "fermée"}) : <strong>${A1_LABELS[expected]}</strong>`;
+    expTxt.textContent = res.incomplete + " Complète tous les blocs de ton arbre puis relance le test.";
     return;
   }
 
-  const contextStr = `Entrées : ${temp} °C • Fenêtre ${winOpen ? "OUVERTE" : "FERMÉE"}`;
-  if (res.action === "FROID") {
-    unit.classList.add("cold");
-    icon.textContent = "❄️";
-    status.textContent = "MODE FROID (Climatisation)";
-    detail.textContent = contextStr;
-  } else if (res.action === "CHAUD") {
-    unit.classList.add("heat");
-    icon.textContent = "🔥";
-    status.textContent = "MODE CHAUD (Chauffage)";
-    detail.textContent = contextStr;
+  const isOk = (res.action === expected);
+  highlightA1Path(res, isOk);
+  gotEl.innerHTML = `Action de TON arbre : <strong>${A1_LABELS[res.action]}</strong>`;
+  expEl.innerHTML = `Action attendue (${temp} °C, fenêtre ${winOpen ? "ouverte" : "fermée"}) : <strong>${A1_LABELS[expected]}</strong>`;
+
+  const matchedProto = A1_PROTOCOL.find(p => p.match(temp, winOpen));
+
+  if (isOk) {
+    card.className = "verdict-card v-ok";
+    badge.textContent = "✅ CONFORME à la consigne";
+    expTxt.textContent = matchedProto
+      ? `Bravo ! ${matchedProto.label} validé. Passe au test suivant du protocole.`
+      : `Résultat conforme pour ${temp} °C (fenêtre ${winOpen ? "ouverte" : "fermée"}).`;
+    if (matchedProto) state.a1ProtoStatus[matchedProto.id] = "ok";
   } else {
-    unit.classList.add("idle");
-    icon.textContent = "🌿";
-    status.textContent = "ARRÊT / VEILLE (Éco)";
-    detail.textContent = contextStr;
+    card.className = "verdict-card v-ko";
+    const sig = JSON.stringify(tree) + "|" + (matchedProto ? matchedProto.id : `${temp}_${winOpen}`);
+    let penaltyNote = "";
+    if (!state.locked && state.a1LastFailedSig !== sig) {
+      state.a1Errors += 1;
+      state.a1LastFailedSig = sig;
+      penaltyNote = " (-0,5 pt)";
+    } else if (!state.locked) {
+      penaltyNote = " (modifie d'abord ton arbre avant de retester)";
+    }
+    badge.textContent = `❌ NON CONFORME${penaltyNote}`;
+    expTxt.textContent = `Ton arbre a suivi le chemin rouge et déclenche « ${A1_LABELS[res.action]} » au lieu de « ${A1_LABELS[expected]} ». Trouve où est l'erreur dans ton arbre, corrige-la et re-teste !`;
+    if (matchedProto) state.a1ProtoStatus[matchedProto.id] = "ko";
   }
+
+  renderA1ProtoTable();
+  saveDraft();
 });
 
 function gradeActivity1() {
-  const tree = getTreeValues();
-  const scenarios = [
-    { name: "Été fenêtre ouverte (31 °C, Ouverte)",   temp: 31, win: true,  expected: "VEILLE", pts: 0.75, rule: "Priorité éco-conception : la fenêtre est ouverte, l'appareil doit s'arrêter même à 31 °C." },
-    { name: "Hiver fenêtre ouverte (14 °C, Ouverte)", temp: 14, win: true,  expected: "VEILLE", pts: 0.75, rule: "Priorité éco-conception : la fenêtre est ouverte, on ne chauffe pas dehors !" },
-    { name: "Canicule fenêtre fermée (29 °C, Fermée)",temp: 29, win: false, expected: "FROID",  pts: 0.75, rule: "Température > 25 °C et fenêtre fermée → Mode Froid." },
-    { name: "Hiver fenêtre fermée (16 °C, Fermée)",   temp: 16, win: false, expected: "CHAUD",  pts: 0.75, rule: "Température < 19 °C et fenêtre fermée → Mode Chaud." },
-    { name: "Confort fenêtre fermée (22 °C, Fermée)", temp: 22, win: false, expected: "VEILLE", pts: 0.50, rule: "Entre 19 °C et 25 °C → Arrêt / Veille." },
-    { name: "Seuil limite (25 °C, Fermée)",           temp: 25, win: false, expected: "VEILLE", pts: 0.50, rule: "25 °C n'est pas strictement supérieur à 25 °C → Arrêt / Veille." }
+  const tree = getA1Values();
+  const feedback = [];
+  const allScenarios = [
+    { name: "Été fenêtre ouverte (30 °C, Ouverte)",   temp: 30, win: true,  expected: "VEILLE" },
+    { name: "Hiver fenêtre ouverte (14 °C, Ouverte)", temp: 14, win: true,  expected: "VEILLE" },
+    { name: "Canicule fenêtre fermée (29 °C, Fermée)",temp: 29, win: false, expected: "FROID"  },
+    { name: "Hiver fenêtre fermée (15 °C, Fermée)",   temp: 15, win: false, expected: "CHAUD"  },
+    { name: "Confort fenêtre fermée (22 °C, Fermée)", temp: 22, win: false, expected: "VEILLE" }
   ];
 
-  const labels = { VEILLE: "Arrêt / Veille", FROID: "Mode Froid", CHAUD: "Mode Chaud", "": "(Vide)" };
-  let score = 0;
-  const feedback = [];
-
-  scenarios.forEach(sc => {
-    const out = runDecisionTree(tree, sc.temp, sc.win);
-    if (out.action === sc.expected) {
-      score += sc.pts;
-      feedback.push({ type: "ok", text: `✅ ${sc.name} → Ton arbre choisit bien « ${labels[out.action]} » (+${sc.pts} pt).` });
+  let passed = 0;
+  allScenarios.forEach(sc => {
+    const out = runA1Tree(tree, sc.temp, sc.win);
+    if (!out.incomplete && out.action === sc.expected) {
+      passed++;
+      feedback.push({ type: "ok", text: `✅ ${sc.name} → « ${A1_LABELS[out.action]} » (Conforme).` });
     } else {
-      feedback.push({ type: "ko", text: `❌ ${sc.name} → Ton arbre donne « ${labels[out.action]} » au lieu de « ${labels[sc.expected]} ». (${sc.rule})` });
+      feedback.push({ type: "ko", text: `❌ ${sc.name} → Ton arbre donne « ${A1_LABELS[out.action]} » au lieu de « ${A1_LABELS[sc.expected]} ».` });
     }
   });
 
-  // Vérifier si l'élève a mis 2 fois le même test
-  const tests = [tree.t1, tree.t2, tree.t3].filter(Boolean);
-  if (new Set(tests).size < 3 && score < 4) {
-    feedback.push({ type: "mid", text: "💡 Conseil : utilise les 3 tests différents (Fenêtre ouverte en 1er, puis T > 25 °C et T < 19 °C dans l'ordre de ton choix)." });
+  // Base sur 2.5 pts : 2.0 pts pour exactitude finale + 0.5 pt pour avoir exécuté les 4 tests du protocole
+  const protoDone = Object.values(state.a1ProtoStatus).filter(s => s === "ok").length;
+  let rawScore = (passed / allScenarios.length) * 2.0 + (protoDone === 4 ? 0.5 : (protoDone >= 2 ? 0.25 : 0));
+
+  if (protoDone === 4) {
+    feedback.push({ type: "ok", text: `✅ Protocole de vérification complet (4/4 tests manipulés et validés sur le banc d'essai).` });
+  } else {
+    feedback.push({ type: "mid", text: `⚠️ Protocole de vérification incomplet (${protoDone}/4 tests validés sur le banc d'essai).` });
   }
 
-  return { score: Math.round(score * 100) / 100, feedback };
+  // Pénalité explicite de -0,5 pt par erreur détectée lors de la mise au point
+  const penalty = state.a1Errors * 0.5;
+  if (state.a1Errors > 0) {
+    feedback.push({ type: "mid", text: `📉 Pénalité protocole : ${state.a1Errors} erreur(s) détectée(s) lors des tests (-${penalty} pt).` });
+  }
+
+  // Arrondi au 0,25 près, plancher à 0
+  let finalScore = Math.max(0, Math.round((rawScore - penalty) * 4) / 4);
+  // Si l'élève a fini par corriger parfaitement (5/5) + validé le protocole malgré beaucoup d'essais, on garde le calcul strict -0,5/erreur (min 0)
+  return { score: finalScore, feedback, protoDone };
 }
 
 /* ============================================================================
-   ACTIVITÉ 2 : ÉDITEUR DE BLOCS & SIMULATEUR ROBOT SEMEUR
+   ÉTAPE 2 : CONCEVOIR UN ARBRE DE DÉCISION (BARRIÈRE DE PARKING) EN SVG
    ============================================================================ */
+const A2_TESTS = {
+  CAR:   "Voiture présente ?",
+  BADGE: "Badge valide ?",
+  SPOTS: "Places libres > 0 ?"
+};
+const A2_ACTIONS = {
+  CLOSED: "Laisser fermée",
+  OPEN:   "Ouvrir la barrière",
+  DENIED: "Afficher « Accès refusé »",
+  FULL:   "Afficher « Complet »"
+};
+
+const A2_PROTOCOL = [
+  { id: "p1", label: "Test 1 (Vide)",      reqText: "Voit=Non, Badg=Non, Pl=>0", match: (c,b,s) => !c,               expected: "CLOSED" },
+  { id: "p2", label: "Test 2 (Intrus)",    reqText: "Voit=Oui, Badg=Non, Pl=>0", match: (c,b,s) => c && !b,          expected: "DENIED" },
+  { id: "p3", label: "Test 3 (Autorisé)",  reqText: "Voit=Oui, Badg=Oui, Pl=>0", match: (c,b,s) => c && b && s,      expected: "OPEN"   },
+  { id: "p4", label: "Test 4 (Complet)",   reqText: "Voit=Oui, Badg=Oui, Pl=0",  match: (c,b,s) => c && b && !s,     expected: "FULL"   }
+];
+
+function expectedParkingAction(car, badge, spots) {
+  if (!car) return "CLOSED";
+  if (!badge) return "DENIED";
+  if (spots) return "OPEN";
+  return "FULL";
+}
+
+function findA2Node(node, id, depth = 0) {
+  if (!node) return null;
+  if (node.id === id) return { node, depth };
+  if (node.kind === "TEST") {
+    return findA2Node(node.oui, id, depth + 1) || findA2Node(node.non, id, depth + 1);
+  }
+  return null;
+}
+
+function countLeaves(node) {
+  if (!node || node.kind !== "TEST") return 1;
+  return countLeaves(node.oui) + countLeaves(node.non);
+}
+
+function layoutA2Tree(node, xMin, xMax, depth) {
+  const cx = (xMin + xMax) / 2;
+  const cy = 110 + depth * 124;
+  node._x = cx;
+  node._y = cy;
+  node._depth = depth;
+  if (node.kind === "TEST") {
+    const lO = countLeaves(node.oui);
+    const lN = countLeaves(node.non);
+    const splitX = xMin + (xMax - xMin) * (lO / (lO + lN));
+    layoutA2Tree(node.oui, xMin, splitX, depth + 1);
+    layoutA2Tree(node.non, splitX, xMax, depth + 1);
+  }
+}
+
+function renderAct2SVG() {
+  const svg = document.getElementById("svgAct2");
+  layoutA2Tree(state.a2Tree, 20, 900, 0);
+
+  let html = `
+    <defs>
+      <marker id="a2-def" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569"/>
+      </marker>
+      <marker id="a2-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#16a34a"/>
+      </marker>
+      <marker id="a2-ko" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626"/>
+      </marker>
+    </defs>
+  `;
+
+  // Début (Ovale) centré au-dessus de la racine
+  const rx = state.a2Tree._x;
+  const startHi = state.a2Highlight.nodes.includes(state.a2Tree.id);
+  const startCol = startHi ? (state.a2Highlight.status === "ok" ? "#16a34a" : "#dc2626") : "#475569";
+  const startMk  = startHi ? (state.a2Highlight.status === "ok" ? "url(#a2-ok)" : "url(#a2-ko)") : "url(#a2-def)";
+  html += `
+    <rect x="${rx - 65}" y="12" width="130" height="34" rx="17" fill="#e2e8f0" stroke="#334155" stroke-width="2.5"/>
+    <text x="${rx}" y="34" text-anchor="middle" font-size="13" font-weight="800" fill="#0f172a">DÉBUT</text>
+    <path d="M ${rx} 46 L ${rx} ${state.a2Tree._y - 44}" fill="none" stroke="${startCol}" stroke-width="${startHi ? 4 : 2.5}" marker-end="${startMk}"/>
+  `;
+
+  // Passe 1 : Segments + étiquettes OUI/NON
+  function drawEdges(node) {
+    if (!node || node.kind !== "TEST") return;
+    const x1 = node._x, y1 = node._y;
+    const halfW = 92;
+
+    // Branche OUI (gauche)
+    const cO = node.oui;
+    const eKeyO = `${node.id}-oui`;
+    const hiO = state.a2Highlight.edges.includes(eKeyO);
+    const colO = hiO ? (state.a2Highlight.status === "ok" ? "#16a34a" : "#dc2626") : "#475569";
+    const mkO  = hiO ? (state.a2Highlight.status === "ok" ? "url(#a2-ok)" : "url(#a2-ko)") : "url(#a2-def)";
+    const targetTopO = cO.kind === "TEST" ? cO._y - 44 : cO._y - 28;
+    const midYO = (y1 + targetTopO) / 2;
+    html += `<path d="M ${x1 - halfW} ${y1} L ${cO._x} ${y1} L ${cO._x} ${targetTopO}" fill="none" stroke="${colO}" stroke-width="${hiO ? 4 : 2.3}" marker-end="${mkO}"/>`;
+    const tagXO = (x1 - halfW + cO._x) / 2;
+    html += `<rect x="${cO._x - 20}" y="${midYO - 11}" width="40" height="20" rx="10" fill="#16a34a"/>`;
+    html += `<text x="${cO._x}" y="${midYO + 3}" text-anchor="middle" font-size="10.5" font-weight="800" fill="#fff">OUI</text>`;
+
+    // Branche NON (droite)
+    const cN = node.non;
+    const eKeyN = `${node.id}-non`;
+    const hiN = state.a2Highlight.edges.includes(eKeyN);
+    const colN = hiN ? (state.a2Highlight.status === "ok" ? "#16a34a" : "#dc2626") : "#475569";
+    const mkN  = hiN ? (state.a2Highlight.status === "ok" ? "url(#a2-ok)" : "url(#a2-ko)") : "url(#a2-def)";
+    const targetTopN = cN.kind === "TEST" ? cN._y - 44 : cN._y - 28;
+    const midYN = (y1 + targetTopN) / 2;
+    html += `<path d="M ${x1 + halfW} ${y1} L ${cN._x} ${y1} L ${cN._x} ${targetTopN}" fill="none" stroke="${colN}" stroke-width="${hiN ? 4 : 2.3}" marker-end="${mkN}"/>`;
+    html += `<rect x="${cN._x - 20}" y="${midYN - 11}" width="40" height="20" rx="10" fill="#dc2626"/>`;
+    html += `<text x="${cN._x}" y="${midYN + 3}" text-anchor="middle" font-size="10.5" font-weight="800" fill="#fff">NON</text>`;
+
+    drawEdges(cO);
+    drawEdges(cN);
+  }
+  drawEdges(state.a2Tree);
+
+  // Passe 2 : Formes (Losanges, Rectangles, Emplacements vides)
+  function drawNodes(node) {
+    if (!node) return;
+    const x = node._x, y = node._y;
+    const isSel = (node.id === state.a2SelectedId);
+    const isHi  = state.a2Highlight.nodes.includes(node.id);
+    const hiStroke = state.a2Highlight.status === "ok" ? "#16a34a" : "#dc2626";
+    const hiFill   = state.a2Highlight.status === "ok" ? "#dcfce7" : "#fee2e2";
+
+    if (node.kind === "TEST") {
+      const hw = 92, hh = 42;
+      const stroke = isSel ? "#f59e0b" : (isHi ? hiStroke : "#1d4ed8");
+      const fill   = isHi ? hiFill : "#eff6ff";
+      const sw     = (isSel || isHi) ? 4 : 2.5;
+      const lbl    = A2_TESTS[node.value] || "◆ Choisir test ?";
+      html += `
+        <g class="svg-clickable" onclick="selectA2Node('${node.id}')">
+          <polygon points="${x},${y - hh} ${x + hw},${y} ${x},${y + hh} ${x - hw},${y}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+          <text x="${x}" y="${y + 4}" text-anchor="middle" font-size="11.5" font-weight="800" fill="#0f172a">${lbl}</text>
+        </g>
+      `;
+      drawNodes(node.oui);
+      drawNodes(node.non);
+    } else if (node.kind === "ACTION") {
+      const w = 166, h = 50;
+      const stroke = isSel ? "#f59e0b" : (isHi ? hiStroke : "#0f766e");
+      const fill   = isHi ? hiFill : "#f0fdfa";
+      const sw     = (isSel || isHi) ? 4 : 2.5;
+      const lbl    = A2_ACTIONS[node.value] || "▭ Choisir action ?";
+      html += `
+        <g class="svg-clickable" onclick="selectA2Node('${node.id}')">
+          <rect x="${x - w/2}" y="${y - h/2}" width="${w}" height="${h}" rx="0" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+          <text x="${x}" y="${y + 4}" text-anchor="middle" font-size="11.5" font-weight="800" fill="#0f172a">${lbl}</text>
+        </g>
+      `;
+    } else {
+      const w = 148, h = 44;
+      const stroke = isSel ? "#2563eb" : "#94a3b8";
+      const fill   = isSel ? "#dbeafe" : "#f8fafc";
+      html += `
+        <g class="svg-clickable" onclick="selectA2Node('${node.id}')">
+          <rect x="${x - w/2}" y="${y - h/2}" width="${w}" height="${h}" rx="8" fill="${fill}" stroke="${stroke}" stroke-width="${isSel ? 3 : 2}" stroke-dasharray="6,4"/>
+          <text x="${x}" y="${y + 4}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1d4ed8">+ Cliquer ici</text>
+        </g>
+      `;
+    }
+  }
+  drawNodes(state.a2Tree);
+
+  svg.innerHTML = html;
+  renderA2Editor();
+}
+
+function selectA2Node(id) {
+  if (state.locked) return;
+  state.a2SelectedId = id;
+  renderAct2SVG();
+}
+
+function renderA2Editor() {
+  const titleEl = document.getElementById("a2EditorTitle");
+  const bodyEl = document.getElementById("a2EditorBody");
+  const found = findA2Node(state.a2Tree, state.a2SelectedId);
+
+  if (!found || state.locked) {
+    titleEl.textContent = state.locked ? "🔒 Arbre verrouillé après envoi" : "✏️ Clique sur un bloc du schéma pour le modifier";
+    bodyEl.innerHTML = "";
+    return;
+  }
+
+  const { node, depth } = found;
+  const canBeTest = depth < 3; // Max 3 niveaux de tests
+
+  if (node.kind === "EMPTY") {
+    titleEl.textContent = `✏️ Nouvel emplacement (Niveau ${depth + 1}) — Que veux-tu placer ici ?`;
+    bodyEl.innerHTML = `
+      ${canBeTest ? `<button type="button" class="btn btn-primary btn-sm" onclick="setA2NodeKind('TEST')">◆ Placer un Nœud (Losange = Test)</button>` : `<span style="font-size:0.8rem;color:#b45309;font-weight:700;">Profondeur max atteinte : place une Feuille (Action)</span>`}
+      <button type="button" class="btn btn-success btn-sm" onclick="setA2NodeKind('ACTION')">▭ Placer une Feuille (Rectangle = Action)</button>
+    `;
+  } else if (node.kind === "TEST") {
+    titleEl.textContent = `◆ Modification du Nœud de test (Losange) :`;
+    const opts = Object.entries(A2_TESTS).map(([k, v]) => `<option value="${k}" ${node.value === k ? "selected" : ""}>${v}</option>`).join("");
+    bodyEl.innerHTML = `
+      <select onchange="setA2NodeValue(this.value)">
+        <option value="">-- Choisir le capteur à tester --</option>
+        ${opts}
+      </select>
+      <button type="button" class="btn btn-outline btn-sm" onclick="setA2NodeKind('ACTION')">Transformer en ▭ Action</button>
+      <button type="button" class="btn btn-danger btn-sm" onclick="clearA2Node()">✕ Supprimer cette branche</button>
+    `;
+  } else if (node.kind === "ACTION") {
+    titleEl.textContent = `▭ Modification de la Feuille d'action (Rectangle) :`;
+    const opts = Object.entries(A2_ACTIONS).map(([k, v]) => `<option value="${k}" ${node.value === k ? "selected" : ""}>${v}</option>`).join("");
+    bodyEl.innerHTML = `
+      <select onchange="setA2NodeValue(this.value)">
+        <option value="">-- Choisir l'action de la barrière --</option>
+        ${opts}
+      </select>
+      ${canBeTest ? `<button type="button" class="btn btn-outline btn-sm" onclick="setA2NodeKind('TEST')">Transformer en ◆ Test</button>` : ""}
+      <button type="button" class="btn btn-danger btn-sm" onclick="clearA2Node()">✕ Supprimer</button>
+    `;
+  }
+}
+
+function invalidateA2Protocol() {
+  Object.keys(state.a2ProtoStatus).forEach(k => {
+    if (state.a2ProtoStatus[k] === "ok" || state.a2ProtoStatus[k] === "ko") state.a2ProtoStatus[k] = "redo";
+  });
+  state.a2LastFailedSig = "";
+  state.a2Highlight = { nodes: [], edges: [], status: "idle" };
+  renderA2ProtoTable();
+}
+
+function setA2NodeKind(kind) {
+  if (state.locked) return;
+  const found = findA2Node(state.a2Tree, state.a2SelectedId);
+  if (!found) return;
+  const node = found.node;
+  node.kind = kind;
+  node.value = "";
+  if (kind === "TEST") {
+    node.oui = { id: "n" + (state.a2NextUid++), kind: "EMPTY", value: "", oui: null, non: null };
+    node.non = { id: "n" + (state.a2NextUid++), kind: "EMPTY", value: "", oui: null, non: null };
+  } else {
+    node.oui = null;
+    node.non = null;
+  }
+  invalidateA2Protocol();
+  renderAct2SVG();
+  saveDraft();
+}
+
+function setA2NodeValue(val) {
+  if (state.locked) return;
+  const found = findA2Node(state.a2Tree, state.a2SelectedId);
+  if (!found) return;
+  found.node.value = val;
+  invalidateA2Protocol();
+  renderAct2SVG();
+  saveDraft();
+}
+
+function clearA2Node() {
+  if (state.locked) return;
+  const found = findA2Node(state.a2Tree, state.a2SelectedId);
+  if (!found) return;
+  found.node.kind = "EMPTY";
+  found.node.value = "";
+  found.node.oui = null;
+  found.node.non = null;
+  invalidateA2Protocol();
+  renderAct2SVG();
+  saveDraft();
+}
+
+document.getElementById("btnResetTree2").addEventListener("click", () => {
+  if (state.locked) return;
+  state.a2Tree = { id: "n0", kind: "EMPTY", value: "", oui: null, non: null };
+  state.a2SelectedId = "n0";
+  invalidateA2Protocol();
+  renderAct2SVG();
+  saveDraft();
+});
+
+function runA2Tree(car, badge, spots) {
+  const nodes = [];
+  const edges = [];
+  let cur = state.a2Tree;
+  let guard = 0;
+
+  while (cur && guard < 10) {
+    nodes.push(cur.id);
+    if (cur.kind === "EMPTY") {
+      return { action: "", nodes, edges, incomplete: "Un emplacement de ton arbre est encore vide (+ Cliquer ici)." };
+    }
+    if (cur.kind === "ACTION") {
+      if (!cur.value) return { action: "", nodes, edges, incomplete: "Un Rectangle d'action n'a pas encore de valeur choisie." };
+      return { action: cur.value, nodes, edges };
+    }
+    if (cur.kind === "TEST") {
+      if (!cur.value) return { action: "", nodes, edges, incomplete: "Un Losange de test n'a pas encore de capteur choisi." };
+      let condRes = false;
+      if (cur.value === "CAR") condRes = car;
+      else if (cur.value === "BADGE") condRes = badge;
+      else if (cur.value === "SPOTS") condRes = spots;
+      edges.push(`${cur.id}-${condRes ? "oui" : "non"}`);
+      cur = condRes ? cur.oui : cur.non;
+    }
+    guard++;
+  }
+  return { action: "", nodes, edges, incomplete: "Arbre incomplet." };
+}
+
+function renderA2ProtoTable() {
+  const tbody = document.getElementById("a2ProtoBody");
+  const statusMap = {
+    todo: `<span class="proto-status ps-todo">⬜ À tester</span>`,
+    ok:   `<span class="proto-status ps-ok">✅ Conforme</span>`,
+    ko:   `<span class="proto-status ps-ko">❌ Erreur !</span>`,
+    redo: `<span class="proto-status ps-redo">🔄 À re-tester</span>`
+  };
+  tbody.innerHTML = A2_PROTOCOL.map(p => `
+    <tr>
+      <td><strong>${p.label}</strong></td>
+      <td>${p.reqText}</td>
+      <td>${A2_ACTIONS[p.expected]}</td>
+      <td>${statusMap[state.a2ProtoStatus[p.id]]}</td>
+    </tr>
+  `).join("");
+
+  const pill = document.getElementById("a2PenaltyPill");
+  const pen = (state.a2Errors * 0.5).toString().replace(".", ",");
+  pill.textContent = `Erreurs : ${state.a2Errors} (-${pen} pt)`;
+  pill.classList.toggle("has-err", state.a2Errors > 0);
+}
+
+document.getElementById("btnTestParking").addEventListener("click", () => {
+  const car   = document.getElementById("pCar").value === "true";
+  const badge = document.getElementById("pBadge").value === "true";
+  const spots = document.getElementById("pSpots").value === "true";
+  const res = runA2Tree(car, badge, spots);
+  const expected = expectedParkingAction(car, badge, spots);
+
+  const card = document.getElementById("a2Verdict");
+  const vBadge = document.getElementById("a2VBadge");
+  const gotEl = document.getElementById("a2VGot");
+  const expEl = document.getElementById("a2VExp");
+  const expTxt = document.getElementById("a2VExplain");
+
+  if (res.incomplete) {
+    state.a2Highlight = { nodes: res.nodes, edges: res.edges, status: "ko" };
+    renderAct2SVG();
+    card.className = "verdict-card v-warn";
+    vBadge.textContent = "⚠️ Arbre incomplet";
+    gotEl.innerHTML = `Action de TON arbre : <strong>Aucune (bloqué)</strong>`;
+    expEl.innerHTML = `Action attendue : <strong>${A2_ACTIONS[expected]}</strong>`;
+    expTxt.textContent = res.incomplete + " Complète cette branche puis relance le test.";
+    return;
+  }
+
+  const isOk = (res.action === expected);
+  state.a2Highlight = { nodes: res.nodes, edges: res.edges, status: isOk ? "ok" : "ko" };
+  renderAct2SVG();
+
+  gotEl.innerHTML = `Action de TON arbre : <strong>${A2_ACTIONS[res.action]}</strong>`;
+  expEl.innerHTML = `Action attendue : <strong>${A2_ACTIONS[expected]}</strong>`;
+
+  const matchedProto = A2_PROTOCOL.find(p => p.match(car, badge, spots));
+
+  if (isOk) {
+    card.className = "verdict-card v-ok";
+    vBadge.textContent = "✅ CONFORME à la consigne";
+    expTxt.textContent = matchedProto
+      ? `Parfait ! ${matchedProto.label} validé. Passe au test suivant du protocole.`
+      : `Résultat conforme au cahier des charges.`;
+    if (matchedProto) state.a2ProtoStatus[matchedProto.id] = "ok";
+  } else {
+    card.className = "verdict-card v-ko";
+    const sig = JSON.stringify(state.a2Tree) + "|" + `${car}_${badge}_${spots}`;
+    let penaltyNote = "";
+    if (!state.locked && state.a2LastFailedSig !== sig) {
+      state.a2Errors += 1;
+      state.a2LastFailedSig = sig;
+      penaltyNote = " (-0,5 pt)";
+    } else if (!state.locked) {
+      penaltyNote = " (corrige d'abord ton arbre)";
+    }
+    vBadge.textContent = `❌ NON CONFORME${penaltyNote}`;
+    expTxt.textContent = `Ton arbre suit le chemin rouge et renvoie « ${A2_ACTIONS[res.action]} » au lieu de « ${A2_ACTIONS[expected]} ». Clique sur le nœud fautif pour le corriger !`;
+    if (matchedProto) state.a2ProtoStatus[matchedProto.id] = "ko";
+  }
+
+  renderA2ProtoTable();
+  saveDraft();
+});
+
+function gradeActivity2() {
+  const scenarios = [
+    { name: "Aucune voiture (Voit=Non, Badg=Non, Pl=>0)",       c: false, b: false, s: true,  expected: "CLOSED" },
+    { name: "Aucune voiture même badge ok (Voit=Non, Badg=Oui)",c: false, b: true,  s: true,  expected: "CLOSED" },
+    { name: "Badge invalide (Voit=Oui, Badg=Non, Pl=>0)",       c: true,  b: false, s: true,  expected: "DENIED" },
+    { name: "Priorité badge si complet (Voit=Oui, Badg=Non, Pl=0)", c: true, b: false, s: false, expected: "DENIED" },
+    { name: "Accès autorisé (Voit=Oui, Badg=Oui, Pl=>0)",       c: true,  b: true,  s: true,  expected: "OPEN"   },
+    { name: "Parking complet (Voit=Oui, Badg=Oui, Pl=0)",       c: true,  b: true,  s: false, expected: "FULL"   }
+  ];
+
+  let passed = 0;
+  const feedback = [];
+  scenarios.forEach(sc => {
+    const out = runA2Tree(sc.c, sc.b, sc.s);
+    if (!out.incomplete && out.action === sc.expected) {
+      passed++;
+      feedback.push({ type: "ok", text: `✅ ${sc.name} → « ${A2_ACTIONS[out.action]} » (Conforme).` });
+    } else {
+      const gotLbl = out.action ? A2_ACTIONS[out.action] : "(Incomplet / Vide)";
+      feedback.push({ type: "ko", text: `❌ ${sc.name} → Ton arbre donne « ${gotLbl} » au lieu de « ${A2_ACTIONS[sc.expected]} ».` });
+    }
+  });
+
+  const protoDone = Object.values(state.a2ProtoStatus).filter(s => s === "ok").length;
+  const rawScore = (passed / scenarios.length) * 2.5 + (protoDone === 4 ? 0.5 : (protoDone >= 2 ? 0.25 : 0));
+
+  if (protoDone === 4) {
+    feedback.push({ type: "ok", text: `✅ Protocole de vérification complet (4/4 tests manipulés et validés).` });
+  } else {
+    feedback.push({ type: "mid", text: `⚠️ Protocole de vérification incomplet (${protoDone}/4 tests validés sur le banc d'essai).` });
+  }
+
+  const penalty = state.a2Errors * 0.5;
+  if (state.a2Errors > 0) {
+    feedback.push({ type: "mid", text: `📉 Pénalité protocole : ${state.a2Errors} erreur(s) détectée(s) lors des tests (-${penalty} pt).` });
+  }
+
+  const finalScore = Math.max(0, Math.round((rawScore - penalty) * 4) / 4);
+  return { score: finalScore, feedback, protoDone };
+}
+
+/* ============================================================================
+   ÉTAPE 3 : ROBOT SEMEUR (BLOCS MÉLANGÉS + BOUCLE INTELLIGENTE)
+   ============================================================================ */
+const BLOCK_META = {
+  GYRO_ON:  { label: "🚨 Allumer gyrophare",  cls: "c-signal" },
+  MOVE:     { label: "➡️ Avancer d'1 bac",    cls: "c-move"   },
+  DIG:      { label: "⛏️ Creuser un trou",    cls: "c-tool"   },
+  SEED:     { label: "🌱 Déposer graine",     cls: "c-tool"   },
+  WATER:    { label: "💧 Arroser le trou",    cls: "c-tool"   },
+  GYRO_OFF: { label: "🔕 Éteindre gyrophare", cls: "c-signal" },
+  RETURN:   { label: "🏠 Rentrer à la base",  cls: "c-move"   }
+};
+
+// Ordre volontairement mélangé (aucune suite logique consécutive !)
+const SCRAMBLED_KEYS = ["WATER", "RETURN", "DIG", "GYRO_OFF", "SEED", "GYRO_ON", "MOVE"];
+
+function initScrambledPalette() {
+  const pal = document.getElementById("blockPalette");
+  // Mélange léger supplémentaire à chaque chargement tout en garantissant qu'on n'est jamais dans l'ordre solution
+  const keys = [...SCRAMBLED_KEYS];
+  for (let i = keys.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [keys[i], keys[j]] = [keys[j], keys[i]];
+  }
+  // Sécurité : si par hasard MOVE est juste avant DIG, on permute
+  if (keys.indexOf("MOVE") + 1 === keys.indexOf("DIG")) {
+    [keys[0], keys[keys.length - 1]] = [keys[keys.length - 1], keys[0]];
+  }
+  pal.innerHTML = keys.map(k => `
+    <button type="button" class="block-chip ${BLOCK_META[k].cls}" data-block="${k}">${BLOCK_META[k].label}</button>
+  `).join("");
+
+  pal.querySelectorAll(".block-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (state.locked) return;
+      if (state.zones[state.activeZone].length >= 8) return;
+      state.zones[state.activeZone].push(btn.dataset.block);
+      invalidateA3Proto();
+      renderZone(state.activeZone);
+      saveDraft();
+    });
+  });
+}
+
+function invalidateA3Proto() {
+  state.a3Proto = { p4: "todo", p6: "todo" };
+  document.getElementById("rProto4").className = "proto-status ps-todo";
+  document.getElementById("rProto4").textContent = "⬜ À tester";
+  document.getElementById("rProto6").className = "proto-status ps-todo";
+  document.getElementById("rProto6").textContent = "⬜ À tester";
+}
+
 function selectZone(z) {
   state.activeZone = z;
-  document.querySelectorAll(".zone-box").forEach(el => {
-    el.classList.toggle("zone-active", el.dataset.zone === z);
-  });
+  document.querySelectorAll(".zone-box").forEach(el => el.classList.toggle("zone-active", el.dataset.zone === z));
 }
 
 function renderZone(z) {
@@ -1397,10 +2046,7 @@ function renderZone(z) {
     listEl.appendChild(div);
   });
 }
-
-function renderAllZones() {
-  ["before", "loop", "after"].forEach(renderZone);
-}
+function renderAllZones() { ["before", "loop", "after"].forEach(renderZone); }
 
 function moveBlock(z, idx, dir) {
   if (state.locked) return;
@@ -1408,6 +2054,7 @@ function moveBlock(z, idx, dir) {
   const target = idx + dir;
   if (target < 0 || target >= arr.length) return;
   [arr[idx], arr[target]] = [arr[target], arr[idx]];
+  invalidateA3Proto();
   renderZone(z);
   saveDraft();
 }
@@ -1415,152 +2062,88 @@ function moveBlock(z, idx, dir) {
 function removeBlock(z, idx) {
   if (state.locked) return;
   state.zones[z].splice(idx, 1);
+  invalidateA3Proto();
   renderZone(z);
   saveDraft();
 }
 
-document.querySelectorAll("#blockPalette .block-chip").forEach(btn => {
-  btn.addEventListener("click", () => {
-    if (state.locked) return;
-    if (state.zones[state.activeZone].length >= 8) return;
-    state.zones[state.activeZone].push(btn.dataset.block);
-    renderZone(state.activeZone);
-    saveDraft();
-  });
-});
-
 document.getElementById("loopType").addEventListener("change", e => {
   document.getElementById("loopCount").style.display = (e.target.value === "FIXED") ? "inline-block" : "none";
+  invalidateA3Proto();
   saveDraft();
 });
-
-document.getElementById("loopCount").addEventListener("input", saveDraft);
+document.getElementById("loopCount").addEventListener("input", () => { invalidateA3Proto(); saveDraft(); });
 
 document.getElementById("btnClearBlocks").addEventListener("click", () => {
   if (state.locked) return;
   state.zones = { before: [], loop: [], after: [] };
+  invalidateA3Proto();
   renderAllZones();
-  drawField(4, 0, [], false, null);
-  document.getElementById("simLog").textContent = "Programme vidé. Construis ta nouvelle solution.";
+  drawField(4, 0, [], false, false);
+  document.getElementById("simLog").textContent = "Programme vidé.";
   saveDraft();
 });
 
-/* Moteur de simulation déterministe du Robot Semeur */
 function simulateRobot(numPlots) {
   const loopType = document.getElementById("loopType").value;
   const loopCount = Math.max(1, Math.min(10, Number(document.getElementById("loopCount").value) || 1));
+  const plots = Array.from({ length: numPlots }, () => ({ dug: false, seeded: false, watered: false, ruined: false }));
 
-  // État des bacs (indices 1..numPlots)
-  const plots = [];
-  for (let i = 1; i <= numPlots; i++) {
-    plots.push({ dug: false, seeded: false, watered: false, ruined: false });
-  }
-
-  let pos = 0; // 0 = base en béton, 1..numPlots = bacs, >numPlots = mur
-  let gyroOn = false;
-  let gyroWasUsed = false;
-  let returnedHome = false;
-  let crashed = false;
-  let crashMsg = "";
+  let pos = 0, gyroOn = false, gyroWasUsed = false, returnedHome = false, crashed = false, crashMsg = "";
   let warnings = [];
   const frames = [];
 
   function snapshot(msg, isError = false) {
-    frames.push({
-      numPlots,
-      pos,
-      plots: plots.map(p => ({ ...p })),
-      gyroOn,
-      crashed: isError,
-      msg
-    });
+    frames.push({ numPlots, pos, plots: plots.map(p => ({ ...p })), gyroOn, crashed: isError, msg });
   }
 
   function execBlock(bKey, inLoop) {
     if (crashed) return;
     if (bKey === "GYRO_ON") {
-      if (inLoop) warnings.push("Le gyrophare est allumé en boucle : il vaut mieux le placer AVANT la boucle.");
-      gyroOn = true;
-      gyroWasUsed = true;
-      snapshot("🚨 Gyrophare allumé.");
+      if (inLoop) warnings.push("Gyrophare allumé dans la boucle (à placer AVANT).");
+      gyroOn = true; gyroWasUsed = true; snapshot("🚨 Gyrophare allumé.");
     } else if (bKey === "GYRO_OFF") {
-      if (inLoop) warnings.push("Le gyrophare est éteint dans la boucle : il doit être éteint APRÈS la boucle.");
-      gyroOn = false;
-      snapshot("🔕 Gyrophare éteint.");
+      if (inLoop) warnings.push("Gyrophare éteint dans la boucle (à placer APRÈS).");
+      gyroOn = false; snapshot("🔕 Gyrophare éteint.");
     } else if (bKey === "RETURN") {
-      if (inLoop) warnings.push("« Rentrer à la base » est dans la boucle : le robot fait des allers-retours inutiles !");
-      pos = 0;
-      returnedHome = true;
-      snapshot("🏠 Le robot rentre à sa base (case 0).");
+      if (inLoop) warnings.push("« Rentrer à la base » est dans la boucle (allers-retours inutiles).");
+      pos = 0; returnedHome = true; snapshot("🏠 Retour à la base (case 0).");
     } else if (bKey === "MOVE") {
       pos += 1;
       if (pos > numPlots) {
-        crashed = true;
-        crashMsg = `💥 Collision avec la clôture au-delà du bac ${numPlots} !`;
-        snapshot(crashMsg, true);
-      } else {
-        snapshot(`➡️ Avance au bac n°${pos}.`);
-      }
+        crashed = true; crashMsg = `💥 Collision avec la clôture après le bac ${numPlots} !`; snapshot(crashMsg, true);
+      } else { snapshot(`➡️ Avance au bac n°${pos}.`); }
     } else if (bKey === "DIG") {
       if (pos === 0) {
-        crashed = true;
-        crashMsg = "💥 Foreuse cassée ! Tu as creusé sur la base en béton (case 0). Il faut avancer avant de creuser !";
-        snapshot(crashMsg, true);
+        crashed = true; crashMsg = "💥 Foreuse cassée sur le béton (case 0) ! Il faut avancer avant de creuser."; snapshot(crashMsg, true);
       } else {
         const p = plots[pos - 1];
-        if (p.watered) {
-          p.ruined = true;
-          warnings.push(`Bac ${pos} : tu as arrosé avant de creuser (sol boueux).`);
-          snapshot(`⚠️ Bac ${pos} : terre déjà mouillée, trou raté !`);
-        } else {
-          p.dug = true;
-          snapshot(`⛏️ Bac ${pos} : trou creusé.`);
-        }
+        if (p.watered) { p.ruined = true; warnings.push(`Bac ${pos} : arrosé avant de creuser !`); snapshot(`⚠️ Bac ${pos} : terre boueuse.`); }
+        else { p.dug = true; snapshot(`⛏️ Bac ${pos} : trou creusé.`); }
       }
     } else if (bKey === "SEED") {
-      if (pos === 0) {
-        warnings.push("Tu as déposé une graine sur le béton de la base !");
-        snapshot("⚠️ Graine déposée sur le béton (case 0) !");
-      } else {
+      if (pos === 0) { warnings.push("Graine déposée sur le béton !"); snapshot("⚠️ Graine sur le béton."); }
+      else {
         const p = plots[pos - 1];
-        if (!p.dug) {
-          p.ruined = true;
-          warnings.push(`Bac ${pos} : graine déposée sans avoir creusé avant !`);
-          snapshot(`⚠️ Bac ${pos} : graine posée en surface (pas de trou) !`);
-        } else {
-          p.seeded = true;
-          snapshot(`🌱 Bac ${pos} : graine déposée dans le trou.`);
-        }
+        if (!p.dug) { p.ruined = true; warnings.push(`Bac ${pos} : graine posée sans trou !`); snapshot(`⚠️ Bac ${pos} : pas de trou creusé.`); }
+        else { p.seeded = true; snapshot(`🌱 Bac ${pos} : graine déposée.`); }
       }
     } else if (bKey === "WATER") {
-      if (pos === 0) {
-        warnings.push("Tu as arrosé la base électrique en béton !");
-        snapshot("⚠️ Eau sur la base électrique (case 0) !");
-      } else {
+      if (pos === 0) { warnings.push("Base électrique arrosée !"); snapshot("⚠️ Eau sur la base."); }
+      else {
         const p = plots[pos - 1];
-        if (!p.dug || !p.seeded) {
-          p.ruined = true;
-          warnings.push(`Bac ${pos} : arrosage effectué avant d'avoir creusé et semé !`);
-          snapshot(`⚠️ Bac ${pos} : arrosé trop tôt (boue) !`);
-        } else {
-          p.watered = true;
-          snapshot(`💧 Bac ${pos} : graine arrosée → semis réussi !`);
-        }
+        if (!p.dug || !p.seeded) { p.ruined = true; warnings.push(`Bac ${pos} : arrosé avant d'avoir creusé et semé !`); snapshot(`⚠️ Bac ${pos} : arrosé trop tôt.`); }
+        else { p.watered = true; snapshot(`💧 Bac ${pos} : arrosage réussi !`); }
       }
     }
   }
 
-  snapshot(`Départ sur la base (Parcelle de ${numPlots} bacs).`);
-
-  // 1. Avant la boucle
+  snapshot(`Départ sur la base (Parcelle ${numPlots} bacs).`);
   state.zones.before.forEach(b => execBlock(b, false));
 
-  // 2. Boucle
   if (!crashed && state.zones.loop.length > 0 && loopType !== "NONE") {
     if (loopType === "FIXED") {
-      for (let i = 0; i < loopCount && !crashed; i++) {
-        state.zones.loop.forEach(b => execBlock(b, true));
-      }
+      for (let i = 0; i < loopCount && !crashed; i++) state.zones.loop.forEach(b => execBlock(b, true));
     } else if (loopType === "UNTIL_END") {
       let guard = 0;
       while (pos < numPlots && !crashed && guard < 15) {
@@ -1568,171 +2151,92 @@ function simulateRobot(numPlots) {
         guard++;
       }
       if (guard >= 15 && !crashed) {
-        crashed = true;
-        crashMsg = "💥 Boucle infinie bloquée : le robot n'avance jamais jusqu'à la balise de fin !";
-        snapshot(crashMsg, true);
+        crashed = true; crashMsg = "💥 Boucle bloquée : le robot n'atteint jamais la fin de rangée !"; snapshot(crashMsg, true);
       }
     } else if (loopType === "FOREVER") {
-      for (let i = 0; i < numPlots + 2 && !crashed; i++) {
-        state.zones.loop.forEach(b => execBlock(b, true));
-      }
-      if (!crashed) {
-        crashed = true;
-        crashMsg = "💥 Boucle « Répéter indéfiniment » : le robot ne s'arrête jamais !";
-        snapshot(crashMsg, true);
-      }
+      for (let i = 0; i < numPlots + 2 && !crashed; i++) state.zones.loop.forEach(b => execBlock(b, true));
+      if (!crashed) { crashed = true; crashMsg = "💥 « Répéter indéfiniment » : le robot ne s'arrête jamais !"; snapshot(crashMsg, true); }
     }
   }
 
-  // 3. Après la boucle
-  if (!crashed) {
-    state.zones.after.forEach(b => execBlock(b, false));
-  }
+  if (!crashed) state.zones.after.forEach(b => execBlock(b, false));
 
   const allPlanted = plots.every(p => p.dug && p.seeded && p.watered && !p.ruined);
   const cleanSuccess = allPlanted && !crashed && gyroWasUsed && !gyroOn && returnedHome && warnings.length === 0;
-
   return {
-    frames,
-    allPlanted,
-    crashed,
-    crashMsg,
-    gyroWasUsed,
-    gyroOffAtEnd: !gyroOn,
-    returnedHome,
-    warnings: [...new Set(warnings)],
-    cleanSuccess,
+    frames, allPlanted, crashed, crashMsg, gyroWasUsed, gyroOffAtEnd: !gyroOn, returnedHome,
+    warnings: [...new Set(warnings)], cleanSuccess,
     plantedCount: plots.filter(p => p.dug && p.seeded && p.watered && !p.ruined).length
   };
 }
 
-/* Rendu Canvas 2D du Robot Semeur */
 function drawField(numPlots, robotPos, plotsState, gyroOn, crashed) {
   const canvas = document.getElementById("robotCanvas");
   const ctx = canvas.getContext("2d");
-  const W = canvas.width;
-  const H = canvas.height;
-
+  const W = canvas.width, H = canvas.height;
   ctx.clearRect(0, 0, W, H);
 
-  // Ciel & sol
-  ctx.fillStyle = "#0f172a";
-  ctx.fillRect(0, 0, W, H);
-  ctx.fillStyle = "#1e293b";
-  ctx.fillRect(0, 0, W, 150);
-  ctx.fillStyle = "#334155";
-  ctx.fillRect(0, 150, W, 95);
+  ctx.fillStyle = "#0f172a"; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = "#1e293b"; ctx.fillRect(0, 0, W, 145);
+  ctx.fillStyle = "#334155"; ctx.fillRect(0, 145, W, 90);
 
-  const totalSlots = numPlots + 1; // 0 (base) + 1..numPlots
+  const totalSlots = numPlots + 1;
   const marginX = 24;
-  const usableW = W - marginX * 2 - 26; // place pour la balise/clôture
+  const usableW = W - marginX * 2 - 26;
   const slotW = usableW / totalSlots;
 
-  // Base en béton (case 0)
-  const baseX = marginX;
-  ctx.fillStyle = "#64748b";
-  ctx.fillRect(baseX + 3, 154, slotW - 6, 46);
-  ctx.strokeStyle = "#cbd5e1";
-  ctx.strokeRect(baseX + 3, 154, slotW - 6, 46);
-  ctx.fillStyle = "#f8fafc";
-  ctx.font = "bold 11px sans-serif";
-  ctx.textAlign = "center";
-  ctx.fillText("BASE", baseX + slotW / 2, 174);
-  ctx.font = "10px sans-serif";
-  ctx.fillText("(Béton)", baseX + slotW / 2, 189);
+  // Base béton
+  ctx.fillStyle = "#64748b"; ctx.fillRect(marginX + 3, 149, slotW - 6, 44);
+  ctx.strokeStyle = "#cbd5e1"; ctx.strokeRect(marginX + 3, 149, slotW - 6, 44);
+  ctx.fillStyle = "#f8fafc"; ctx.font = "bold 11px sans-serif"; ctx.textAlign = "center";
+  ctx.fillText("BASE", marginX + slotW / 2, 168);
+  ctx.font = "10px sans-serif"; ctx.fillText("(Béton)", marginX + slotW / 2, 183);
 
-  // Bacs de terre 1..numPlots
   for (let i = 1; i <= numPlots; i++) {
     const x = marginX + i * slotW;
     const p = plotsState[i - 1] || { dug: false, seeded: false, watered: false, ruined: false };
-
     ctx.fillStyle = p.ruined ? "#7f1d1d" : (p.watered ? "#3f2e21" : "#78350f");
-    ctx.fillRect(x + 4, 154, slotW - 8, 46);
+    ctx.fillRect(x + 4, 149, slotW - 8, 44);
     ctx.strokeStyle = p.ruined ? "#ef4444" : "#b45309";
-    ctx.strokeRect(x + 4, 154, slotW - 8, 46);
+    ctx.strokeRect(x + 4, 149, slotW - 8, 44);
 
     const cx = x + slotW / 2;
-    ctx.fillStyle = "#fde68a";
-    ctx.font = "bold 11px sans-serif";
-    ctx.fillText("Bac " + i, cx, 215);
+    ctx.fillStyle = "#fde68a"; ctx.font = "bold 11px sans-serif";
+    ctx.fillText("Bac " + i, cx, 209);
 
     if (p.dug) {
-      ctx.fillStyle = "#1c1917";
-      ctx.beginPath();
-      ctx.ellipse(cx, 177, 11, 6, 0, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.fillStyle = "#1c1917"; ctx.beginPath(); ctx.ellipse(cx, 171, 11, 6, 0, 0, Math.PI * 2); ctx.fill();
     }
     if (p.seeded) {
-      ctx.fillStyle = "#facc15";
-      ctx.beginPath();
-      ctx.arc(cx, 177, 4, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.fillStyle = "#facc15"; ctx.beginPath(); ctx.arc(cx, 171, 4, 0, Math.PI * 2); ctx.fill();
     }
     if (p.watered && p.dug && p.seeded && !p.ruined) {
-      // Petite pousse verte !
-      ctx.strokeStyle = "#22c55e";
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(cx, 174);
-      ctx.lineTo(cx, 148);
-      ctx.stroke();
+      ctx.strokeStyle = "#22c55e"; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(cx, 168); ctx.lineTo(cx, 142); ctx.stroke();
       ctx.fillStyle = "#4ade80";
-      ctx.beginPath();
-      ctx.ellipse(cx - 6, 153, 6, 3, -0.5, 0, Math.PI * 2);
-      ctx.ellipse(cx + 6, 151, 6, 3, 0.5, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.ellipse(cx - 6, 147, 6, 3, -0.5, 0, Math.PI * 2); ctx.ellipse(cx + 6, 145, 6, 3, 0.5, 0, Math.PI * 2); ctx.fill();
       ctx.lineWidth = 1;
     }
   }
 
-  // Balise fin de rangée + Clôture
+  // Balise FIN
   const wallX = marginX + totalSlots * slotW + 4;
-  ctx.fillStyle = "#ef4444";
-  ctx.fillRect(wallX, 110, 6, 92);
-  ctx.fillStyle = "#facc15";
-  ctx.beginPath();
-  ctx.arc(wallX + 3, 108, 7, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = "#e2e8f0";
-  ctx.font = "bold 10px sans-serif";
-  ctx.fillText("FIN", wallX + 3, 96);
+  ctx.fillStyle = "#ef4444"; ctx.fillRect(wallX, 106, 6, 88);
+  ctx.fillStyle = "#facc15"; ctx.beginPath(); ctx.arc(wallX + 3, 104, 7, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = "#e2e8f0"; ctx.font = "bold 10px sans-serif"; ctx.fillText("FIN", wallX + 3, 92);
 
   // Robot
-  const clampedPos = Math.min(robotPos, numPlots + 0.55);
-  const rx = marginX + clampedPos * slotW + slotW / 2;
-  const ry = 112;
-
-  // Corps du robot
+  const rx = marginX + Math.min(robotPos, numPlots + 0.55) * slotW + slotW / 2;
+  const ry = 107;
   ctx.fillStyle = crashed ? "#dc2626" : "#3b82f6";
-  ctx.beginPath();
-  ctx.roundRect(rx - 22, ry, 44, 28, 6);
-  ctx.fill();
-  ctx.strokeStyle = "#93c5fd";
-  ctx.stroke();
-
-  // Roues
+  ctx.beginPath(); ctx.roundRect(rx - 22, ry, 44, 28, 6); ctx.fill();
+  ctx.strokeStyle = "#93c5fd"; ctx.stroke();
   ctx.fillStyle = "#0f172a";
-  ctx.beginPath();
-  ctx.arc(rx - 13, ry + 30, 7, 0, Math.PI * 2);
-  ctx.arc(rx + 13, ry + 30, 7, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Gyrophare
+  ctx.beginPath(); ctx.arc(rx - 13, ry + 30, 7, 0, Math.PI * 2); ctx.arc(rx + 13, ry + 30, 7, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = gyroOn ? "#facc15" : "#475569";
-  ctx.beginPath();
-  ctx.arc(rx, ry - 5, 6, Math.PI, 0);
-  ctx.fill();
-  if (gyroOn) {
-    ctx.fillStyle = "rgba(250, 204, 21, 0.35)";
-    ctx.beginPath();
-    ctx.arc(rx, ry - 6, 14, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  // Étiquette robot
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 11px sans-serif";
-  ctx.fillText(crashed ? "💥" : "BOT", rx, ry + 18);
+  ctx.beginPath(); ctx.arc(rx, ry - 5, 6, Math.PI, 0); ctx.fill();
+  if (gyroOn) { ctx.fillStyle = "rgba(250, 204, 21, 0.35)"; ctx.beginPath(); ctx.arc(rx, ry - 6, 14, 0, Math.PI * 2); ctx.fill(); }
+  ctx.fillStyle = "#fff"; ctx.font = "bold 11px sans-serif"; ctx.fillText(crashed ? "💥" : "BOT", rx, ry + 18);
 }
 
 function playSimulation(numPlots) {
@@ -1740,17 +2244,21 @@ function playSimulation(numPlots) {
   const sim = simulateRobot(numPlots);
   const logEl = document.getElementById("simLog");
   const badge = document.getElementById("simBadge");
+  const vCard = document.getElementById("a3Verdict");
+  const vBadge = document.getElementById("a3VBadge");
+  const vText = document.getElementById("a3VText");
+  const cell = document.getElementById(numPlots === 4 ? "rProto4" : "rProto6");
 
   if (sim.frames.length <= 1) {
     drawField(numPlots, 0, [], false, false);
-    logEl.innerHTML = "⚠️ Ton programme est vide (ou aucune boucle n'est sélectionnée). Ajoute des blocs puis relance le test.";
-    badge.textContent = "Programme vide";
-    badge.style.background = "#b45309";
+    vCard.className = "verdict-card v-warn";
+    vBadge.textContent = "⚠️ Programme incomplet";
+    vText.textContent = "Ajoute tes blocs et choisis un type de boucle avant de tester.";
     return;
   }
 
   let idx = 0;
-  badge.textContent = `Simulation Parcelle ${numPlots} bacs...`;
+  badge.textContent = `Test ${numPlots} bacs...`;
   badge.style.background = "#2563eb";
   logEl.innerHTML = "";
 
@@ -1763,20 +2271,32 @@ function playSimulation(numPlots) {
       clearInterval(state.simTimer);
       state.simTimer = null;
       if (sim.cleanSuccess) {
-        badge.textContent = `✅ Réussi (${numPlots}/${numPlots} bacs)`;
+        badge.textContent = `✅ Conforme (${numPlots}/${numPlots})`;
         badge.style.background = "#16a34a";
-        logEl.innerHTML = `<div style="color:#4ade80; font-weight:700;">✅ Mission parfaite sur la parcelle de ${numPlots} bacs !</div>` + logEl.innerHTML;
-      } else if (sim.crashed) {
-        badge.textContent = "❌ Crash / Erreur";
-        badge.style.background = "#dc2626";
+        vCard.className = "verdict-card v-ok";
+        vBadge.textContent = `✅ CONFORME (Parcelle ${numPlots} bacs)`;
+        vText.textContent = `Mission réussie : les ${numPlots} bacs sont semés dans le bon ordre, le gyrophare est éteint et le robot est rentré.`;
+        cell.className = "proto-status ps-ok"; cell.textContent = "✅ Conforme";
+        state.a3Proto[numPlots === 4 ? "p4" : "p6"] = "ok";
       } else {
-        badge.textContent = `⚠️ Incomplet (${sim.plantedCount}/${numPlots} bacs)`;
-        badge.style.background = "#d97706";
-        const extra = sim.warnings.length ? " — " + sim.warnings[0] : "";
-        logEl.innerHTML = `<div style="color:#fbbf24; font-weight:700;">⚠️ Bacs réussis : ${sim.plantedCount}/${numPlots}${extra}</div>` + logEl.innerHTML;
+        badge.textContent = sim.crashed ? "❌ Crash" : `❌ Non conforme (${sim.plantedCount}/${numPlots})`;
+        badge.style.background = "#dc2626";
+        vCard.className = "verdict-card v-ko";
+        vBadge.textContent = `❌ NON CONFORME (Parcelle ${numPlots} bacs)`;
+        let reason = sim.crashMsg || (sim.warnings[0]) || "";
+        if (!reason) {
+          if (!sim.allPlanted) reason = `Seulement ${sim.plantedCount}/${numPlots} bacs semés correctement.`;
+          else if (!sim.gyroWasUsed) reason = "Tu as oublié d'allumer le gyrophare avant la boucle.";
+          else if (!sim.gyroOffAtEnd) reason = "Tu as oublié d'éteindre le gyrophare après la boucle.";
+          else if (!sim.returnedHome) reason = "Le robot n'est pas rentré à la base après la boucle.";
+        }
+        vText.textContent = reason + " Corrige ton programme et relance le test !";
+        cell.className = "proto-status ps-ko"; cell.textContent = "❌ Non conforme";
+        state.a3Proto[numPlots === 4 ? "p4" : "p6"] = "ko";
       }
+      saveDraft();
     }
-  }, 260);
+  }, 230);
 }
 
 document.getElementById("btnRun4").addEventListener("click", () => playSimulation(4));
@@ -1786,110 +2306,78 @@ document.getElementById("btnResetSim").addEventListener("click", () => {
   drawField(4, 0, [], false, false);
   document.getElementById("simBadge").textContent = "Prêt";
   document.getElementById("simBadge").style.background = "#334155";
-  document.getElementById("simLog").textContent = "Simulateur réinitialisé.";
 });
 
-function gradeActivity2() {
+function gradeActivity3() {
   let score = 0;
   const feedback = [];
 
-  // 1. Analyse A1 & A2 (1 pt)
+  // Analyse (1 pt)
   const ana1 = (document.querySelector('input[name="ana1"]:checked') || {}).value || "";
   const ana2 = (document.querySelector('input[name="ana2"]:checked') || {}).value || "";
 
-  if (ana1 === "B") {
-    score += 0.5;
-    feedback.push({ type: "ok", text: "✅ Analyse Q1 : Exact ! On allume le gyrophare AVANT la boucle, et on l'éteint + rentre à la base APRÈS (+0,5 pt)." });
-  } else {
-    feedback.push({ type: "ko", text: "❌ Analyse Q1 : Les actions réalisées une seule fois (allumer le gyrophare au début, l'éteindre et rentrer à la fin) doivent rester hors de la boucle." });
-  }
+  if (ana1 === "B") { score += 0.5; feedback.push({ type: "ok", text: "✅ Analyse Q1 : Exact, l'allumage/extinction du gyrophare et le retour base restent hors boucle (+0,5 pt)." }); }
+  else { feedback.push({ type: "ko", text: "❌ Analyse Q1 : Les tâches faites une seule fois (gyrophare ON au début, gyrophare OFF + retour à la fin) doivent être hors boucle." }); }
 
-  if (ana2 === "A") {
-    score += 0.5;
-    feedback.push({ type: "ok", text: "✅ Analyse Q2 : Exact ! Comme le robot démarre sur la base en béton, il doit avancer en premier (+0,5 pt)." });
-  } else {
-    feedback.push({ type: "ko", text: "❌ Analyse Q2 : Le robot démarre sur le béton (case 0). Il doit impérativement « Avancer d'1 bac » avant de creuser !" });
-  }
+  if (ana2 === "A") { score += 0.5; feedback.push({ type: "ok", text: "✅ Analyse Q2 : Exact, le robot démarre sur le béton et doit avancer avant de creuser (+0,5 pt)." }); }
+  else { feedback.push({ type: "ko", text: "❌ Analyse Q2 : Il faut « Avancer d'1 bac » en premier sinon la foreuse casse sur le béton (case 0)." }); }
 
-  // 2. Qualité du motif dans la boucle (1.25 pt)
+  // Motif répété (0.75 pt)
   const expectedMotif = ["MOVE", "DIG", "SEED", "WATER"];
   const userLoop = state.zones.loop;
   const motifExact = userLoop.length === 4 && expectedMotif.every((b, i) => userLoop[i] === b);
   const hasAll4 = expectedMotif.every(b => userLoop.includes(b));
 
-  if (motifExact) {
-    score += 1.25;
-    feedback.push({ type: "ok", text: "✅ Motif répété : Suite exacte et dans le bon ordre (Avancer → Creuser → Déposer graine → Arroser) (+1,25 pt)." });
-  } else if (hasAll4 && userLoop.length === 4) {
-    score += 0.5;
-    feedback.push({ type: "mid", text: "⚠️ Motif répété : Tu as trouvé les 4 bonnes actions, mais pas dans le bon ordre logique. Ordre attendu : Avancer → Creuser → Déposer graine → Arroser (+0,5 / 1,25 pt)." });
-  } else {
-    feedback.push({ type: "ko", text: "❌ Motif répété : Le motif dans la boucle est incomplet ou contient des blocs parasites. Attendu : Avancer → Creuser → Déposer graine → Arroser." });
-  }
+  if (motifExact) { score += 0.75; feedback.push({ type: "ok", text: "✅ Motif répété : Ordre exact (Avancer → Creuser → Graine → Arroser) (+0,75 pt)." }); }
+  else if (hasAll4 && userLoop.length === 4) { score += 0.25; feedback.push({ type: "mid", text: "⚠️ Motif répété : Les 4 actions y sont mais dans le mauvais ordre (+0,25 / 0,75 pt)." }); }
+  else { feedback.push({ type: "ko", text: "❌ Motif répété : Attendu dans la boucle : Avancer → Creuser → Déposer graine → Arroser." }); }
 
-  // 3. Initialisation et clôture (0.75 pt)
+  // Init & Fin (0.5 pt)
   const initOk = state.zones.before.length === 1 && state.zones.before[0] === "GYRO_ON";
-  const afterOk = state.zones.after.length === 2 &&
-                  state.zones.after.includes("GYRO_OFF") &&
-                  state.zones.after.includes("RETURN");
+  const afterOk = state.zones.after.length === 2 && state.zones.after.includes("GYRO_OFF") && state.zones.after.includes("RETURN");
+  if (initOk && afterOk) { score += 0.5; feedback.push({ type: "ok", text: "✅ Initialisation & Fin : Zones Avant et Après correctement complétées (+0,5 pt)." }); }
+  else if (initOk || afterOk) { score += 0.25; feedback.push({ type: "mid", text: "⚠️ Initialisation & Fin : Une des deux zones (Avant ou Après) est incomplète (+0,25 / 0,5 pt)." }); }
+  else { feedback.push({ type: "ko", text: "❌ Initialisation & Fin : Placer « Allumer gyrophare » AVANT la boucle, « Éteindre gyrophare » et « Rentrer à la base » APRÈS." }); }
 
-  if (initOk && afterOk) {
-    score += 0.75;
-    feedback.push({ type: "ok", text: "✅ Initialisation & Fin : Gyrophare allumé avant la boucle, puis éteint et retour à la base après (+0,75 pt)." });
-  } else if (initOk || afterOk) {
-    score += 0.35;
-    feedback.push({ type: "mid", text: "⚠️ Initialisation & Fin : Une des deux zones (Avant ou Après la boucle) est incomplète ou mal placée (+0,35 / 0,75 pt)." });
-  } else {
-    feedback.push({ type: "ko", text: "❌ Initialisation & Fin : Il faut placer « Allumer gyrophare » AVANT la boucle, et « Éteindre gyrophare » + « Rentrer à la base » APRÈS la boucle." });
-  }
-
-  // 4. Intelligence & validation sur 2 parcelles (1 pt)
+  // Boucle intelligente sur 2 parcelles (0.75 pt)
   const sim4 = simulateRobot(4);
   const sim6 = simulateRobot(6);
   const loopType = document.getElementById("loopType").value;
 
-  if (sim4.allPlanted && !sim4.crashed && sim6.allPlanted && !sim6.crashed && loopType === "UNTIL_END") {
-    score += 1.0;
-    feedback.push({ type: "ok", text: "✅ Boucle intelligente : Bravo ! Grâce à « Répéter jusqu'à [Fin de rangée] », ton robot réussit la Parcelle A (4 bacs) ET la Parcelle B (6 bacs) sans rien modifier (+1 pt)." });
+  if (sim4.cleanSuccess && sim6.cleanSuccess && loopType === "UNTIL_END") {
+    score += 0.75;
+    feedback.push({ type: "ok", text: "✅ Boucle intelligente : « Répéter jusqu'à [Fin de rangée] » réussit parfaitement les Parcelles A (4 bacs) et B (6 bacs) (+0,75 pt)." });
   } else if (sim4.allPlanted && !sim4.crashed) {
-    score += 0.5;
-    feedback.push({ type: "mid", text: "⚠️ Boucle fixe : Ton programme réussit la Parcelle A (4 bacs), mais échoue sur la Parcelle B (6 bacs). Utilise « Répéter jusqu'à [Capteur = Fin de rangée] » pour rendre la boucle vraiment intelligente (+0,5 / 1 pt)." });
+    score += 0.25;
+    feedback.push({ type: "mid", text: "⚠️ Boucle fixe : Fonctionne sur 4 bacs mais échoue sur 6 bacs. Il fallait utiliser « Répéter jusqu'à [Fin de rangée] » (+0,25 / 0,75 pt)." });
   } else {
-    const reason = sim4.crashMsg || (sim4.warnings[0]) || `Seulement ${sim4.plantedCount}/4 bacs plantés sur la Parcelle A.`;
-    feedback.push({ type: "ko", text: `❌ Test pratique sur terrain : ${reason}` });
+    feedback.push({ type: "ko", text: `❌ Exécution sur terrain : ${sim4.crashMsg || sim4.warnings[0] || `Seulement ${sim4.plantedCount}/4 bacs réussis.`}` });
   }
 
-  return { score: Math.round(score * 100) / 100, feedback };
+  return { score: Math.round(score * 4) / 4, feedback };
 }
 
 /* ============================================================================
-   ÉTAPE 3 : MINI-BILAN (2 POINTS)
+   ÉTAPE 4 : MINI-BILAN (1,5 PT)
    ============================================================================ */
 function gradeBilan() {
   const key = [
-    { name: "b1", good: "B", label: "Q1 (Losange)", expl: "Un losange représente toujours un test / une condition." },
-    { name: "b2", good: "B", label: "Q2 (Opérateur ET)", expl: "Avec ET, les deux conditions doivent être vraies simultanément." },
-    { name: "b3", good: "A", label: "Q3 (Répéter jusqu'à)", expl: "La boucle conditionnelle s'adapte grâce au capteur de fin de rangée." },
-    { name: "b4", good: "C", label: "Q4 (Boucle infinie)", expl: "Dans un système embarqué, elle permet une surveillance continue des capteurs." }
+    { name: "b1", good: "B", label: "Q1 (Formalisme)", expl: "Losange = Nœud de test (capteur/condition) ; Rectangle = Feuille d'action." },
+    { name: "b2", good: "A", label: "Q2 (Protocole de vérification)", expl: "Il permet de tester des cas précis pour vérifier la conformité et déboguer." },
+    { name: "b3", good: "A", label: "Q3 (Boucle conditionnelle)", expl: "« Répéter jusqu'à » s'adapte automatiquement grâce au capteur." }
   ];
-
   let score = 0;
   const feedback = [];
   key.forEach(q => {
     const val = (document.querySelector(`input[name="${q.name}"]:checked`) || {}).value || "";
-    if (val === q.good) {
-      score += 0.5;
-      feedback.push({ type: "ok", text: `✅ ${q.label} : Bonne réponse (+0,5 pt).` });
-    } else {
-      feedback.push({ type: "ko", text: `❌ ${q.label} : Incorrect ou non répondu. À retenir : ${q.expl}` });
-    }
+    if (val === q.good) { score += 0.5; feedback.push({ type: "ok", text: `✅ ${q.label} : Bonne réponse (+0,5 pt).` }); }
+    else { feedback.push({ type: "ko", text: `❌ ${q.label} : Incorrect. À retenir : ${q.expl}` }); }
   });
-
-  return { score: Math.round(score * 100) / 100, feedback };
+  return { score: Math.round(score * 4) / 4, feedback };
 }
 
 /* ============================================================================
-   VALIDATION FINALE, AFFICHAGE CORRECTION & ENVOI GOOGLE SHEETS
+   VALIDATION FINALE & ENVOI GOOGLE SHEETS
    ============================================================================ */
 function computePixLevel(total10) {
   if (total10 >= 8.5) return "Très Bonne Maîtrise (Pix 3.4 — Niveau 2 validé)";
@@ -1899,12 +2387,13 @@ function computePixLevel(total10) {
 }
 
 function renderFeedbackList(containerId, items) {
-  const el = document.getElementById(containerId);
-  el.innerHTML = items.map(it => {
+  document.getElementById(containerId).innerHTML = items.map(it => {
     const cls = it.type === "ok" ? "fb-ok" : (it.type === "mid" ? "fb-mid" : "fb-ko");
     return `<div class="fb-item ${cls}">${it.text}</div>`;
   }).join("");
 }
+
+function fmt(n) { return n.toString().replace(".", ","); }
 
 function submitAndGrade() {
   const nom = document.getElementById("elNom").value.trim().toUpperCase();
@@ -1912,59 +2401,64 @@ function submitAndGrade() {
   const classe = document.getElementById("elClasse").value;
 
   if (!nom || !prenom || !classe) {
-    alert("⚠️ Merci de renseigner ton NOM, ton PRÉNOM et ta CLASSE en haut de la page avant de valider.");
+    alert("⚠️ Merci de saisir ton NOM, ton PRÉNOM et ta CLASSE en haut de la page avant de valider.");
     window.scrollTo({ top: 0, behavior: "smooth" });
     return;
   }
 
   const r1 = gradeActivity1();
   const r2 = gradeActivity2();
-  const r3 = gradeBilan();
-  const total = Math.round((r1.score + r2.score + r3.score) * 100) / 100;
+  const r3 = gradeActivity3();
+  const r4 = gradeBilan();
+  const total = Math.min(10, Math.round((r1.score + r2.score + r3.score + r4.score) * 4) / 4);
   const niveau = computePixLevel(total);
 
-  // Verrouillage des champs
   state.locked = true;
   document.getElementById("lockedBanner").style.display = "block";
   document.querySelectorAll("input, select").forEach(el => {
-    if (el.id !== "simTemp" && el.id !== "simWin") el.disabled = true;
+    if (!["simTemp", "simWin", "pCar", "pBadge", "pSpots"].includes(el.id)) el.disabled = true;
   });
   document.getElementById("btnFinish").disabled = true;
   document.getElementById("btnClearBlocks").disabled = true;
+  document.getElementById("btnResetTree2").disabled = true;
+  renderAct2SVG();
   renderAllZones();
 
-  // Affichage des résultats
   document.getElementById("notSubmittedMsg").style.display = "none";
   document.getElementById("resultsContainer").style.display = "block";
-  document.getElementById("finalTotal").textContent = total.toString().replace(".", ",");
-  document.getElementById("resA1").textContent = r1.score.toString().replace(".", ",");
-  document.getElementById("resA2").textContent = r2.score.toString().replace(".", ",");
-  document.getElementById("resBilan").textContent = r3.score.toString().replace(".", ",");
-  document.getElementById("fbA1Score").textContent = `${r1.score} / 4 pts`;
-  document.getElementById("fbA2Score").textContent = `${r2.score} / 4 pts`;
-  document.getElementById("fbBilanScore").textContent = `${r3.score} / 2 pts`;
+  document.getElementById("finalTotal").textContent = fmt(total);
+  document.getElementById("resA1").textContent = fmt(r1.score);
+  document.getElementById("resA2").textContent = fmt(r2.score);
+  document.getElementById("resA3").textContent = fmt(r3.score);
+  document.getElementById("resBilan").textContent = fmt(r4.score);
+  document.getElementById("fbA1Score").textContent = `${fmt(r1.score)} / 2,5 pts`;
+  document.getElementById("fbA2Score").textContent = `${fmt(r2.score)} / 3 pts`;
+  document.getElementById("fbA3Score").textContent = `${fmt(r3.score)} / 3 pts`;
+  document.getElementById("fbBilanScore").textContent = `${fmt(r4.score)} / 1,5 pt`;
   document.getElementById("studentSummary").textContent = `${prenom} ${nom} (${classe})`;
   document.getElementById("pixLevel").textContent = `🏅 ${niveau}`;
 
   renderFeedbackList("fbA1List", r1.feedback);
   renderFeedbackList("fbA2List", r2.feedback);
-  renderFeedbackList("fbBilanList", r3.feedback);
+  renderFeedbackList("fbA3List", r3.feedback);
+  renderFeedbackList("fbBilanList", r4.feedback);
 
   lastPayload = {
     activite: CONFIG.ACTIVITY_NAME,
-    classe,
-    nom,
-    prenom,
-    score_arbre: r1.score,
-    score_boucle: r2.score,
-    score_bilan: r3.score,
+    classe, nom, prenom,
+    score_arbre_guide: r1.score,
+    erreurs_proto_a1: state.a1Errors,
+    score_arbre_concu: r2.score,
+    erreurs_proto_a2: state.a2Errors,
+    score_boucle: r3.score,
+    score_bilan: r4.score,
     note_totale: total,
     niveau_pix: niveau,
     boucle_choisie: document.getElementById("loopType").value,
     motif_boucle: state.zones.loop.join(" > ")
   };
 
-  goTab("tab4");
+  goTab("tab5");
   sendToGoogleSheet(lastPayload);
   saveDraft();
 }
@@ -1974,9 +2468,9 @@ async function sendToGoogleSheet(payload) {
   const retryBtn = document.getElementById("btnRetrySend");
   retryBtn.style.display = "none";
 
-  if (!CONFIG.GOOGLE_SHEET_URL || CONFIG.GOOGLE_SHEET_URL.includes("https://script.google.com/macros/s/AKfycbzVVAsvfEOhjm0T_ST2KB-7Z5t4luH15-AITwOghv5RTqLSZp-7W0iRqbqH1zOhZ-RS/exec")) {
+  if (!CONFIG.GOOGLE_SHEET_URL || CONFIG.GOOGLE_SHEET_URL.includes("https://script.google.com/macros/s/AKfycbzL-W9pGDA9yHaauQCpJd8RYQ5tU-Wc-8ZwFl3d7nq-MdOVRpERV3odW79egewpXz8A/exec")) {
     statusEl.className = "send-status fb-mid";
-    statusEl.innerHTML = "ℹ️ Mode aperçu local : l'URL Google Sheets n'est pas encore configurée dans le fichier HTML. Ta correction complète est affichée ci-dessous.";
+    statusEl.innerHTML = "ℹ️ Mode aperçu local : collez votre URL Google Apps Script dans CONFIG.GOOGLE_SHEET_URL pour activer l'envoi vers Google Sheets.";
     return;
   }
 
@@ -1991,16 +2485,16 @@ async function sendToGoogleSheet(payload) {
       body: JSON.stringify(payload)
     });
     statusEl.className = "send-status fb-ok";
-    statusEl.innerHTML = "✅ Note transmise avec succès au professeur ! Tu peux maintenant lire attentivement ce qui va et ce qui ne va pas dans ta copie.";
+    statusEl.innerHTML = "✅ Note transmise avec succès au professeur ! Lis bien la correction détaillée ci-dessous.";
   } catch (err) {
     statusEl.className = "send-status fb-ko";
-    statusEl.innerHTML = "❌ Erreur réseau lors de l'envoi. Appelle le professeur ou clique sur « Réessayer l'envoi ».";
+    statusEl.innerHTML = "❌ Erreur réseau lors de l'envoi. Clique sur « Réessayer » ou appelle le professeur.";
     retryBtn.style.display = "inline-flex";
   }
 }
 
 /* ============================================================================
-   SAUVEGARDE LOCALE ANTI-RAFRAÎCHISSEMENT (try/catch sécurisé)
+   SAUVEGARDE LOCALE (try/catch)
    ============================================================================ */
 function saveDraft() {
   try {
@@ -2008,14 +2502,20 @@ function saveDraft() {
       nom: document.getElementById("elNom").value,
       prenom: document.getElementById("elPrenom").value,
       classe: document.getElementById("elClasse").value,
-      tree: getTreeValues(),
+      a1: getA1Values(),
+      a1Errors: state.a1Errors,
+      a1ProtoStatus: state.a1ProtoStatus,
+      a2Tree: state.a2Tree,
+      a2NextUid: state.a2NextUid,
+      a2Errors: state.a2Errors,
+      a2ProtoStatus: state.a2ProtoStatus,
       zones: state.zones,
       loopType: document.getElementById("loopType").value,
       loopCount: document.getElementById("loopCount").value
     };
     localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(draft));
-    document.getElementById("saveIndicator").textContent = "💾 Sauvegardé automatiquement";
-  } catch (e) { /* Ignore si localStorage bloqué */ }
+    document.getElementById("saveIndicator").textContent = "💾 Sauvegardé";
+  } catch (e) {}
 }
 
 function loadDraft() {
@@ -2026,27 +2526,30 @@ function loadDraft() {
     if (d.nom) document.getElementById("elNom").value = d.nom;
     if (d.prenom) document.getElementById("elPrenom").value = d.prenom;
     if (d.classe) document.getElementById("elClasse").value = d.classe;
-    if (d.tree) {
-      Object.keys(d.tree).forEach(k => {
-        const el = document.getElementById(k);
-        if (el && d.tree[k]) el.value = d.tree[k];
-      });
-    }
+    if (d.a1) Object.keys(d.a1).forEach(k => { const el = document.getElementById(k); if (el && d.a1[k]) el.value = d.a1[k]; });
+    if (typeof d.a1Errors === "number") state.a1Errors = d.a1Errors;
+    if (d.a1ProtoStatus) state.a1ProtoStatus = d.a1ProtoStatus;
+    if (d.a2Tree) state.a2Tree = d.a2Tree;
+    if (d.a2NextUid) state.a2NextUid = d.a2NextUid;
+    if (typeof d.a2Errors === "number") state.a2Errors = d.a2Errors;
+    if (d.a2ProtoStatus) state.a2ProtoStatus = d.a2ProtoStatus;
     if (d.zones) state.zones = d.zones;
     if (d.loopType) {
       document.getElementById("loopType").value = d.loopType;
       document.getElementById("loopCount").style.display = (d.loopType === "FIXED") ? "inline-block" : "none";
     }
     if (d.loopCount) document.getElementById("loopCount").value = d.loopCount;
-  } catch (e) { /* Ignore */ }
+  } catch (e) {}
 }
 
-["elNom", "elPrenom", "elClasse", "t1", "t2", "t3", "a1", "a2", "a3", "a4"].forEach(id => {
-  document.getElementById(id).addEventListener("change", saveDraft);
-});
+["elNom", "elPrenom", "elClasse"].forEach(id => document.getElementById(id).addEventListener("change", saveDraft));
 
 // Initialisation
 loadDraft();
+initScrambledPalette();
+renderA1ProtoTable();
+renderA2ProtoTable();
+renderAct2SVG();
 renderAllZones();
 drawField(4, 0, [], false, false);
 </script>
